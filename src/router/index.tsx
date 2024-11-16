@@ -19,7 +19,7 @@ const Router = () => {
         <Route element={<DefaultLayout />}>
           <Route path='*' />
           <Route path='/login' element={<LoginPage />} />
-          <Route path='/mypage' element={<MyPage />} />
+          <Route path='/my-page' element={<MyPage />} />
           <Route path='/member-agree' element={<TermsOfServicePage />} />
           <Route path='/role-selection' element={<RoleSelect />} />
           <Route path='/signup' element={<SignupPage />} />
