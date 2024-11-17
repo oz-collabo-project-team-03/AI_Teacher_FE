@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import AuthInput from '../../components/auth/AuthInput';
 import { GradeSelector } from '../../components/auth/GradeButton';
-import AuthInput from '../../components/common/AuthInput';
 import Button from '../../components/common/Button';
 
 const SignupPage = () => {
