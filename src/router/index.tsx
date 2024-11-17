@@ -10,6 +10,7 @@ import StudentLayout from '../layouts/studentLayout';
 import TeacherLayout from '../layouts/teacherLayout';
 import TermsOfServicePage from '../pages/auth/termsOfServicePage';
 import EditProfile from '../pages/editProfile/editProfile';
+import ChangeProfile from '../pages/changeProfile/changeProfile';
 
 // import StudentChatListPage from '../pages/chat/studentChatListPage';
 
@@ -22,6 +23,7 @@ const Router = () => {
           <Route path='/login' element={<LoginPage />} />
           <Route path='/my-page' element={<MyPage />} />
           <Route path='/edit-profile' element={<EditProfile />} />
+          <Route path='/change-profile' element={<ChangeProfile />} />
           <Route path='/member-agree' element={<TermsOfServicePage />} />
           <Route path='/role-selection' element={<RoleSelect />} />
           <Route path='/signup' element={<SignupPage />} />
