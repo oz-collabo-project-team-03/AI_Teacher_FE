@@ -7,11 +7,7 @@ type TInputProps = Omit<React.ComponentPropsWithoutRef<'input'>, 'type'> & {
   labelClassName?: string;
 };
 
-const AuthInput: React.FC<TInputProps> = ({
-  label,
-  labelClassName,
-  ...rest
-}) => {
+const AuthInput = ({ label, ...rest }: TInputProps) => {
   const [isFocused, setIsFocused] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -32,10 +28,7 @@ const AuthInput: React.FC<TInputProps> = ({
     >
       {label && (
         <label
-          className={twMerge(
-            'flex-grow text-sm font-medium',
-            labelClassName || ''
-          )}
+          className={twMerge('flex-grow text-sm font-medium')}
           htmlFor={rest.id}
         >
           {label}
