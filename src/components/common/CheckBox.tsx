@@ -1,19 +1,15 @@
 import { useId } from 'react';
 
-type TCheckBoxProps = Omit<
-  React.ComponentPropsWithoutRef<'input'>,
-  'type' | 'id'
-> & {
-  type: 'checkbox';
-};
+type CheckBoxProps = Omit<React.ComponentPropsWithoutRef<'input'>, 'id'>;
 
-const CheckBox = (props: TCheckBoxProps) => {
+const CheckBox = (props: CheckBoxProps) => {
   const uid = useId();
   const { children, ...rest } = props;
   return (
     <div className='flex items-center'>
       <input
         id={uid}
+        type='checkBox'
         className='size-4 rounded border-[#DEDEDE] text-primaryHoverColor focus:ring-transparent'
         {...rest}
       />

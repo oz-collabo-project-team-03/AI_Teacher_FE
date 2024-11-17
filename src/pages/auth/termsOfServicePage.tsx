@@ -61,11 +61,7 @@ const TermsOfServicePage = () => {
         </div>
 
         <div className='flex flex-col'>
-          <CheckBox
-            type='checkbox'
-            checked={isAllChecked}
-            onChange={handleAllCheck}
-          >
+          <CheckBox checked={isAllChecked} onChange={handleAllCheck}>
             전체 동의합니다
           </CheckBox>
           <div className='ml-[26px] pb-[30px] text-sm text-captionColor'>
@@ -77,7 +73,6 @@ const TermsOfServicePage = () => {
             <div className='flex flex-col gap-3'>
               <div className='flex'>
                 <CheckBox
-                  type='checkbox'
                   checked={isPrivacyChecked}
                   onChange={(e) => handlePrivacyCheck(e.target.checked)}
                 >
@@ -114,7 +109,6 @@ const TermsOfServicePage = () => {
             <div className='flex flex-col gap-3'>
               <div className='flex'>
                 <CheckBox
-                  type='checkbox'
                   checked={isThirdPartyChecked}
                   onChange={(e) => handleThirdPartyCheck(e.target.checked)}
                 >
