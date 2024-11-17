@@ -4,7 +4,6 @@ import { twMerge } from 'tailwind-merge';
 type TInputProps = Omit<React.ComponentPropsWithoutRef<'input'>, 'type'> & {
   type: 'text' | 'password' | 'email' | 'number' | 'date';
   label?: string;
-  labelClassName?: string;
 };
 
 const AuthInput = ({ label, ...rest }: TInputProps) => {
