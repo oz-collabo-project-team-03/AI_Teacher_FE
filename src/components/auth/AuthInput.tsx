@@ -19,14 +19,6 @@ const AuthInput: React.FC<TInputProps> = ({
     inputRef.current?.focus();
   };
 
-  const handleFocus = () => {
-    setIsFocused(true);
-  };
-
-  const handleBlur = () => {
-    setIsFocused(false);
-  };
-
   return (
     <div
       className={twMerge(
@@ -52,8 +44,8 @@ const AuthInput: React.FC<TInputProps> = ({
       <input
         ref={inputRef}
         className='w-9/12 rounded-[10px] border-0 outline-none ring-0 ring-inset ring-inputBorderColor placeholder:text-inputBorderColor focus:ring-0 focus:ring-inset'
-        onFocus={handleFocus}
-        onBlur={handleBlur}
+        onFocus={() => setIsFocused(true)}
+        onBlur={() => setIsFocused(false)}
         {...rest}
       />
     </div>
