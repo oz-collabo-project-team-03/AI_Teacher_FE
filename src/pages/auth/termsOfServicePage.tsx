@@ -1,29 +1,18 @@
 import { useState } from 'react';
-import { twMerge } from 'tailwind-merge';
 import Button from '../../components/common/Button';
 import CheckBox from '../../components/common/CheckBox';
-import Terms from '../../components/terms/Terms';
+import ShowPrivacyTerms from '../../components/terms/ShowPrivacyTerms';
+import ShowThirdPartyTerms from '../../components/terms/ShowThirdPartyTerms';
 import { useToast } from '../../context/ToastContextProvider';
 import { useValidationCheck } from '../../hooks/useValidateAndProceed';
-import { privacyTerms, thirdPartyTerms } from '../../mocks/termsData';
 // 이용약관 페이지라는 뜻
 const TermsOfServicePage = () => {
-  const [showPrivacyTerms, setShowPrivacyTerms] = useState(false);
-  const [showThirdPartyTerms, setShowThirdPartyTerms] = useState(false);
   //동의 상태
   const [isAllChecked, setIsAllChecked] = useState(false);
   const [isPrivacyChecked, setIsPrivacyChecked] = useState(false);
   const [isThirdPartyChecked, setIsThirdPartyChecked] = useState(false);
 
   const { showToast } = useToast();
-
-  const togglePrivacyTerms = () => {
-    setShowPrivacyTerms((prev) => !prev);
-  };
-
-  const toggleThirdPartyTerms = () => {
-    setShowThirdPartyTerms((prev) => !prev);
-  };
 
   const handleAllCheck = () => {
     const newChecked = !isAllChecked;
@@ -70,77 +59,15 @@ const TermsOfServicePage = () => {
           </div>
 
           <div className='mb-[38px] flex flex-col gap-[30px] border-t border-captionColor pt-[30px]'>
-            <div className='flex flex-col gap-3'>
-              <div className='flex'>
-                <CheckBox
-                  checked={isPrivacyChecked}
-                  onChange={(e) => handlePrivacyCheck(e.target.checked)}
-                >
-                  [필수] 개인정보 수집 및 이용동의
-                </CheckBox>
-                <button
-                  className='ml-2 text-sm text-captionColor'
-                  onClick={togglePrivacyTerms}
-                >
-                  더보기
-                </button>
-              </div>
-              <div>
-                <div
-                  className={twMerge(
-                    'h-[126px] w-[355px] overflow-scroll rounded-[5px] border border-unFocusColor p-[14px]',
-                    showPrivacyTerms ? '' : 'hidden'
-                  )}
-                >
-                  <Terms
-                    title={privacyTerms.title}
-                    description={privacyTerms.description}
-                    sections={privacyTerms.sections.map((section) => ({
-                      title: section.title,
-                      description: section.description,
-                      numberedPoints: section.numberedPoints || [],
-                      // bulletPoints: section.bulletPoints,
-                    }))}
-                  />
-                </div>
-              </div>
-            </div>
+            <ShowPrivacyTerms
+              handlePrivacyCheck={handlePrivacyCheck}
+              isPrivacyChecked={isPrivacyChecked}
+            />
 
-            <div className='flex flex-col gap-3'>
-              <div className='flex'>
-                <CheckBox
-                  checked={isThirdPartyChecked}
-                  onChange={(e) => handleThirdPartyCheck(e.target.checked)}
-                >
-                  [필수] 개인정보 제3자 제공에 동의
-                </CheckBox>
-                <button
-                  className='ml-2 text-sm text-captionColor'
-                  onClick={toggleThirdPartyTerms}
-                >
-                  더보기
-                </button>
-              </div>
-              <div>
-                <div
-                  className={twMerge(
-                    'h-[126px] w-[355px] overflow-scroll rounded-[5px] border border-unFocusColor p-[14px]',
-                    showThirdPartyTerms ? '' : 'hidden'
-                  )}
-                >
-                  <Terms
-                    title={thirdPartyTerms.title}
-                    description={thirdPartyTerms.description}
-                    sections={thirdPartyTerms.sections.map((section) => ({
-                      title: section.title,
-                      description: section.description,
-                      bulletPoints: section.bulletPoints,
-                      // numberedPoints: section.numberedPoints || [],
-                    }))}
-                  />
-                </div>
-              </div>
-            </div>
+            <ShowThirdPartyTerms
+              handleThirdPartyCheck={handleThirdPartyCheck}
+              isThirdPartyChecked={isThirdPartyChecked}
+            />
           </div>
         </div>
       </div>
