@@ -1,8 +1,8 @@
 import { editIcon, stDefaultIcon } from '../../assets/assets';
 import postTestImg from '../../../src/assets/profileEdit/postTestImg.png';
+import { Link } from 'react-router-dom';
 
 const MyPage = () => {
-  // 프로필 정보
   const profileInfo = {
     nickName: '닉네임',
     dream: '희망진로, 흥미',
@@ -12,14 +12,12 @@ const MyPage = () => {
     comment: 18,
   };
 
-  // 커뮤니티 정보
   const communityInfo = [
     { label: '게시물', value: profileInfo.post },
     { label: '좋아요', value: profileInfo.like },
     { label: '작성 댓글', value: profileInfo.comment },
   ];
 
-  // 게시글 메인 이미지
   const postImg = [
     postTestImg,
     postTestImg,
@@ -35,7 +33,7 @@ const MyPage = () => {
   ];
 
   return (
-    <div className='flex w-full justify-center overflow-y-scroll text-textMainColor'>
+    <div className='flex w-full justify-center overflow-y-scroll'>
       <div className='flex flex-col items-center gap-9 py-12'>
         <ul className='flex flex-col gap-2'>
           <li className='relative h-[92px] w-[92px] rounded-full'>
@@ -44,11 +42,13 @@ const MyPage = () => {
               alt='학생 기본 이미지'
               className='h-full w-full'
             />
-            <img
-              src={editIcon}
-              alt='프로필 수정 아이콘'
-              className='absolute bottom-0 right-0'
-            />
+            <Link to='/edit-profile'>
+              <img
+                src={editIcon}
+                alt='프로필 수정 아이콘'
+                className='absolute bottom-0 right-0'
+              />
+            </Link>
           </li>
           <li className='flex flex-col items-center'>
             <p className='text-xl font-bold text-textMainColor'>
@@ -60,16 +60,16 @@ const MyPage = () => {
             </p>
           </li>
         </ul>
-        <ul className='flex items-center gap-4'>
+        <ul className='flex w-full items-center justify-between'>
           {communityInfo.map((info, index) => (
             <li
               key={index}
-              className='shadow-profileInfoShadow flex h-[50px] w-[83px] flex-col items-center justify-center rounded-[10px]'
+              className='flex h-[50px] w-[83px] flex-col items-center justify-center rounded-[10px] shadow-profileInfoShadow'
             >
               <p className='text-[13px] font-normal text-textMainColor'>
                 {info.label}
               </p>
-              <p className='text-profilePointTextColor text-[15px] font-bold'>
+              <p className='text-[15px] font-bold text-profilePointTextColor'>
                 {info.value}
               </p>
             </li>
@@ -83,7 +83,7 @@ const MyPage = () => {
             {postImg.map((img) => (
               <div
                 key={img}
-                className='border-postBorderColor h-[97px] w-[97px] overflow-hidden border'
+                className='h-[97px] w-[97px] overflow-hidden border border-postBorderColor'
               >
                 <img
                   src={img}
