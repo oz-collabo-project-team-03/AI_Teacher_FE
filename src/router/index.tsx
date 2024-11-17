@@ -1,16 +1,21 @@
+import { Suspense, lazy } from 'react';
 import { Route, Routes } from 'react-router';
-
 import DefaultLayout from '../layouts/defaultLayout';
-import LoginPage from '../pages/auth/loginPage';
-import MyPage from '../pages/myPage/myPage';
-import RoleSelect from '../pages/auth/roleSelectPage';
-import SignupCompletePage from '../pages/auth/signupCompletePage';
-import SignupPage from '../pages/auth/signupPage';
 import StudentLayout from '../layouts/studentLayout';
 import TeacherLayout from '../layouts/teacherLayout';
-import TermsOfServicePage from '../pages/auth/termsOfServicePage';
-import EditProfile from '../pages/editProfile/editProfile';
-import ChangeProfile from '../pages/changeProfile/changeProfile';
+import LoadingPage from '../pages/loadingPage';
+
+const LoginPage = lazy(() => import('../pages/auth/loginPage'));
+const MyPage = lazy(() => import('../pages/myPage/myPage'));
+const EditProfile = lazy(() => import('../pages/editProfile/editProfile'));
+const TermsOfServicePage = lazy(
+  () => import('../pages/auth/termsOfServicePage')
+);
+const RoleSelectPage = lazy(() => import('../pages/auth/roleSelectPage'));
+const SignupPage = lazy(() => import('../pages/auth/signupPage'));
+const SignupCompletePage = lazy(
+  () => import('../pages/auth/signupCompletePage')
+);
 
 // import StudentChatListPage from '../pages/chat/studentChatListPage';
 
@@ -20,14 +25,62 @@ const Router = () => {
       <Routes>
         <Route element={<DefaultLayout />}>
           <Route path='*' />
-          <Route path='/login' element={<LoginPage />} />
-          <Route path='/my-page' element={<MyPage />} />
-          <Route path='/edit-profile' element={<EditProfile />} />
-          <Route path='/change-profile' element={<ChangeProfile />} />
-          <Route path='/member-agree' element={<TermsOfServicePage />} />
-          <Route path='/role-selection' element={<RoleSelect />} />
-          <Route path='/signup' element={<SignupPage />} />
-          <Route path='/signup-complete' element={<SignupCompletePage />} />
+          <Route
+            path='/login'
+            element={
+              <Suspense fallback={<LoadingPage />}>
+                <LoginPage />
+              </Suspense>
+            }
+          />
+          <Route
+            path='/my-page'
+            element={
+              <Suspense fallback={<LoadingPage />}>
+                <MyPage />
+              </Suspense>
+            }
+          />
+          <Route
+            path='/edit-profile'
+            element={
+              <Suspense fallback={<LoadingPage />}>
+                <EditProfile />
+              </Suspense>
+            }
+          />
+          <Route
+            path='/member-agree'
+            element={
+              <Suspense fallback={<LoadingPage />}>
+                <TermsOfServicePage />
+              </Suspense>
+            }
+          />
+          <Route
+            path='/role-selection'
+            element={
+              <Suspense fallback={<LoadingPage />}>
+                <RoleSelectPage />
+              </Suspense>
+            }
+          />
+          <Route
+            path='/signup/:role'
+            element={
+              <Suspense fallback={<LoadingPage />}>
+                <SignupPage />
+              </Suspense>
+            }
+          />
+          <Route
+            path='/signup-complete'
+            element={
+              <Suspense fallback={<LoadingPage />}>
+                <SignupCompletePage />
+              </Suspense>
+            }
+          />
         </Route>
         <Route element={<StudentLayout />}>
           {/* <Route path='/chat' element={<StudentChatListPage />} /> */}

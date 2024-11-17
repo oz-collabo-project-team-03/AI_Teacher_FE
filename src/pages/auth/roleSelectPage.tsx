@@ -23,17 +23,25 @@ const RoleSelectPage = () => {
     setSelectedRole(role);
   };
 
+  // 역할이 선택되었는지 확인하는 함수
+  const isRoleSelected = (role: 'student' | 'teacher'): boolean => {
+    return selectedRole === role;
+  };
+
+  // 역할에 마우스가 호버되었는지 확인하는 함수
+  const isRoleHovered = (role: 'student' | 'teacher'): boolean => {
+    return role === 'student' ? isStudentHovered : isTeacherHovered;
+  };
+
+  // 역할이 활성화되었는지 확인하는 함수 (선택 또는 호버)
   const isRoleActive = (role: 'student' | 'teacher'): boolean => {
-    return (
-      selectedRole === role ||
-      (role === 'student' ? isStudentHovered : isTeacherHovered)
-    );
+    return isRoleSelected(role) || isRoleHovered(role);
   };
 
   const { handleProceed } = useValidationCheck({
     showToast,
     validationMessage: '역할을 선택해주세요',
-    nextRoute: `/signup?role=${selectedRole}`,
+    nextRoute: `/signup/${selectedRole}`,
     validationFunction: () => selectedRole !== null,
   });
 

@@ -1,8 +1,8 @@
-import Header from '../../components/common/Header';
-import AuthInput from '../../components/common/AuthInput';
-import { Link } from 'react-router-dom';
-import Button from '../../components/common/Button';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
+import AuthInput from '../../components/auth/AuthInput';
+import Button from '../../components/common/Button';
+import Header from '../../components/common/Header';
 import ProfileImages from '../../components/editProfile/ProfileImages';
 
 const EditProfile = () => {

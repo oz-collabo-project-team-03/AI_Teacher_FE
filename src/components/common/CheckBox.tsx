@@ -1,29 +1,16 @@
-import { useId } from 'react';
+type CheckBoxProps = Omit<React.ComponentPropsWithoutRef<'input'>, 'id'>;
 
-type TCheckBoxProps = Omit<
-  React.ComponentPropsWithoutRef<'input'>,
-  'type' | 'id'
-> & {
-  type: 'checkbox';
-};
-
-const CheckBox = (props: TCheckBoxProps) => {
-  const uid = useId();
+const CheckBox = (props: CheckBoxProps) => {
   const { children, ...rest } = props;
   return (
-    <div className='flex items-center'>
+    <label className='flex min-w-0 flex-1 cursor-pointer items-center text-textMainColor'>
       <input
-        id={uid}
-        className='size-4 rounded border-[#DEDEDE] text-primaryHoverColor focus:ring-transparent'
+        type='checkBox'
+        className='mr-[10px] size-4 cursor-pointer rounded border-[#DEDEDE] text-primaryHoverColor focus:ring-transparent'
         {...rest}
       />
-      <label
-        htmlFor={uid}
-        className='ml-[10px] min-w-0 flex-1 text-textMainColor'
-      >
-        {children}
-      </label>
-    </div>
+      {children}
+    </label>
   );
 };
 export default CheckBox;

@@ -1,30 +1,30 @@
-import { twMerge } from "tailwind-merge";
+import { twMerge } from 'tailwind-merge';
 
 type ButtonVariant = 'active' | 'cancel';
 
-type TButtonProps = React.ComponentPropsWithoutRef<"button"> & {
-  variant: ButtonVariant;
+type ButtonProps = Omit<React.ComponentPropsWithoutRef<'button'>, 'variant'> & {
+  variant?: ButtonVariant;
 };
-const Button = (props: TButtonProps) => {
-  const { children, className, variant, ...reset } = props;
+const Button = (props: ButtonProps) => {
+  const { children, className, variant = 'active', ...rest } = props;
 
   const variantStyles = {
-    active: "bg-primaryColor text-white hover:bg-primaryHoverColor",
-    cancel: "bg-cancelButtonColor text-white"
+    active: 'bg-primaryColor text-white hover:bg-primaryHoverColor',
+    cancel: 'bg-cancelButtonColor text-white',
   };
   return (
     <>
       <button
         className={twMerge(
-          `py-3.5 w-full flex justify-center items-center rounded-lg transition-colors`,
+          `flex w-full items-center justify-center rounded-lg py-3.5 transition-colors`,
           variantStyles[variant],
           className
         )}
-        {...reset}
+        {...rest}
       >
         {children}
       </button>
     </>
   );
-}
-export default Button
+};
+export default Button;

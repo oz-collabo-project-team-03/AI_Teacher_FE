@@ -7,24 +7,12 @@ type TInputProps = Omit<React.ComponentPropsWithoutRef<'input'>, 'type'> & {
   labelClassName?: string;
 };
 
-const AuthInput: React.FC<TInputProps> = ({
-  label,
-  labelClassName,
-  ...rest
-}) => {
+const AuthInput = ({ label, ...rest }: TInputProps) => {
   const [isFocused, setIsFocused] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleContainerClick = () => {
     inputRef.current?.focus();
-  };
-
-  const handleFocus = () => {
-    setIsFocused(true);
-  };
-
-  const handleBlur = () => {
-    setIsFocused(false);
   };
 
   return (
@@ -40,10 +28,7 @@ const AuthInput: React.FC<TInputProps> = ({
     >
       {label && (
         <label
-          className={twMerge(
-            'flex-grow text-sm font-medium',
-            labelClassName || ''
-          )}
+          className={twMerge('flex-grow text-sm font-medium')}
           htmlFor={rest.id}
         >
           {label}
@@ -52,8 +37,8 @@ const AuthInput: React.FC<TInputProps> = ({
       <input
         ref={inputRef}
         className='w-9/12 rounded-[10px] border-0 outline-none ring-0 ring-inset ring-inputBorderColor placeholder:text-inputBorderColor focus:ring-0 focus:ring-inset'
-        onFocus={handleFocus}
-        onBlur={handleBlur}
+        onFocus={() => setIsFocused(true)}
+        onBlur={() => setIsFocused(false)}
         {...rest}
       />
     </div>
