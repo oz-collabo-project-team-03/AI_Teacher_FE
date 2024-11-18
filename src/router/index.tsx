@@ -1,11 +1,20 @@
-import { Suspense, lazy } from 'react';
 import { Route, Routes } from 'react-router';
+import { Suspense, lazy } from 'react';
+
 import DefaultLayout from '../layouts/defaultLayout';
+import LoadingPage from '../pages/loadingPage';
 import StudentLayout from '../layouts/studentLayout';
 import TeacherLayout from '../layouts/teacherLayout';
+<<<<<<< Updated upstream
 import LandingPage from '../pages/landing/landingPage';
 import LoadingPage from '../pages/loadingPage';
+=======
+>>>>>>> Stashed changes
 
+const HomeFeedPage = lazy(() => import('../pages/main/homeFeedPage'));
+const ManagedStudentListPage = lazy(
+  () => import('../pages/main/managedStudentListPage')
+);
 const LoginPage = lazy(() => import('../pages/auth/loginPage'));
 const MyPage = lazy(() => import('../pages/myPage/myPage'));
 const EditProfile = lazy(() => import('../pages/editProfile/editProfile'));
@@ -97,9 +106,25 @@ const Router = () => {
         </Route>
         <Route element={<StudentLayout />}>
           {/* <Route path='/chat' element={<StudentChatListPage />} /> */}
+          <Route
+            path='/student-main'
+            element={
+              <Suspense fallback={<LoadingPage />}>
+                <HomeFeedPage />
+              </Suspense>
+            }
+          />
         </Route>
         <Route element={<TeacherLayout />}>
           {/* <Route path='/chat1' element={<TeacherChatListPage />} /> */}
+          <Route
+            path='/teacher-main'
+            element={
+              <Suspense fallback={<LoadingPage />}>
+                <ManagedStudentListPage />
+              </Suspense>
+            }
+          />
         </Route>
       </Routes>
     </>
