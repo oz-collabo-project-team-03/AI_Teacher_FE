@@ -1,5 +1,5 @@
 import { GradeSelector } from '../auth/GradeButton';
-import AuthInput from '../common/AuthInput';
+import AuthInput from '../auth/AuthInput';
 import Button from '../common/Button';
 
 type InputText = {
