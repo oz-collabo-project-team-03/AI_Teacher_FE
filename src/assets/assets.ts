@@ -36,6 +36,7 @@ import roleStudentActive from './roleSelect/role_student_active.svg';
 import roleStudentUnActive from './roleSelect/role_student_unactive.svg';
 import roleTeacherActive from './roleSelect/role_teacher_active.svg';
 import roleTeacherUnActive from './roleSelect/role_teacher_unactive.svg';
+import iphone from './landing/iphone.svg';
 export {
   backIcon,
   chatActiveIcon,
@@ -67,4 +68,5 @@ export {
   teIcon3,
   thumbsUPIcon,
   userActiveIcon,
+  iphone,
 };

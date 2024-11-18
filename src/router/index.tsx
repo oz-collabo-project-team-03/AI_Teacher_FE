@@ -3,6 +3,7 @@ import { Route, Routes } from 'react-router';
 import DefaultLayout from '../layouts/defaultLayout';
 import StudentLayout from '../layouts/studentLayout';
 import TeacherLayout from '../layouts/teacherLayout';
+import LandingPage from '../pages/landing/landingPage';
 import LoadingPage from '../pages/loadingPage';
 
 const LoginPage = lazy(() => import('../pages/auth/loginPage'));
@@ -25,6 +26,7 @@ const Router = () => {
       <Routes>
         <Route element={<DefaultLayout />}>
           <Route path='*' />
+          <Route path='/' element={<LandingPage />} />
           <Route
             path='/login'
             element={
