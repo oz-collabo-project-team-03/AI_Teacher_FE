@@ -9,6 +9,9 @@ import LoadingPage from '../pages/loadingPage';
 const LoginPage = lazy(() => import('../pages/auth/loginPage'));
 const MyPage = lazy(() => import('../pages/myPage/myPage'));
 const EditProfile = lazy(() => import('../pages/editProfile/editProfile'));
+const ChangeProfile = lazy(
+  () => import('../pages/changeProfile/changeProfile')
+);
 const TermsOfServicePage = lazy(
   () => import('../pages/auth/termsOfServicePage')
 );
@@ -48,6 +51,14 @@ const Router = () => {
             element={
               <Suspense fallback={<LoadingPage />}>
                 <EditProfile />
+              </Suspense>
+            }
+          />
+          <Route
+            path='/change-profile'
+            element={
+              <Suspense fallback={<LoadingPage />}>
+                <ChangeProfile />
               </Suspense>
             }
           />
