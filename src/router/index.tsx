@@ -2,14 +2,10 @@ import { Route, Routes } from 'react-router';
 import { Suspense, lazy } from 'react';
 
 import DefaultLayout from '../layouts/defaultLayout';
+import LandingPage from '../pages/landing/landingPage';
 import LoadingPage from '../pages/loadingPage';
 import StudentLayout from '../layouts/studentLayout';
 import TeacherLayout from '../layouts/teacherLayout';
-<<<<<<< Updated upstream
-import LandingPage from '../pages/landing/landingPage';
-import LoadingPage from '../pages/loadingPage';
-=======
->>>>>>> Stashed changes
 
 const HomeFeedPage = lazy(() => import('../pages/main/homeFeedPage'));
 const ManagedStudentListPage = lazy(
