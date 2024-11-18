@@ -65,6 +65,13 @@ const BouncingBalls = () => {
     function animate() {
       ctx!.clearRect(0, 0, canvas!.width, canvas!.height);
 
+      // 튕기는 공 화면에 그리기
+      ctx!.beginPath();
+      ctx!.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
+      ctx!.fillStyle = ball.color;
+      ctx!.fill();
+      ctx!.closePath();
+
       // 중앙 회전하는 공 위치 지정
       const centerX =
         canvas!.width / 2 +
@@ -79,13 +86,6 @@ const BouncingBalls = () => {
       ctx!.beginPath();
       ctx!.arc(centerX, centerY, centerBall.radius, 0, Math.PI * 2);
       ctx!.fillStyle = centerBall.color;
-      ctx!.fill();
-      ctx!.closePath();
-
-      // 튕기는 공 화면에 그리기
-      ctx!.beginPath();
-      ctx!.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
-      ctx!.fillStyle = ball.color;
       ctx!.fill();
       ctx!.closePath();
 
