@@ -19,7 +19,7 @@ const ChatItem: React.FC<ChatItemProps> = ({
   const navigate = useNavigate();
 
   const handleClick = () => {
-    navigate(`/students/chats/${id}`);
+    navigate(`/student/chats/${id}`);
   };
 
   return (
