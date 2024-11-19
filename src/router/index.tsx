@@ -26,7 +26,15 @@ const SignupCompletePage = lazy(
   () => import('../pages/auth/signupCompletePage')
 );
 
-// import StudentChatListPage from '../pages/chat/studentChatListPage';
+const StudentChatListPage = lazy(
+  () => import('../pages/chat/studentChatListPage')
+);
+const StudentChatRoomPage = lazy(
+  () => import('../pages/chat/studentChatRoomPage')
+);
+const TeacherChatListPage = lazy(
+  () => import('../pages/chat/teacherChatListPage')
+);
 
 const Router = () => {
   return (
@@ -99,9 +107,16 @@ const Router = () => {
               </Suspense>
             }
           />
+          <Route
+            path='/student/chats/:chatId'
+            element={
+              <Suspense fallback={<LoadingPage />}>
+                <StudentChatRoomPage />
+              </Suspense>
+            }
+          />
         </Route>
         <Route element={<StudentLayout />}>
-          {/* <Route path='/chat' element={<StudentChatListPage />} /> */}
           <Route
             path='/student-main'
             element={
@@ -110,14 +125,29 @@ const Router = () => {
               </Suspense>
             }
           />
+          <Route
+            path='/student/chats'
+            element={
+              <Suspense fallback={<LoadingPage />}>
+                <StudentChatListPage />
+              </Suspense>
+            }
+          />
         </Route>
         <Route element={<TeacherLayout />}>
-          {/* <Route path='/chat1' element={<TeacherChatListPage />} /> */}
           <Route
             path='/teacher-main'
             element={
               <Suspense fallback={<LoadingPage />}>
                 <ManagedStudentListPage />
+              </Suspense>
+            }
+          />
+          <Route
+            path='/teacher/chat'
+            element={
+              <Suspense fallback={<LoadingPage />}>
+                <TeacherChatListPage />
               </Suspense>
             }
           />
