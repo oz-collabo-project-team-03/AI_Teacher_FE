@@ -9,6 +9,7 @@ import {
 } from '../../assets/assets';
 import Button from '../../components/common/Button';
 import { useToast } from '../../hooks/useToast';
+import { useTermsStore } from '../../stores/useTermsStore';
 
 type TRole = 'student' | 'teacher' | null;
 
@@ -17,6 +18,7 @@ const RoleSelectPage = () => {
   const [isTeacherHovered, setIsTeacherHovered] = useState(false);
   const [selectedRole, setSelectedRole] = useState<TRole>(null);
 
+  const { isAllTermsAccepted } = useTermsStore();
   const { showToast } = useToast();
   const navigate = useNavigate();
 
@@ -40,6 +42,12 @@ const RoleSelectPage = () => {
   };
 
   const handleProceed = () => {
+    if (!isAllTermsAccepted) {
+      showToast('이용약관 동의 후 진행해주세요');
+      navigate('/member-agree');
+      return;
+    }
+
     if (!selectedRole) {
       showToast('역할을 선택해주세요');
     } else {
