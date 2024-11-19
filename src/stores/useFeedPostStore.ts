@@ -17,8 +17,8 @@ const useFeedPostStore = create<FeedPostStore>((set) => ({
   toggleHeart: () =>
     set((state) => {
       const newLikeCount = state.isLiked
-        ? Math.max(state.likeCount + 1, 0)
-        : Math.max(state.likeCount - 1, 0);
+        ? Math.max(state.likeCount - 1, 0)
+        : Math.max(state.likeCount + 1, 0);
       return { isLiked: !state.isLiked, likeCount: newLikeCount };
     }),
   addComment: () =>
