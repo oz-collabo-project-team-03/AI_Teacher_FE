@@ -30,8 +30,8 @@ export default {
         profileSelectColor: "#9747FF",
         profilePointTextColor: "#9E89FE",
         postBorderColor: "#C1C1C1",
-        chatListHoverColor:"#F5F6F7"
-        
+        chatListHoverColor:"#F5F6F7",
+        chatBubbleColor: "#E7F0FF",
       },
       fontFamily: {
         pre: ['Pretendard Variable'],
@@ -40,6 +40,15 @@ export default {
       boxShadow: {
         navShadow: '0px -4px 10px 0px rgba(142, 139, 139, 0.15)',
         profileInfoShadow: '0px 0px 10px 0px rgba(0, 0, 0, 0.20)',
+      },
+      animation: {
+        'icon-hover': 'scale-opacity 0.2s ease-in-out',
+      },
+      keyframes: {
+        'scale-opacity': {
+          '0%': { transform: 'scale(1)', opacity: '1' },
+          '100%': { transform: 'scale(1.1)', opacity: '0.8' },
+        },
       }
 
     },
