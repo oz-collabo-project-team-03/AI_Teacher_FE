@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import { thumbsUPIcon } from '../../assets/assets';
+import Celebration from '../../components/ConfettiCelebration';
 import Button from '../../components/common/Button';
-import Celebration from '../../components/common/ConfettiCelebration';
 
 const SignupCompletePage = () => {
   // 애니메이션을 위한 초기 상태 및 변형 설정
