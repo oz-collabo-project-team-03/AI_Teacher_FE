@@ -1,5 +1,5 @@
-import { useNavigate } from 'react-router-dom';
 import { backIcon } from '../../assets/assets';
+import { useNavigate } from 'react-router-dom';
 
 type HeaderProps = {
   title: string;
@@ -23,7 +23,7 @@ const Header = ({ title, rightElement }: HeaderProps) => {
       </div>
 
       {/* 오른쪽 영역: rightElement가 있으면 표시, 없으면 빈 공간 */}
-      <div className='w-6 cursor-pointer'>{rightElement}</div>
+      <div className='h-6 cursor-pointer'>{rightElement}</div>
     </header>
   );
 };

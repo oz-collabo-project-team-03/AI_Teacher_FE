@@ -1,20 +1,19 @@
 import backIcon from './header/back.svg';
-import chatBubbleIcon from './header/chat.svg';
-
 import chatActiveIcon from './navBar/chat_active.svg';
-import homeActiveIcon from './navBar/home_active.svg';
-
-import plusActiveIcon from './navBar/student/plus_active.svg';
-
-import userActiveIcon from './navBar/teacher/user_Active.svg';
-
-import googleLogo from './auth/google_login.svg';
-import kakaoLogo from './auth/kakao_logo.png';
-import naverLogo from './auth/naver_logo.svg';
-import thumbsUPIcon from './auth/thumbs_up.svg';
-
+import chatBubbleIcon from './header/chat.svg';
+import chatDeleteIcon from './chat/chat_delete.svg';
 import editIcon from './myPage/editIcon.svg';
-
+import googleLogo from './auth/google_login.svg';
+import homeActiveIcon from './navBar/home_active.svg';
+import iphone from './landing/iphone.svg';
+import kakaoLogo from './auth/kakao_logo.png';
+import modalCloseIcon from './modal/modal_close.svg';
+import naverLogo from './auth/naver_logo.svg';
+import plusActiveIcon from './navBar/student/plus_active.svg';
+import roleStudentActive from './roleSelect/role_student_active.svg';
+import roleStudentUnActive from './roleSelect/role_student_unactive.svg';
+import roleTeacherActive from './roleSelect/role_teacher_active.svg';
+import roleTeacherUnActive from './roleSelect/role_teacher_unactive.svg';
 import stDefaultIcon from './profileEdit/student/stDefaultIcon.svg';
 import stIcon10 from './profileEdit/student/stIcon10.svg';
 import stIcon11 from './profileEdit/student/stIcon11.svg';
@@ -27,16 +26,12 @@ import stIcon6 from './profileEdit/student/stIcon6.svg';
 import stIcon7 from './profileEdit/student/stIcon7.svg';
 import stIcon8 from './profileEdit/student/stIcon8.svg';
 import stIcon9 from './profileEdit/student/stIcon9.svg';
-
 import teDefaultIcon from './profileEdit/teacher/teDefaultIcon.svg';
 import teIcon2 from './profileEdit/teacher/teIcon2.svg';
 import teIcon3 from './profileEdit/teacher/teIcon3.svg';
+import thumbsUPIcon from './auth/thumbs_up.svg';
+import userActiveIcon from './navBar/teacher/user_Active.svg';
 
-import roleStudentActive from './roleSelect/role_student_active.svg';
-import roleStudentUnActive from './roleSelect/role_student_unactive.svg';
-import roleTeacherActive from './roleSelect/role_teacher_active.svg';
-import roleTeacherUnActive from './roleSelect/role_teacher_unactive.svg';
-import iphone from './landing/iphone.svg';
 export {
   backIcon,
   chatActiveIcon,
@@ -69,4 +64,6 @@ export {
   thumbsUPIcon,
   userActiveIcon,
   iphone,
+  chatDeleteIcon,
+  modalCloseIcon,
 };
