@@ -4,7 +4,7 @@ import MainLanding from '../../components/landing/MainLanding';
 import SubLanding from '../../components/landing/SubLanding';
 import { useGestureControl } from '../../hooks/useGestureControl';
 
-const LandingPage = () => {
+const Landing = () => {
   const [showSub, setShowSub] = useState(false);
 
   useGestureControl({
@@ -30,4 +30,4 @@ const LandingPage = () => {
   );
 };
 
-export default LandingPage;
+export default Landing;
