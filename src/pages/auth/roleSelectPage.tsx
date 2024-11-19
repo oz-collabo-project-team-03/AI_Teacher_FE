@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { twMerge } from 'tailwind-merge';
 import {
   roleStudentActive,
@@ -7,8 +8,7 @@ import {
   roleTeacherUnActive,
 } from '../../assets/assets';
 import Button from '../../components/common/Button';
-import { useToast } from '../../context/ToastContextProvider';
-import { useValidationCheck } from '../../hooks/useValidateAndProceed';
+import { useToast } from '../../hooks/useToast';
 
 type TRole = 'student' | 'teacher' | null;
 
@@ -18,6 +18,7 @@ const RoleSelectPage = () => {
   const [selectedRole, setSelectedRole] = useState<TRole>(null);
 
   const { showToast } = useToast();
+  const navigate = useNavigate();
 
   const handleRoleClick = (role: TRole) => {
     setSelectedRole(role);
@@ -38,12 +39,13 @@ const RoleSelectPage = () => {
     return isRoleSelected(role) || isRoleHovered(role);
   };
 
-  const { handleProceed } = useValidationCheck({
-    showToast,
-    validationMessage: '역할을 선택해주세요',
-    nextRoute: `/signup/${selectedRole}`,
-    validationFunction: () => selectedRole !== null,
-  });
+  const handleProceed = () => {
+    if (!selectedRole) {
+      showToast('역할을 선택해주세요');
+    } else {
+      navigate(`/signup/${selectedRole}`);
+    }
+  };
 
   return (
     <div className='flex h-svh flex-col justify-center px-[28px] py-[30px]'>
