@@ -18,6 +18,7 @@ export default {
         borderColor: "#F2EFFF",
         repleText: "#494949",
         chatText: "#646464",
+        hobbyText: "#8E8B8B",
         cancelButtonColor: "#C6C6C6",
         captionColor: "#A8A8A8",
         unFocusColor: "#D9D9D9",

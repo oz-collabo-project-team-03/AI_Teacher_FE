@@ -5,7 +5,7 @@ import FeedPostUserInfo from './FeedPostUserInfo';
 const FeedPost = () => {
   return (
     <div>
-      <div className='h-[368px] w-full [background-color:#D7B26D]'>
+      <div className='min-h-[368px] w-full'>
         <FeedPostUserInfo />
         <FeedPostSlider />
         <FeedPostContent />
