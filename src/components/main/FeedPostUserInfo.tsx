@@ -9,10 +9,8 @@ const FeedPostUserInfo = () => {
         className='mr-[9px] h-[40px] w-[40px]'
       />
       <div className='justify-content flex flex-col'>
-        <div className='mb-[1px] h-[21px] text-[20px] font-medium'>oh_sam</div>
-        <div className='text-hobbyText h-[14px] text-[12px] font-medium'>
-          축구, 게임
-        </div>
+        <div className='text-[20px] font-medium'>oh_sam</div>
+        <div className='text-[12px] font-medium text-hobbyText'>축구, 게임</div>
       </div>
     </div>
   );

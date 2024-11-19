@@ -26,14 +26,14 @@ const FeedPostContent = () => {
             <img src={fullHeart} alt='fullHeartIcon' />
           )}
         </div>
-        <span className='ml-[3px] mr-[25px] h-[20px]'>{likeCount}</span>
+        <span className='ml-[3px] mr-[25px]'>{likeCount}</span>
         <img
           src={chat}
           alt='fullHeartIcon'
           className='h-[17px] w-[17px]'
           onClick={(e) => feedPostHandleClick(e, addComment)}
         />
-        <span className='ml-[3px] h-[20px]'>{commentCount}</span>
+        <span className='ml-[3px]'>{commentCount}</span>
       </div>
 
       {/* 협업멘트 */}
@@ -51,11 +51,9 @@ const FeedPostContent = () => {
         <div className='mr-[6px]'>
           이번에 수학 수업 수행평가 해봤습니다 ㅎㅎ ...
         </div>
-        <span>더보기</span>
+        <span className='text-captionColor'>더보기</span>
       </div>
-      <div className='h-[12px] w-full text-[10px] text-captionColor'>
-        24년 10월 15일
-      </div>
+      <div className='w-full text-[10px] text-captionColor'>24년 10월 15일</div>
     </div>
   );
 };
