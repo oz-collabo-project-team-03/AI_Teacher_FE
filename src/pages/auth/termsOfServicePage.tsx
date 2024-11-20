@@ -1,10 +1,12 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Button from '../../components/common/Button';
 import CheckBox from '../../components/common/CheckBox';
 import ShowPrivacyTerms from '../../components/terms/ShowPrivacyTerms';
 import ShowThirdPartyTerms from '../../components/terms/ShowThirdPartyTerms';
-import { useToast } from '../../context/ToastContextProvider';
-import { useValidationCheck } from '../../hooks/useValidateAndProceed';
+
+import { useToast } from '../../hooks/useToast';
+import { useTermsStore } from '../../stores/useTermsStore';
 // 이용약관 페이지라는 뜻
 const TermsOfServicePage = () => {
   //동의 상태
@@ -13,6 +15,8 @@ const TermsOfServicePage = () => {
   const [isThirdPartyChecked, setIsThirdPartyChecked] = useState(false);
 
   const { showToast } = useToast();
+  const { setAllTermsAccepted } = useTermsStore();
+  const navigate = useNavigate();
 
   const handleAllCheck = () => {
     const newChecked = !isAllChecked;
@@ -31,12 +35,22 @@ const TermsOfServicePage = () => {
     setIsAllChecked(isPrivacyChecked && checked);
   };
 
-  const { handleProceed } = useValidationCheck({
-    showToast,
-    validationMessage: '필수 이용약관에 동의해주세요',
-    nextRoute: `/role-selection`,
-    validationFunction: () => isPrivacyChecked && isThirdPartyChecked,
-  });
+  const handleProceed = () => {
+    if (!isAllChecked) {
+      showToast('필수 이용약관에 동의해주세요');
+    } else {
+      navigate(`/role-selection`);
+    }
+  };
+
+  // 상태 변경 감지용 useEffect
+  useEffect(() => {
+    if (isPrivacyChecked && isThirdPartyChecked) {
+      setAllTermsAccepted(true);
+    } else {
+      setAllTermsAccepted(false);
+    }
+  }, [isPrivacyChecked, isThirdPartyChecked, setAllTermsAccepted]);
 
   return (
     <div className='flex h-lvh w-full flex-col items-center px-[28px] pb-[30px] text-textMainColor'>
