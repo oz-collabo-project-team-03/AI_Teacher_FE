@@ -2,16 +2,16 @@ import Input from '../common/Input';
 import Button from '../common/Button';
 
 type PwCheckProps = {
-  onVerify: () => void;
+  onUserPwVerification: () => void;
 };
 
-const PwCheck = ({ onVerify }: PwCheckProps) => {
+const PwCheck = ({ onUserPwVerification }: PwCheckProps) => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // 비밀번호 확인 로직...
 
     // 비밀번호 확인이 성공하면
-    onVerify();
+    onUserPwVerification();
   };
 
   return (

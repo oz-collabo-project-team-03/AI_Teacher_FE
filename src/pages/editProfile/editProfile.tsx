@@ -8,13 +8,6 @@ import ProfileImages from '../../components/editProfile/ProfileImages';
 const EditProfile = () => {
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
 
-  const inputTexts = [
-    { label: '닉네임', placeholder: '닉네임을 입력해주세요.' },
-    { label: '상태 메세지', placeholder: '상태 메세지를 입력해주세요.' },
-    { label: '희망진로', placeholder: '희망진로를 입력해주세요.' },
-    { label: '흥미', placeholder: '흥미를 입력해주세요.' },
-  ];
-
   const handleImageSelect = (index: number) => {
     setSelectedImageIndex(selectedImageIndex === index ? -1 : index);
   };
@@ -31,14 +24,50 @@ const EditProfile = () => {
             // userType='teacher'
           />
           <form className='flex flex-col gap-4 pb-2'>
-            {inputTexts.map(({ label, placeholder }) => (
+            {/* 공통 입력 필드 */}
+            <AuthInput
+              type='text'
+              label='닉네임'
+              placeholder='닉네임을 입력해주세요.'
+            />
+
+            {/* 학생 전용 입력 필드 */}
+            <>
               <AuthInput
-                key={label}
                 type='text'
-                label={label}
-                placeholder={placeholder}
+                label='상태 메세지'
+                placeholder='상태 메세지를 입력해주세요.'
               />
-            ))}
+              <AuthInput
+                type='text'
+                label='희망진로'
+                placeholder='희망진로를 입력해주세요.'
+              />
+              <AuthInput
+                type='text'
+                label='흥미'
+                placeholder='흥미를 입력해주세요.'
+              />
+            </>
+
+            {/* 교사 전용 입력 필드 */}
+            {/* <>
+              <AuthInput
+                type='text'
+                label='소속 종류'
+                placeholder='소속 종류를 입력해주세요.'
+              />
+              <AuthInput
+                type='text'
+                label='소속 이름'
+                placeholder='소속 이름을 입력해주세요.'
+              />
+              <AuthInput
+                type='text'
+                label='직급'
+                placeholder='직급을 입력해주세요.'
+              />
+            </> */}
           </form>
           <Link to='/change-profile' className='inline-block pb-4'>
             <span className='text-sm font-medium text-primaryColor hover:text-primaryColor'>

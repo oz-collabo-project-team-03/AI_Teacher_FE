@@ -1,7 +1,7 @@
 import Heart from '../../assets/feedPost/heart.svg';
 import chat from '../../assets/feedPost/chat.svg';
 import fullHeart from '../../assets/feedPost/fullHeart.svg';
-import teacher from '../../assets/profileEdit/teacher/teDefaultIcon.svg';
+import teacher from '../../assets/editProfile/teacher/teacherDefaultIcon.png';
 import useFeedPostStore from '../../stores/useFeedPostStore';
 
 const FeedPostContent = () => {

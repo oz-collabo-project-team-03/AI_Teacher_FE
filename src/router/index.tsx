@@ -2,7 +2,7 @@ import { Route, Routes } from 'react-router';
 import { Suspense, lazy } from 'react';
 
 import DefaultLayout from '../layouts/defaultLayout';
-import LandingPage from '../pages/landing/landingPage';
+import Landing from '../pages/landing/landing';
 import LoadingPage from '../pages/loadingPage';
 import StudentLayout from '../layouts/studentLayout';
 import TeacherLayout from '../layouts/teacherLayout';
@@ -42,20 +42,12 @@ const Router = () => {
       <Routes>
         <Route element={<DefaultLayout />}>
           <Route path='*' />
-          <Route path='/' element={<LandingPage />} />
+          <Route path='/' element={<Landing />} />
           <Route
             path='/login'
             element={
               <Suspense fallback={<LoadingPage />}>
                 <LoginPage />
-              </Suspense>
-            }
-          />
-          <Route
-            path='/my-page'
-            element={
-              <Suspense fallback={<LoadingPage />}>
-                <MyPage />
               </Suspense>
             }
           />
@@ -117,6 +109,14 @@ const Router = () => {
           />
         </Route>
         <Route element={<StudentLayout />}>
+          <Route
+            path='/my-page'
+            element={
+              <Suspense fallback={<LoadingPage />}>
+                <MyPage />
+              </Suspense>
+            }
+          />
           <Route
             path='/student-main'
             element={

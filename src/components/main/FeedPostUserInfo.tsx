@@ -1,4 +1,4 @@
-import student10 from '../../assets/profileEdit/student/stIcon10.svg';
+import student10 from '../../assets/editProfile/student/studentIcon10.png';
 
 const FeedPostUserInfo = () => {
   return (
@@ -10,7 +10,7 @@ const FeedPostUserInfo = () => {
       />
       <div className='justify-content flex flex-col'>
         <div className='text-[20px] font-medium'>oh_sam</div>
-        <div className='text-[12px] font-medium text-hobbyText'>축구, 게임</div>
+        <div className='text-hobbyText text-[12px] font-medium'>축구, 게임</div>
       </div>
     </div>
   );

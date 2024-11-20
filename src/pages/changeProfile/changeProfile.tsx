@@ -6,7 +6,7 @@ import { useState } from 'react';
 const ChangeProfile = () => {
   const [isVerified, setIsVerified] = useState(false);
 
-  const handleVerification = () => {
+  const handleUserPwVerification = () => {
     setIsVerified(true);
   };
 
@@ -14,7 +14,7 @@ const ChangeProfile = () => {
     <div className='flex h-full w-full flex-col'>
       <Header title='회원정보 변경' />
       {!isVerified ? (
-        <PwCheck onVerify={handleVerification} />
+        <PwCheck onUserPwVerification={handleUserPwVerification} />
       ) : (
         <EditAccount userType='student' />
         // <EditAccount userType='teacher' />

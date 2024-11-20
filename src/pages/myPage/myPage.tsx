@@ -1,5 +1,6 @@
-import { editIcon, stDefaultIcon } from '../../assets/assets';
-import postTestImg from '../../../src/assets/profileEdit/postTestImg.png';
+import { editIcon } from '../../assets/assets';
+import studentDefaultIcon from '../../assets/editProfile/student/studentDefaultIcon.png';
+import postTestImg from '../../../src/assets/editProfile/postTestImg.png';
 import { Link } from 'react-router-dom';
 
 const MyPage = () => {
@@ -33,12 +34,12 @@ const MyPage = () => {
   ];
 
   return (
-    <div className='flex w-full justify-center overflow-y-scroll'>
+    <div className='flex w-full justify-center overflow-y-scroll pb-[62px]'>
       <div className='flex flex-col items-center gap-9 py-12'>
         <ul className='flex flex-col gap-2'>
           <li className='relative h-[92px] w-[92px] rounded-full'>
             <img
-              src={stDefaultIcon}
+              src={studentDefaultIcon}
               alt='학생 기본 이미지'
               className='h-full w-full'
             />
@@ -80,9 +81,9 @@ const MyPage = () => {
             내 게시글
           </p>
           <div className='flex w-[311px] flex-wrap gap-[10px]'>
-            {postImg.map((img) => (
+            {postImg.map((img, index) => (
               <div
-                key={img}
+                key={`img${index}`}
                 className='h-[97px] w-[97px] overflow-hidden border border-postBorderColor'
               >
                 <img
