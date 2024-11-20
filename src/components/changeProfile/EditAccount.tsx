@@ -1,12 +1,15 @@
 import { GradeSelector } from '../auth/GradeButton';
 import AuthInput from '../auth/AuthInput';
 import Button from '../common/Button';
+import { useState } from 'react';
 
 type EditAccountProps = {
   userType: 'student' | 'teacher';
 };
 
 const EditAccount = ({ userType }: EditAccountProps) => {
+  const [selectedGrade, setSelectedGrade] = useState<number>(1);
+
   return (
     <div className='flex h-full flex-col justify-between gap-4 px-4 pb-[48px] pt-[38px]'>
       <form className='flex flex-col gap-4'>
@@ -40,27 +43,9 @@ const EditAccount = ({ userType }: EditAccountProps) => {
               label='학교'
               placeholder='학교 이름을 입력해주세요.'
             />
-            <GradeSelector />
-          </>
-        )}
-
-        {/* 교사 전용 입력 필드 */}
-        {userType === 'teacher' && (
-          <>
-            <AuthInput
-              type='text'
-              label='소속 종류'
-              placeholder='소속 종류를 입력해주세요.'
-            />
-            <AuthInput
-              type='text'
-              label='소속 이름'
-              placeholder='소속 이름을 입력해주세요.'
-            />
-            <AuthInput
-              type='text'
-              label='직급'
-              placeholder='직급을 입력해주세요.'
+            <GradeSelector
+              selectedGrade={selectedGrade}
+              setSelectedGrade={setSelectedGrade}
             />
           </>
         )}
