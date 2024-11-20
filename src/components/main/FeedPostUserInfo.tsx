@@ -2,15 +2,17 @@ import student10 from '../../assets/editProfile/student/studentIcon10.png';
 
 const FeedPostUserInfo = () => {
   return (
-    <div className='justify-content flex h-[54px] w-full items-center px-[7px] py-[8px]'>
+    <div className='flex h-[54px] w-full items-center px-[7px] py-[8px]'>
       <img
         src={student10}
         alt='studentProfileImage'
-        className='mr-[9px] h-[40px] w-[40px]'
+        className='mr-[9px] h-[40px] w-[40px] rounded-full'
       />
-      <div className='justify-content flex flex-col'>
-        <div className='text-[20px] font-medium'>oh_sam</div>
-        <div className='text-hobbyText text-[12px] font-medium'>축구, 게임</div>
+      <div className='flex flex-col'>
+        <p className='text-[20px] font-medium leading-none'>oh_sam</p>
+        <p className='text-[12px] font-medium leading-none text-hobbyText'>
+          축구, 게임
+        </p>
       </div>
     </div>
   );
