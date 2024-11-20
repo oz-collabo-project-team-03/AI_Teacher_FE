@@ -14,15 +14,9 @@ import Button from '../../components/common/Button';
 import useCountdown from '../../hooks/useCountDown';
 import { useToast } from '../../hooks/useToast';
 import { useTermsStore } from '../../stores/useTermsStore';
+import { ApiErrorResponse } from '../../types/apiErrorType';
 import { SignupRequestData } from '../../types/signupType';
 
-type ApiErrorResponse = {
-  response?: {
-    data?: {
-      message?: string;
-    };
-  };
-};
 const STEP = {
   ACCOUNT_INFO: 1,
   PERSONAL_INFO: 2,

@@ -33,10 +33,10 @@ const registeredEmails = ['test@example.com', 'user@example.com'];
 
 const MOCK_USER = {
   id: '1',
-  email: 'student@example.com',
-  password: 'password123',
-  nickname: 'StudentNick',
-  role: 'student',
+  email: 'gw@test.com',
+  password: 'qlalfqjsgh1234',
+  nickname: '경원학생이지만선생입니다',
+  role: 'teacher',
   school: '서울고등학교',
   grade: 11,
   career_aspiration: '의사',
