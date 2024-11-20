@@ -4,13 +4,17 @@ import FeedPostUserInfo from './FeedPostUserInfo';
 
 const FeedPost = () => {
   return (
-    <div>
-      <div className='min-h-[368px] w-full'>
+    <article className='min-h-[368px] w-full'>
+      <header>
         <FeedPostUserInfo />
+      </header>
+      <section>
         <FeedPostSlider />
+      </section>
+      <footer>
         <FeedPostContent />
-      </div>
-    </div>
+      </footer>
+    </article>
   );
 };
 
