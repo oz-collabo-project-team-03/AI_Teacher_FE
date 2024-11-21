@@ -1,11 +1,10 @@
 import Button from '../common/Button';
-import React from 'react';
 
 type DeleteChatModalProps = {
   onClose: () => void;
 };
 
-const DeleteChatModal: React.FC<DeleteChatModalProps> = ({ onClose }) => {
+const DeleteChatModal = ({ onClose }: DeleteChatModalProps) => {
   return (
     <div
       className='absolute inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50'

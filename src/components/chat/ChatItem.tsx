@@ -1,4 +1,3 @@
-import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
 type ChatItemProps = {
@@ -9,13 +8,13 @@ type ChatItemProps = {
   showHelpRequest?: boolean;
 };
 
-const ChatItem: React.FC<ChatItemProps> = ({
+const ChatItem = ({
   id,
   roomName,
   lastMessage,
   lastMessageTime,
   showHelpRequest,
-}) => {
+}: ChatItemProps) => {
   const navigate = useNavigate();
 
   const handleClick = () => {

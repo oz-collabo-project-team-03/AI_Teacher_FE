@@ -4,7 +4,7 @@ type ChatInputProps = {
   onSendMessage: (message: string) => void;
 };
 
-const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage }) => {
+const ChatInput = ({ onSendMessage }: ChatInputProps) => {
   const [inputValue, setInputValue] = useState('');
 
   const handleSendOnEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
