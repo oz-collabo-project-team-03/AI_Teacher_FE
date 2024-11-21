@@ -4,25 +4,18 @@ import ChatMyBubble from './bubbles/ChatMyBubble';
 import ChatTeacherBubble from './bubbles/ChatTeacherBubble';
 import React from 'react';
 
-// import ChatSystemBubble from './bubbles/ChatSystemBubble';
-
-const ChatMessage: React.FC<ChatMessageProps> = ({
-  message,
-  nickname,
-  userType,
-}) => {
-  const renderBubble = () => {
-    switch (userType) {
-      case 'user':
-        return <ChatMyBubble message={message} />;
-      case 'ai':
-        return <ChatAiBubble message={message} />;
-      case 'teacher':
-        return <ChatTeacherBubble message={message} />;
-      default:
-        return null;
-    }
+const ChatMessage = ({ message, nickname, userType }: ChatMessageProps) => {
+  // 객체 매핑 방식으로 변경
+  const bubbleComponents: Record<
+    string,
+    (props: { message: string }) => React.ReactNode
+  > = {
+    user: ChatMyBubble,
+    ai: ChatAiBubble,
+    teacher: ChatTeacherBubble,
   };
+
+  const BubbleComponent = bubbleComponents[userType];
 
   return (
     <div
@@ -37,7 +30,8 @@ const ChatMessage: React.FC<ChatMessageProps> = ({
         {userType !== 'user' && (
           <div className='text-[14px] text-captionColor'>{nickname}</div>
         )}
-        {renderBubble()}
+        {/* BubbleComponent가 존재하면 렌더링 */}
+        {BubbleComponent ? <BubbleComponent message={message} /> : null}
       </div>
     </div>
   );

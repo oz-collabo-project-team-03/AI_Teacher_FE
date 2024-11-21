@@ -1,19 +1,25 @@
 import Button from '../common/Button';
 import Input from '../common/Input';
-import React from 'react';
 import { modalCloseIcon } from '../../assets/assets';
 
 type CreateChatModalProps = {
   onClose: () => void;
 };
 
-const CreateChatModal: React.FC<CreateChatModalProps> = ({ onClose }) => {
+const CreateChatModal = ({ onClose }: CreateChatModalProps) => {
+  const handleModalClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    e.stopPropagation();
+  };
+
   return (
     <div
       className='absolute inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50'
       onClick={onClose}
     >
-      <div className='h-auto w-full max-w-[90%] rounded-[16px] border border-inputBorderColor bg-white p-[16px]'>
+      <div
+        className='h-auto w-full max-w-[90%] rounded-[16px] border border-inputBorderColor bg-white p-[16px]'
+        onClick={handleModalClick}
+      >
         <div className='flex justify-end'>
           <img
             src={modalCloseIcon}
@@ -28,9 +34,7 @@ const CreateChatModal: React.FC<CreateChatModalProps> = ({ onClose }) => {
         <div className='mb-[12px]'>
           <Input type='text' placeholder='국어 수행평가' />
         </div>
-        <div>
-          <Button variant='active'>수행평가 보러가기</Button>
-        </div>
+        <Button variant='active'>수행평가 보러가기</Button>
       </div>
     </div>
   );

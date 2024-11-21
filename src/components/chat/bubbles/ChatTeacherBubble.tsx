@@ -1,7 +1,6 @@
 import { ChatBubbleProps } from '../../../types/index';
-import React from 'react';
 
-const ChatTeacherBubble: React.FC<ChatBubbleProps> = ({ message }) => {
+const ChatTeacherBubble = ({ message }: ChatBubbleProps) => {
   return (
     <div className='flex justify-end'>
       {/* 말풍선 꼬리 */}
@@ -10,7 +9,7 @@ const ChatTeacherBubble: React.FC<ChatBubbleProps> = ({ message }) => {
           {message}
         </p>
       </div>
-      <div className='relative left-[-15px] h-0 w-0 border-b-[10px] border-l-[10px] border-r-[10px] border-t-[10px] border-b-transparent border-l-transparent border-r-transparent border-t-primaryColor'></div>
+      <div className='relative left-[-15px] h-0 w-0 border-[10px] border-b-transparent border-l-transparent border-r-transparent border-t-primaryColor'></div>
     </div>
   );
 };
