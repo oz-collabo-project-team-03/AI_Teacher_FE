@@ -1,0 +1,27 @@
+/* 슬라이더 도트 커스텀 */
+.slick-dots li button:before {
+  content: ''; /* 기본 동그라미 대신 다른 모양을 사용하려면 content를 설정 */
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  @apply bg-unFocusColor;
+  border: 2px solid white;
+}
+
+.slick-dots li.slick-active button:before {
+  @apply bg-buttonColor;
+}
+
+.slick-dots li {
+  margin-right: -10px;
+}
+
+.slick-dots {
+  bottom: -12px;
+  height: 12px;
+}
+
+/* 이미지 클릭시 테두리생기는 이벤트 */
+.slick-slide img {
+  pointer-events: none !important;
+}

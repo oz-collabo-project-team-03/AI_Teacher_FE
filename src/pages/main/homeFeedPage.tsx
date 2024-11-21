@@ -8,16 +8,20 @@ const HomeFeedPage = () => {
 
   return (
     <div className='h-screen'>
-      <MainHeader />
+      <MainHeader className='fixed top-0 z-10 w-full' />
       <div
         className={twMerge(
           'h-full overflow-auto pb-[62px] pt-[72px]',
           hideScrollbar && 'scrollbar-hide'
         )}
       >
-        {posts.map((index) => (
-          <FeedPost key={index} />
-        ))}
+        <div className='space-y-8'>
+          {' '}
+          {/* 각 게시물 간 여백 추가 */}
+          {posts.map((index) => (
+            <FeedPost key={index} />
+          ))}
+        </div>
       </div>
     </div>
   );
