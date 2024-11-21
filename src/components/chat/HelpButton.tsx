@@ -1,4 +1,3 @@
-import React from 'react';
 import { twMerge } from 'tailwind-merge';
 
 type ButtonProps = {
@@ -6,19 +5,24 @@ type ButtonProps = {
   onClick: () => void;
 };
 
-const HelpButton: React.FC<ButtonProps> = ({ type, onClick }) => {
+const HelpButton = ({ type, onClick }: ButtonProps) => {
   const baseButtonStyle =
     'p-[6px] w-[80px] rounded-[4px] font-bold text-white text-[16px] transition-colors duration-300 ease-in-out';
 
-  const variantButtonStyles =
-    (type === 'help' && 'bg-helpButtonColor hover:bg-primaryHoverColor') ||
-    (type === 'end' && 'bg-cancelButtonColor hover:bg-unFocusColor');
+  // 각 타입별 스타일 분리
+  const variantHelpButtonStyles =
+    'bg-helpButtonColor hover:bg-primaryHoverColor';
+  const variantEndButtonStyles = 'bg-cancelButtonColor hover:bg-unFocusColor';
 
-  const mergedButtonStyles = twMerge(baseButtonStyle, variantButtonStyles);
+  // 타입에 따라 조건적으로 스타일 선택
+  const variantStyles =
+    type === 'help' ? variantHelpButtonStyles : variantEndButtonStyles;
+
+  const mergedButtonStyles = twMerge(baseButtonStyle, variantStyles);
 
   return (
     <button className={mergedButtonStyles} onClick={onClick}>
-      {(type === 'help' && 'Help !') || '상담종료'}
+      {type === 'help' ? 'Help !' : '상담종료'}
     </button>
   );
 };
