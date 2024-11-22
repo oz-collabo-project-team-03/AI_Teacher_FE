@@ -37,6 +37,7 @@ const StudentChatRoomPage = lazy(
 const TeacherChatListPage = lazy(
   () => import('../pages/chat/teacherChatListPage')
 );
+const CreatePostPage = lazy(() => import('../pages/post/createPostPage'));
 
 const Router = () => {
   return (
@@ -122,6 +123,14 @@ const Router = () => {
             element={
               <Suspense fallback={<LoadingPage />}>
                 <StudentChatRoomPage />
+              </Suspense>
+            }
+          />
+          <Route
+            path='/student/post'
+            element={
+              <Suspense fallback={<LoadingPage />}>
+                <CreatePostPage />
               </Suspense>
             }
           />
