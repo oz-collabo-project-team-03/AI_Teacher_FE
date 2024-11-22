@@ -1,44 +1,19 @@
 import { editIcon } from '../../assets/assets';
-import studentDefaultIcon from '../../assets/editProfile/student/studentDefaultIcon.png';
-import postTestImg from '../../../src/assets/editProfile/postTestImg.png';
 import { Link } from 'react-router-dom';
+import { StudentMyPageResponse } from '../../types/myPageType.ts';
 
-const StudentPage = () => {
-  const profileInfo = {
-    nickName: '닉네임',
-    dream: '희망진로, 흥미',
-    text: '상태 메세지',
-    post: 2,
-    like: 10,
-    comment: 18,
-  };
+type StudentPageProps = {
+  userInfo: StudentMyPageResponse;
+  communityInfo: { label: string; value: number }[];
+};
 
-  const communityInfo = [
-    { label: '게시물', value: profileInfo.post },
-    { label: '좋아요', value: profileInfo.like },
-    { label: '작성 댓글', value: profileInfo.comment },
-  ];
-
-  const postImg = [
-    postTestImg,
-    postTestImg,
-    postTestImg,
-    postTestImg,
-    postTestImg,
-    postTestImg,
-    postTestImg,
-    postTestImg,
-    postTestImg,
-    postTestImg,
-    postTestImg,
-  ];
-
+const StudentPage = ({ userInfo, communityInfo }: StudentPageProps) => {
   return (
-    <div className='flex w-full flex-col items-center gap-9 px-8 py-12'>
-      <ul className='flex flex-col gap-2'>
+    <>
+      <ul className='flex flex-col items-center gap-2'>
         <li className='relative h-[92px] w-[92px] rounded-full'>
           <img
-            src={studentDefaultIcon}
+            src={userInfo.profile_image}
             alt='학생 기본 이미지'
             className='h-full w-full'
           />
@@ -50,19 +25,18 @@ const StudentPage = () => {
             />
           </Link>
         </li>
-
         <li className='flex flex-col items-center'>
           <p className='text-xl font-bold text-textMainColor'>
-            {profileInfo.nickName}
+            {userInfo.nickname}
           </p>
-          <p className='mb-2 text-captionColor'>{profileInfo.dream}</p>
+          <p className='mb-2 text-captionColor'>{`${userInfo.career_aspiration}, ${userInfo.interest}`}</p>
           <p className='text-[13px] font-medium text-textMainColor'>
-            {profileInfo.text}
+            {userInfo.description}
           </p>
         </li>
       </ul>
 
-      <ul className='flex items-center justify-center gap-5'>
+      <ul className='flex items-center justify-center gap-6'>
         {communityInfo.map((info, index) => (
           <li
             key={index}
@@ -78,18 +52,18 @@ const StudentPage = () => {
         ))}
       </ul>
 
-      <div className='flex w-[321px] flex-col gap-3'>
+      <div className='flex w-[360px] flex-col gap-3'>
         <p className='text-left text-xs font-medium text-captionColor'>
           내 게시글
         </p>
-        <div className='flex flex-wrap gap-[15px]'>
-          {postImg.map((img, index) => (
+        <div className='flex flex-wrap gap-[6px]'>
+          {userInfo.posts.map((post) => (
             <div
-              key={`img${index}`}
-              className='h-[97px] w-[97px] overflow-hidden border border-postBorderColor'
+              key={post.post_id}
+              className='h-[116px] w-[116px] overflow-hidden border border-postBorderColor'
             >
               <img
-                src={img}
+                src={post.post_image}
                 alt='게시글 이미지'
                 className='h-full w-full object-cover'
               />
@@ -97,7 +71,7 @@ const StudentPage = () => {
           ))}
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

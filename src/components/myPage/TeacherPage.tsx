@@ -1,48 +1,78 @@
 import { Link } from 'react-router-dom';
 import { editIcon } from '../../assets/assets';
-import teacherDefaultIcon from '../../assets/editProfile/teacher/teacherDefaultIcon.png';
+import { TeacherMyPageResponse } from '../../types/myPageType.ts';
 
-const TeacherPage = () => {
-  const profileInfo = [
-    { label: '닉네임', value: '닉네임' },
-    { label: '소속 종류', value: '소속 종류' },
-    { label: '소속 이름', value: '소속 이름' },
-    { label: '직급', value: '직급' },
-  ];
+type TeacherPageProps = {
+  userInfo: TeacherMyPageResponse;
+  communityInfo: { label: string; value: number }[];
+};
 
+const TeacherPage = ({ userInfo, communityInfo }: TeacherPageProps) => {
   return (
-    <div className='flex w-full flex-col items-center gap-12 px-8 py-12'>
-      <div className='relative h-[92px] w-[92px] rounded-full'>
-        <img
-          src={teacherDefaultIcon}
-          alt='선생님 기본 이미지'
-          className='h-full w-full'
-        />
-        <Link to='/edit-profile'>
+    <>
+      <ul className='flex flex-col items-center gap-2'>
+        <li className='relative h-[92px] w-[92px] rounded-full'>
           <img
-            src={editIcon}
-            alt='프로필 수정 아이콘'
-            className='absolute bottom-0 right-0'
+            src={userInfo.profile_image}
+            alt='선생님 기본 이미지'
+            className='h-full w-full'
           />
-        </Link>
-      </div>
+          <Link to='/edit-profile'>
+            <img
+              src={editIcon}
+              alt='프로필 수정 아이콘'
+              className='absolute bottom-0 right-0'
+            />
+          </Link>
+        </li>
 
-      <ul className='flex min-w-[361px] flex-col gap-9'>
-        {profileInfo.map((info, index) => (
+        <li className='flex flex-col items-center'>
+          <p className='text-xl font-bold text-textMainColor'>
+            {userInfo.nickname}
+          </p>
+          <p className='mb-2 text-captionColor'>{`${userInfo.organization_type}, ${userInfo.organization_name}`}</p>
+          <p className='text-[13px] font-medium text-textMainColor'>
+            {userInfo.organization_position}
+          </p>
+        </li>
+      </ul>
+
+      <ul className='flex items-center justify-center gap-6'>
+        {communityInfo.map((info, index) => (
           <li
             key={index}
-            className='flex h-[50px] w-full items-center rounded-[10px] px-5 py-[14px] shadow-profileInfoShadow'
+            className='flex h-[50px] w-[83px] flex-col items-center justify-center rounded-[10px] shadow-profileInfoShadow'
           >
-            <p className='w-[95px] text-[16px] font-semibold text-textMainColor'>
+            <p className='text-[13px] font-normal text-textMainColor'>
               {info.label}
             </p>
-            <p className='text-sm font-medium text-captionColor'>
+            <p className='text-[15px] font-bold text-profilePointTextColor'>
               {info.value}
             </p>
           </li>
         ))}
       </ul>
-    </div>
+
+      <div className='flex w-[360px] flex-col gap-3'>
+        <p className='text-left text-xs font-medium text-captionColor'>
+          협업 게시글
+        </p>
+        <div className='flex flex-wrap gap-[6px]'>
+          {userInfo.posts.map((post) => (
+            <div
+              key={post.post_id}
+              className='h-[116px] w-[116px] overflow-hidden border border-postBorderColor'
+            >
+              <img
+                src={post.post_image}
+                alt='게시글 이미지'
+                className='h-full w-full object-cover'
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+    </>
   );
 };
 
