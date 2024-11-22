@@ -1,4 +1,4 @@
-export type ApiErrorResponse = {
+export type ApiErrorResponseDto = {
   response?: {
     data?: {
       message?: string;

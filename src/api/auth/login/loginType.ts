@@ -1,9 +1,9 @@
-export type LoginRequsetData = {
+export type LoginRequestParams = {
   email: string;
   password: string;
 };
 
-export type LoginResponseData = {
+export type LoginResponseDto = {
   user: {
     access_token: string;
     token_type: string;
