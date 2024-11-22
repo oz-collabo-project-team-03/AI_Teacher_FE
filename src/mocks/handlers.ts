@@ -1,9 +1,9 @@
 import { http, HttpResponse } from 'msw';
 import {
-  BaseSignupRequest,
-  SignupRequestData,
-  StudentSignupRequest,
-  TeacherSignupRequest,
+  BaseSignupRequestParams,
+  SignupRequestParams,
+  StudentSignupRequestParams,
+  TeacherSignupRequestParams,
 } from '../types/signupType';
 
 type LoginRequest = {
@@ -46,10 +46,10 @@ const MOCK_USER = {
 export const handlers = [
   // 회원가입
   http.post('/api/signup', async ({ request }) => {
-    const data = (await request.json()) as SignupRequestData;
+    const data = (await request.json()) as SignupRequestParams;
 
     // 공통 필수 필드 체크
-    const baseRequiredFields: (keyof BaseSignupRequest)[] = [
+    const baseRequiredFields: (keyof BaseSignupRequestParams)[] = [
       'email',
       'password',
       'password_confirm',
@@ -77,12 +77,12 @@ export const handlers = [
     // role별 필수 필드 체크
     if (data.role === 'student') {
       const studentRequiredFields: (keyof Omit<
-        StudentSignupRequest,
-        keyof BaseSignupRequest
+        StudentSignupRequestParams,
+        keyof BaseSignupRequestParams
       >)[] = ['school', 'grade', 'career_aspiration', 'interests'];
 
       const missingStudentFields = studentRequiredFields.filter(
-        (field) => !(data as StudentSignupRequest)[field]
+        (field) => !(data as StudentSignupRequestParams)[field]
       );
 
       if (missingStudentFields.length > 0) {
@@ -97,12 +97,12 @@ export const handlers = [
       }
     } else {
       const teacherRequiredFields: (keyof Omit<
-        TeacherSignupRequest,
-        keyof BaseSignupRequest
+        TeacherSignupRequestParams,
+        keyof BaseSignupRequestParams
       >)[] = ['organization_type', 'organization_name', 'position'];
 
       const missingTeacherFields = teacherRequiredFields.filter(
-        (field) => !(data as TeacherSignupRequest)[field]
+        (field) => !(data as TeacherSignupRequestParams)[field]
       );
 
       if (missingTeacherFields.length > 0) {
