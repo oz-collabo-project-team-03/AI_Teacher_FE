@@ -27,7 +27,7 @@ const SignupCompletePage = lazy(
   () => import('../pages/auth/signupCompletePage')
 );
 const FindEmailPage = lazy(() => import('../pages/auth/findEmailPage'));
-
+const FindPasswordPage = lazy(() => import('@pages/auth/findPasswordPage'));
 const StudentChatListPage = lazy(
   () => import('../pages/chat/studentChatListPage')
 );
@@ -113,7 +113,7 @@ const Router = () => {
             path='/find/password'
             element={
               <Suspense fallback={<LoadingPage />}>
-                <SignupCompletePage />
+                <FindPasswordPage />
               </Suspense>
             }
           />

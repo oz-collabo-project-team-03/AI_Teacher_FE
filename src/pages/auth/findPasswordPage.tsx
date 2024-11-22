@@ -9,7 +9,7 @@ const STEP = {
   DISPLAY_EMAIL: 2, // 이메일 결과 표시
 };
 
-const FindEmailPage = () => {
+const FindPasswordPage = () => {
   const [step, setStep] = useState(STEP.INPUT_PHONE);
   const navigate = useNavigate();
 
@@ -27,8 +27,8 @@ const FindEmailPage = () => {
   };
 
   // 비밀번호 찾기 버튼 클릭 핸들러
-  const handleFindPassword = () => {
-    navigate('/find/password');
+  const handleFindEmail = () => {
+    navigate('/find/email');
   };
 
   return (
@@ -39,36 +39,28 @@ const FindEmailPage = () => {
             수행쌤
           </h1>
           <div className='mb-[50px] text-lg text-captionColor'>
-            <p className='font-semibold text-textMainColor'>이메일 찾기</p>
+            <p className='font-semibold text-textMainColor'>비밀번호 찾기</p>
             {step === STEP.INPUT_PHONE && (
               <div className='mt-3'>
-                <p className='text-base'>
-                  이메일 주소를 찾으려면 가입 시 사용한
-                </p>
-                <p className='text-base'>전화번호를 입력해주세요.</p>
-              </div>
-            )}
-            {step === STEP.DISPLAY_EMAIL && (
-              <div className='mt-3'>
-                <p className='text-base'>
-                  고객님의 정보와 일치하는 아이디 목록입니다.
-                </p>
+                <p className='text-base'>비밀번호를 찾으려면 가입 시 사용한</p>
+                <p className='text-base'>이메일을 입력해주세요.</p>
               </div>
             )}
           </div>
           {step === STEP.INPUT_PHONE && (
             <div className='flex flex-col gap-4'>
               <AuthInput
-                type='text'
-                placeholder='-없이 입력해주세요.'
-                label='연락처'
+                type='email'
+                placeholder='example@email.com'
+                label='이메일'
               />
             </div>
           )}
           {step === STEP.DISPLAY_EMAIL && (
-            <ul className='flex flex-col items-center gap-4'>
-              <li className='font-medium'>gw@test.com</li>
-            </ul>
+            <div className='flex h-full flex-col items-center gap-1'>
+              <p>입력하신 이메일로 임시비밀번호를 발송했습니다.</p>
+              <p>메일함을 확인해주세요.</p>
+            </div>
           )}
         </div>
       </div>
@@ -79,8 +71,8 @@ const FindEmailPage = () => {
         {step === STEP.DISPLAY_EMAIL && (
           <>
             <Button onClick={handleLogin}>로그인하기</Button>
-            <Button variant='cancel' onClick={handleFindPassword}>
-              비밀번호 찾기
+            <Button variant='cancel' onClick={handleFindEmail}>
+              아이디 찾기
             </Button>
           </>
         )}
@@ -89,4 +81,4 @@ const FindEmailPage = () => {
   );
 };
 
-export default FindEmailPage;
+export default FindPasswordPage;
