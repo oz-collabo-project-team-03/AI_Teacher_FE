@@ -15,7 +15,7 @@ const Header = ({ title, rightElement }: HeaderProps) => {
   return (
     <header className='flex items-center justify-between border-b border-borderColor bg-white px-2 py-6'>
       <div className='flex items-center'>
-        <button onClick={() => navigate(-1)} className='mr-2'>
+        <button onClick={() => navigate(-1)} type='button' className='mr-2'>
           <img src={backIcon} alt='' />
         </button>
 

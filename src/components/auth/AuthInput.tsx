@@ -8,16 +8,25 @@ type TInputProps = Omit<React.ComponentPropsWithoutRef<'input'>, 'type'> & {
 };
 
 const AuthInput = forwardRef<HTMLInputElement, TInputProps>(
-  ({ label, children, className, ...rest }, ref) => {
+  ({ label, children, className, onBlur, ...rest }, ref) => {
     const [isFocused, setIsFocused] = useState(false);
     const inputRef = useRef<HTMLInputElement>(null);
+    const containerRef = useRef<HTMLDivElement>(null);
 
     const handleContainerClick = () => {
       inputRef.current?.focus();
     };
 
+    const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+      if (!containerRef.current?.contains(e.relatedTarget as Node)) {
+        setIsFocused(false);
+        onBlur?.(e);
+      }
+    };
+
     return (
       <div
+        ref={containerRef}
         className={twMerge(
           'flex w-full items-center justify-between rounded-[10px] border-0 px-[14px] py-[8px] outline-none ring-1 ring-inset',
           isFocused
@@ -42,7 +51,7 @@ const AuthInput = forwardRef<HTMLInputElement, TInputProps>(
             className
           )}
           onFocus={() => setIsFocused(true)}
-          onBlur={() => setIsFocused(false)}
+          onBlur={handleBlur}
           {...rest}
         />
         {children}
