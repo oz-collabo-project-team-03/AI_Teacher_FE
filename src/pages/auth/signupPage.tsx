@@ -1,3 +1,4 @@
+import { ApiErrorResponseDto } from '@/types/apiErrorType';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
@@ -6,16 +7,15 @@ import { z as zod } from 'zod';
 import {
   useEmailVerificationCodeMutation,
   useEmailVerificationMutation,
-} from '../../api/auth/sendcode.hooks';
-import { useSignupMutation } from '../../api/auth/signup.hooks';
+} from '../../api/auth/sendEmail/sendEmail.hooks';
+import { useSignupMutation } from '../../api/auth/signup/signup.hooks';
 import AuthInput from '../../components/auth/AuthInput';
 import { GradeSelector } from '../../components/auth/GradeButton';
 import Button from '../../components/common/Button';
 import useCountdown from '../../hooks/useCountDown';
 import { useToast } from '../../hooks/useToast';
 import { useTermsStore } from '../../stores/useTermsStore';
-import { ApiErrorResponse } from '../../types/apiErrorType';
-import { SignupRequestData } from '../../types/signupType';
+import { SignupRequestParams } from '../../types/signupType';
 
 const STEP = {
   ACCOUNT_INFO: 1,
@@ -122,7 +122,7 @@ const SignupPage = () => {
   const handleSignup = async () => {
     const formData = getValues();
 
-    const signupData: SignupRequestData = {
+    const signupData: SignupRequestParams = {
       email: formData.email,
       password: formData.password,
       password_confirm: formData.confirmPassword,
@@ -145,7 +145,7 @@ const SignupPage = () => {
         organization_name: formData.organization_name,
         position: formData.position,
       }),
-    } as SignupRequestData;
+    } as SignupRequestParams;
 
     // 첫 번째 단계: 이메일, 비밀번호 검증
     if (step === STEP.ACCOUNT_INFO) {
@@ -224,7 +224,7 @@ const SignupPage = () => {
         // setShowVerificationInput(false); // 인증 입력 필드 숨기기
       },
       onError: (error) => {
-        const apiError = error as ApiErrorResponse;
+        const apiError = error as ApiErrorResponseDto;
         const errorMessage =
           apiError?.response?.data?.message ||
           '인증에 실패하였습니다. 다시 시도해주세요.';
