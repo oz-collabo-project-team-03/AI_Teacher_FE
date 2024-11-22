@@ -1,5 +1,5 @@
 import FeedPost from '../../components/main/FeedPost';
-import MainHeader from '../../components/common/MainHeader';
+import MainHeader from '../../components/main/MainHeader';
 import { twMerge } from 'tailwind-merge';
 
 const HomeFeedPage = () => {
@@ -7,7 +7,7 @@ const HomeFeedPage = () => {
   const hideScrollbar = true;
 
   return (
-    <div className='h-screen'>
+    <div className='h-svh'>
       <MainHeader className='fixed top-0 z-10 w-full' />
       <div
         className={twMerge(
