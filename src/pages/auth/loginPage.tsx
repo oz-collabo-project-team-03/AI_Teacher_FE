@@ -110,9 +110,13 @@ const LoginPage = () => {
             <Button>로그인</Button>
           </form>
           <div className='mb-[34px] flex items-center justify-center gap-[20px] text-sm text-mainLogoTextColor'>
-            <p className='cursor-pointer'>아이디 찾기</p>
+            <Link to={'/find/email'}>
+              <p className='cursor-pointer'>아이디 찾기</p>
+            </Link>
             <span className='inline-block h-[14px] w-[1px] bg-inputBorderColor'></span>
-            <p className='cursor-pointer'>비밀번호 찾기</p>
+            <Link to={'/find/password'}>
+              <p className='cursor-pointer'>비밀번호 찾기</p>
+            </Link>
             <span className='inline-block h-[14px] w-[1px] bg-inputBorderColor'></span>
             <Link to='/member-agree'>
               <p className='cursor-pointer'>회원가입</p>
