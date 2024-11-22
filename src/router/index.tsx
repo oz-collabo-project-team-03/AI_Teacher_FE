@@ -1,11 +1,12 @@
-import { Route, Routes } from 'react-router';
 import { Suspense, lazy } from 'react';
+import { Route, Routes } from 'react-router';
 
 import DefaultLayout from '../layouts/defaultLayout';
-import Landing from '../pages/landing/landing';
-import LoadingPage from '../pages/loadingPage';
 import StudentLayout from '../layouts/studentLayout';
 import TeacherLayout from '../layouts/teacherLayout';
+
+import Landing from '../pages/landing/landing';
+import LoadingPage from '../pages/loadingPage';
 
 const HomeFeedPage = lazy(() => import('../pages/main/homeFeedPage'));
 const ManagedStudentListPage = lazy(
@@ -25,7 +26,8 @@ const SignupPage = lazy(() => import('../pages/auth/signupPage'));
 const SignupCompletePage = lazy(
   () => import('../pages/auth/signupCompletePage')
 );
-
+const FindEmailPage = lazy(() => import('../pages/auth/findEmailPage'));
+const FindPasswordPage = lazy(() => import('@pages/auth/findPasswordPage'));
 const StudentChatListPage = lazy(
   () => import('../pages/chat/studentChatListPage')
 );
@@ -96,6 +98,22 @@ const Router = () => {
             element={
               <Suspense fallback={<LoadingPage />}>
                 <SignupCompletePage />
+              </Suspense>
+            }
+          />
+          <Route
+            path='/find/email'
+            element={
+              <Suspense fallback={<LoadingPage />}>
+                <FindEmailPage />
+              </Suspense>
+            }
+          />
+          <Route
+            path='/find/password'
+            element={
+              <Suspense fallback={<LoadingPage />}>
+                <FindPasswordPage />
               </Suspense>
             }
           />
