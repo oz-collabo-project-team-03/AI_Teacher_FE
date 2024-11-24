@@ -3,11 +3,11 @@ import {
   MyPageResponseData,
   StudentMyPageResponse,
   TeacherMyPageResponse,
-} from '../types/myPageType';
-import { EditProfileRequestData } from '../types/editProfile';
-import postTestImg from '../assets/editProfile/postTestImg.png';
-import studentDefaultIcon from '../assets/editProfile/student/studentDefaultIcon.png';
-import teacherDefaultIcon from '../assets/editProfile/teacher/teacherDefaultIcon.png';
+} from '@/types/myPageType';
+import { EditProfileRequestData } from '@/types/editProfile';
+import postTestImg from '@/assets/editProfile/postTestImg.png';
+import studentDefaultIcon from '@/assets/editProfile/student/studentDefaultIcon.png';
+import teacherDefaultIcon from '@/assets/editProfile/teacher/teacherDefaultIcon.png';
 
 const MOCK_STUDENT_PROFILE: StudentMyPageResponse = {
   role: 'student',
@@ -87,7 +87,6 @@ export const myPageHandlers = [
 
   http.patch('/api/profile/me', async ({ request }) => {
     const data = await request.json();
-    console.log('Received data:', data); // 디버깅을 위한 로그
 
     if (!data || typeof data !== 'object') {
       return HttpResponse.json(

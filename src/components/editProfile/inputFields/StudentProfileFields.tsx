@@ -1,5 +1,5 @@
-import AuthInput from '../../../components/auth/AuthInput';
-import { ProfileInputFieldsProps } from '../../../types/editProfile';
+import AuthInput from '@/components/auth/AuthInput';
+import { ProfileInputFieldsProps } from '@/types/editProfile';
 
 const StudentProfileFields: React.FC<ProfileInputFieldsProps> = ({
   register,

@@ -1,19 +1,19 @@
 import { twMerge } from 'tailwind-merge';
-import studentDefaultIcon from '../../assets/editProfile/student/studentDefaultIcon.png';
-import studentIcon2 from '../../assets/editProfile/student/studentIcon2.png';
-import studentIcon3 from '../../assets/editProfile/student/studentIcon3.png';
-import studentIcon4 from '../../assets/editProfile/student/studentIcon4.png';
-import studentIcon5 from '../../assets/editProfile/student/studentIcon5.png';
-import studentIcon6 from '../../assets/editProfile/student/studentIcon6.png';
-import studentIcon7 from '../../assets/editProfile/student/studentIcon7.png';
-import studentIcon8 from '../../assets/editProfile/student/studentIcon8.png';
-import studentIcon9 from '../../assets/editProfile/student/studentIcon9.png';
-import studentIcon10 from '../../assets/editProfile/student/studentIcon10.png';
-import studentIcon11 from '../../assets/editProfile/student/studentIcon11.png';
-import studentIcon12 from '../../assets/editProfile/student/studentIcon12.png';
-import teacherDefaultIcon from '../../assets/editProfile/teacher/teacherDefaultIcon.png';
-import teacherIcon2 from '../../assets/editProfile/teacher/teacherIcon2.png';
-import teacherIcon3 from '../../assets/editProfile/teacher/teacherIcon3.png';
+import studentDefaultIcon from '@/assets/editProfile/student/studentDefaultIcon.png';
+import studentIcon2 from '@/assets/editProfile/student/studentIcon2.png';
+import studentIcon3 from '@/assets/editProfile/student/studentIcon3.png';
+import studentIcon4 from '@/assets/editProfile/student/studentIcon4.png';
+import studentIcon5 from '@/assets/editProfile/student/studentIcon5.png';
+import studentIcon6 from '@/assets/editProfile/student/studentIcon6.png';
+import studentIcon7 from '@/assets/editProfile/student/studentIcon7.png';
+import studentIcon8 from '@/assets/editProfile/student/studentIcon8.png';
+import studentIcon9 from '@/assets/editProfile/student/studentIcon9.png';
+import studentIcon10 from '@/assets/editProfile/student/studentIcon10.png';
+import studentIcon11 from '@/assets/editProfile/student/studentIcon11.png';
+import studentIcon12 from '@/assets/editProfile/student/studentIcon12.png';
+import teacherDefaultIcon from '@/assets/editProfile/teacher/teacherDefaultIcon.png';
+import teacherIcon2 from '@/assets/editProfile/teacher/teacherIcon2.png';
+import teacherIcon3 from '@/assets/editProfile/teacher/teacherIcon3.png';
 import { useEffect } from 'react';
 
 type ProfileImagesProps = {
