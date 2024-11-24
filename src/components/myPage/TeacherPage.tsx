@@ -1,6 +1,5 @@
-import { Link } from 'react-router-dom';
-import { editIcon } from '../../assets/assets';
 import { TeacherMyPageResponse } from '../../types/myPageType.ts';
+import ToggleButton from './ToggleButton.tsx';
 
 type TeacherPageProps = {
   userInfo: TeacherMyPageResponse;
@@ -17,13 +16,7 @@ const TeacherPage = ({ userInfo, communityInfo }: TeacherPageProps) => {
             alt='선생님 기본 이미지'
             className='h-full w-full'
           />
-          <Link to='/edit-profile'>
-            <img
-              src={editIcon}
-              alt='프로필 수정 아이콘'
-              className='absolute bottom-0 right-0'
-            />
-          </Link>
+          <ToggleButton />
         </li>
 
         <li className='flex flex-col items-center'>

@@ -2,7 +2,9 @@ import backIcon from './header/back.svg';
 import chatActiveIcon from './navBar/chat_active.svg';
 import chatBubbleIcon from './header/chat.svg';
 import chatDeleteIcon from './chat/chat_delete.svg';
+import toggleIcon from './myPage/toggleIcon.svg';
 import editIcon from './myPage/editIcon.svg';
+import logoutIcon from './myPage/logoutIcon.svg';
 import googleLogo from './auth/google_login.svg';
 import homeActiveIcon from './navBar/home_active.svg';
 import iphone from './landing/iphone.svg';
@@ -21,7 +23,9 @@ export {
   backIcon,
   chatActiveIcon,
   chatBubbleIcon,
+  toggleIcon,
   editIcon,
+  logoutIcon,
   googleLogo,
   homeActiveIcon,
   kakaoLogo,
