@@ -1,14 +1,16 @@
+import { useLoginMutation } from '@/api/auth/login/login.hooks';
+import { LoginResponseDto } from '@/api/auth/login/loginType';
+import googleLogo from '@/assets/auth/google_login.svg';
+import kakaoLogo from '@/assets/auth/kakao_logo.png';
+import naverLogo from '@/assets/auth/naver_logo.svg';
+import Button from '@/components/common/Button';
+import Input from '@/components/common/Input';
+import { useToast } from '@/hooks/useToast';
 import { ApiErrorResponseDto } from '@/types/apiErrorType';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { FormProvider, useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import { z as zod } from 'zod';
-import { useLoginMutation } from '../../api/auth/login/login.hooks';
-import { LoginResponseDto } from '../../api/auth/login/loginType';
-import { googleLogo, kakaoLogo, naverLogo } from '../../assets/assets';
-import Button from '../../components/common/Button';
-import Input from '../../components/common/Input';
-import { useToast } from '../../hooks/useToast';
 
 //소셜로그인 버튼
 const socialLogin = [

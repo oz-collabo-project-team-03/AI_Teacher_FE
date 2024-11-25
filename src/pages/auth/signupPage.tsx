@@ -1,21 +1,21 @@
+import {
+  useEmailVerificationCodeMutation,
+  useEmailVerificationMutation,
+} from '@/api/auth/sendEmail/sendEmail.hooks';
+import { useSignupMutation } from '@/api/auth/signup/signup.hooks';
+import AuthInput from '@/components/auth/AuthInput';
+import { GradeSelector } from '@/components/auth/GradeButton';
+import Button from '@/components/common/Button';
+import useCountdown from '@/hooks/useCountDown';
+import { useToast } from '@/hooks/useToast';
+import { useTermsStore } from '@/stores/useTermsStore';
 import { ApiErrorResponseDto } from '@/types/apiErrorType';
+import { SignupRequestParams } from '@/types/signupType';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 import { z as zod } from 'zod';
-import {
-  useEmailVerificationCodeMutation,
-  useEmailVerificationMutation,
-} from '../../api/auth/sendEmail/sendEmail.hooks';
-import { useSignupMutation } from '../../api/auth/signup/signup.hooks';
-import AuthInput from '../../components/auth/AuthInput';
-import { GradeSelector } from '../../components/auth/GradeButton';
-import Button from '../../components/common/Button';
-import useCountdown from '../../hooks/useCountDown';
-import { useToast } from '../../hooks/useToast';
-import { useTermsStore } from '../../stores/useTermsStore';
-import { SignupRequestParams } from '../../types/signupType';
 
 const STEP = {
   ACCOUNT_INFO: 1,

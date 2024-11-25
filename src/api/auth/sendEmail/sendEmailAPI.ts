@@ -12,7 +12,7 @@ export const sendEmailVerificationAPI = async (
 ): Promise<EmailVerificationResponseDto> => {
   console.log('요청 데이터:', emailData);
   const response = await axios.post<EmailVerificationResponseDto>(
-    '/api/email/send-verification',
+    '/auth/email/send',
     emailData
   );
   return response.data;
@@ -22,6 +22,6 @@ export const sendEmailVerificationAPI = async (
 export const verifyEmailCodeAPI = async (
   verificationData: EmailVerificationCodeRequestParams
 ): Promise<EmailVerificationCodeResponseDto> => {
-  const response = await axios.post('/api/email/verify-code', verificationData);
+  const response = await axios.post('/auth/email/verify', verificationData);
   return response.data;
 };

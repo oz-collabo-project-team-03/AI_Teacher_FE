@@ -1,15 +1,14 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { twMerge } from 'tailwind-merge';
-import {
-  roleStudentActive,
-  roleStudentUnActive,
-  roleTeacherActive,
-  roleTeacherUnActive,
-} from '../../assets/assets';
-import Button from '../../components/common/Button';
-import { useToast } from '../../hooks/useToast';
-import { useTermsStore } from '../../stores/useTermsStore';
+
+import roleStudentActive from '@/assets/roleSelect/role_student_active.svg';
+import roleStudentUnActive from '@/assets/roleSelect/role_student_unactive.svg';
+import roleTeacherActive from '@/assets/roleSelect/role_teacher_active.svg';
+import roleTeacherUnActive from '@/assets/roleSelect/role_teacher_unactive.svg';
+import Button from '@/components/common/Button';
+import { useToast } from '@/hooks/useToast';
+import { useTermsStore } from '@/stores/useTermsStore';
 
 type TRole = 'student' | 'teacher' | null;
 
