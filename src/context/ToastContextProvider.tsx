@@ -1,5 +1,5 @@
+import ToastMessage from '@/components/common/ToastMessage';
 import React, { createContext, useCallback, useState } from 'react';
-import ToastMessage from '../components/common/ToastMessage';
 
 type ToastContextType = {
   showToast: (message: string) => void;
