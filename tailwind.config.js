@@ -46,11 +46,17 @@ export default {
       },
       animation: {
         'icon-hover': 'scale-opacity 0.2s ease-in-out',
+        slideOutLeft: 'slideOutLeft 0.3s ease-in-out',
+        
       },
       keyframes: {
         'scale-opacity': {
           '0%': { transform: 'scale(1)', opacity: '1' },
           '100%': { transform: 'scale(1.1)', opacity: '0.8' },
+        },
+        slideOutLeft: {
+          '0%': { transform: 'translateX(0)', opacity: '1' },
+          '100%': { transform: 'translateX(-100%)', opacity: '0' },
         },
       }
 

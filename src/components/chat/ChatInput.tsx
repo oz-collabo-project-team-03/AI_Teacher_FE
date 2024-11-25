@@ -17,7 +17,7 @@ const ChatInput = ({ onSendMessage }: ChatInputProps) => {
   return (
     <input
       type='text'
-      className='w-full rounded-[10px] border-0 bg-commuInputColor px-5 py-[18px] outline-none ring-0 ring-inset ring-inputBorderColor placeholder:text-inputBorderColor focus:ring-2 focus:ring-inset focus:ring-inputFocusColor'
+      className='w-full rounded-[10px] border-0 bg-commuInputColor py-[18px] pl-[54px] pr-5 outline-none ring-0 ring-inset ring-inputBorderColor placeholder:text-inputBorderColor focus:ring-2 focus:ring-inset focus:ring-inputFocusColor'
       placeholder='메시지를 입력하세요'
       value={inputValue}
       onChange={(e) => setInputValue(e.target.value)}

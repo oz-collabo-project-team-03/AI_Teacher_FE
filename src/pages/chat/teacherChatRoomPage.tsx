@@ -7,14 +7,14 @@ import Header from '../../components/common/Header';
 import HelpButton from '../../components/chat/HelpButton';
 import { chatPlusIcon } from '../../assets/assets';
 
-const StudentChatRoomPage = () => {
+const TeacherChatRoomPage = () => {
   const [buttonType, setButtonType] = useState<'help' | 'end'>('help');
   const [chatStatus, setChatStatus] = useState<'ai' | 'teacher'>('ai');
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [chatMessages, setChatMessages] = useState<ChatMessageProps[]>([
     {
-      message: '안녕하세요!',
-      nickname: 'AI',
+      message: '선생님 도와줏요!!',
+      nickname: '경원핑',
       profileImage: '/images/ai-profile.png',
       isMe: false,
       userType: 'ai',
@@ -108,12 +108,16 @@ const StudentChatRoomPage = () => {
   return (
     <div className='flex h-full flex-col'>
       <Header
-        title='국어 독후감 수행평가'
+        title='경원핑'
         rightElement={
-          <HelpButton type={buttonType} onClick={handleHelpButtonClick} />
+          <HelpButton
+            type={buttonType}
+            onClick={handleHelpButtonClick}
+            disabled={true}
+          />
         }
       />
-      <div className='flex-grow overflow-y-auto'>
+      <div className='flex-grow overflow-y-scroll'>
         {chatMessages.map((msg, index) => (
           <ChatMessage
             key={index}
@@ -152,4 +156,4 @@ const StudentChatRoomPage = () => {
   );
 };
 
-export default StudentChatRoomPage;
+export default TeacherChatRoomPage;
