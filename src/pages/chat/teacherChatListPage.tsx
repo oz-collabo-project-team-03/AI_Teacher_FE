@@ -1,5 +1,6 @@
 import ChatItem from '../../components/chat/ChatItem';
 import Header from '../../components/common/Header';
+import { useNavigate } from 'react-router-dom';
 
 // 임시데이터>나중에 삭제하기
 const chatList = [
@@ -19,7 +20,13 @@ const chatList = [
   },
 ];
 
-const teacherChatListPage = () => {
+const TeacherChatListPage = () => {
+  const navigate = useNavigate();
+
+  const handleClick = (chatId: string) => {
+    navigate(`/teacher/chats/${chatId}`);
+  };
+
   return (
     <div className='flex h-full flex-col'>
       <Header title='최신 채팅' />
@@ -27,11 +34,11 @@ const teacherChatListPage = () => {
         {chatList.map((chat) => (
           <ChatItem
             key={chat.id}
-            id={chat.id}
             roomName={chat.nickname}
             lastMessage={chat.lastMessage}
             lastMessageTime={chat.lastMessageTime}
             showHelpRequest={chat.showHelpRequest}
+            onClick={() => handleClick(chat.id)}
           />
         ))}
       </div>
@@ -39,4 +46,4 @@ const teacherChatListPage = () => {
   );
 };
 
-export default teacherChatListPage;
+export default TeacherChatListPage;
