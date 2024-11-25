@@ -140,6 +140,33 @@ const Router = () => {
               </Suspense>
             }
           />
+        </Route>
+
+        <Route element={<StudentLayout />}>
+          <Route
+            path='/my-page'
+            element={
+              <Suspense fallback={<LoadingPage />}>
+                <MyPage />
+              </Suspense>
+            }
+          />
+          <Route
+            path='/student-main'
+            element={
+              <Suspense fallback={<LoadingPage />}>
+                <HomeFeedPage />
+              </Suspense>
+            }
+          />
+          <Route
+            path='/student/chats'
+            element={
+              <Suspense fallback={<LoadingPage />}>
+                <StudentChatListPage />
+              </Suspense>
+            }
+          />
           <Route
             path='/student/post'
             element={
