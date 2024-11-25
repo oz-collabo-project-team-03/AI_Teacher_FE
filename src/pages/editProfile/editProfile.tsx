@@ -4,9 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Link, useNavigate } from 'react-router-dom';
 import Button from '@/components/common/Button';
 import Header from '@/components/common/Header';
-import ProfileImages, {
-  profileImages,
-} from '@/components/editProfile/ProfileImages';
+import ProfileImages from '@/components/editProfile/ProfileImages';
 import CommonFields from '@/components/editProfile/inputFields/CommonFields';
 import StudentProfileFields from '@/components/editProfile/inputFields/StudentProfileFields';
 import TeacherProfileFields from '@/components/editProfile/inputFields/TeacherProfileFields';
@@ -65,17 +63,8 @@ const EditProfile = () => {
     if (!userInfo) {
       showToast('로그인 후 이용바랍니다.');
       navigate('/login');
-    } else {
-      const currentImageUrl = userInfo.profile_image;
-      if (currentImageUrl && profileImages[role]) {
-        const imageIndex = profileImages[role].findIndex(
-          (img) => img === currentImageUrl
-        );
-        setSelectedImageIndex(imageIndex !== -1 ? imageIndex : 0);
-        setSelectedImageUrl(currentImageUrl);
-      }
     }
-  }, [userInfo, role]);
+  }, [userInfo]);
 
   const form = useForm<EditProfileRequestData>({
     resolver: zodResolver(profileFormSchema),
