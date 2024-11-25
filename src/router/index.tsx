@@ -35,6 +35,9 @@ const StudentChatRoomPage = lazy(
 const TeacherChatListPage = lazy(
   () => import('../pages/chat/teacherChatListPage')
 );
+const TeacherChatRoomPage = lazy(
+  () => import('../pages/chat/teacherChatRoomPage')
+);
 
 const Router = () => {
   return (
@@ -107,6 +110,14 @@ const Router = () => {
               </Suspense>
             }
           />
+          <Route
+            path='/teacher/chats/:chatId'
+            element={
+              <Suspense fallback={<LoadingPage />}>
+                <TeacherChatRoomPage />
+              </Suspense>
+            }
+          />
         </Route>
         <Route element={<StudentLayout />}>
           <Route
@@ -144,7 +155,7 @@ const Router = () => {
             }
           />
           <Route
-            path='/teacher/chat'
+            path='/teacher/chats'
             element={
               <Suspense fallback={<LoadingPage />}>
                 <TeacherChatListPage />
