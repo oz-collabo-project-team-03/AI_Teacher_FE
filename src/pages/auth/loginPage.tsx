@@ -1,14 +1,15 @@
+import { ApiErrorResponseDto } from '@/types/apiErrorType';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { FormProvider, useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import { z as zod } from 'zod';
-import { useLoginMutation } from '../../api/auth/login.hooks';
+import { useLoginMutation } from '../../api/auth/login/login.hooks';
+import { LoginResponseDto } from '../../api/auth/login/loginType';
 import { googleLogo, kakaoLogo, naverLogo } from '../../assets/assets';
 import Button from '../../components/common/Button';
 import Input from '../../components/common/Input';
 import { useToast } from '../../hooks/useToast';
-import { ApiErrorResponse } from '../../types/apiErrorType';
-import { LoginResponseData } from '../../types/loginType';
+
 //소셜로그인 버튼
 const socialLogin = [
   { name: 'google', src: googleLogo, url: '/' },
@@ -44,7 +45,7 @@ const LoginPage = () => {
 
   /**로그인 함수 */
   const { mutate: LoginMutation } = useLoginMutation({
-    onSuccess: (data: LoginResponseData) => {
+    onSuccess: (data: LoginResponseDto) => {
       if (data.user.role === 'student') {
         navigate('/student-main', { replace: true });
       } else if (data.user.role === 'teacher') {
@@ -53,7 +54,7 @@ const LoginPage = () => {
       // 선생인지 학생인지 로그인할때 어떤걸로구별을 해야하는가..? 로그인과 동시에 리스폰스로 내려오는 롤로 비교해서 옮겨줘야하는건가? 일단구현함.
     },
     onError: (error) => {
-      const apiError = error as ApiErrorResponse;
+      const apiError = error as ApiErrorResponseDto;
       const errorMessage =
         apiError?.response?.data?.message ||
         '로그인에 실패하였습니다. 다시 시도해주세요.';
@@ -110,9 +111,13 @@ const LoginPage = () => {
             <Button>로그인</Button>
           </form>
           <div className='mb-[34px] flex items-center justify-center gap-[20px] text-sm text-mainLogoTextColor'>
-            <p className='cursor-pointer'>아이디 찾기</p>
+            <Link to={'/find/email'}>
+              <p className='cursor-pointer'>아이디 찾기</p>
+            </Link>
             <span className='inline-block h-[14px] w-[1px] bg-inputBorderColor'></span>
-            <p className='cursor-pointer'>비밀번호 찾기</p>
+            <Link to={'/find/password'}>
+              <p className='cursor-pointer'>비밀번호 찾기</p>
+            </Link>
             <span className='inline-block h-[14px] w-[1px] bg-inputBorderColor'></span>
             <Link to='/member-agree'>
               <p className='cursor-pointer'>회원가입</p>

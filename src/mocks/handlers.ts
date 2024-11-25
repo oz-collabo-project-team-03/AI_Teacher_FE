@@ -1,9 +1,9 @@
 import { http, HttpResponse } from 'msw';
 import {
-  BaseSignupRequest,
-  SignupRequestData,
-  StudentSignupRequest,
-  TeacherSignupRequest,
+  BaseSignupRequestParams,
+  SignupRequestParams,
+  StudentSignupRequestParams,
+  TeacherSignupRequestParams,
 } from '../types/signupType';
 
 type LoginRequest = {
@@ -46,10 +46,10 @@ const MOCK_USER = {
 export const handlers = [
   // 회원가입
   http.post('/api/signup', async ({ request }) => {
-    const data = (await request.json()) as SignupRequestData;
+    const data = (await request.json()) as SignupRequestParams;
 
     // 공통 필수 필드 체크
-    const baseRequiredFields: (keyof BaseSignupRequest)[] = [
+    const baseRequiredFields: (keyof BaseSignupRequestParams)[] = [
       'email',
       'password',
       'password_confirm',
@@ -77,12 +77,12 @@ export const handlers = [
     // role별 필수 필드 체크
     if (data.role === 'student') {
       const studentRequiredFields: (keyof Omit<
-        StudentSignupRequest,
-        keyof BaseSignupRequest
+        StudentSignupRequestParams,
+        keyof BaseSignupRequestParams
       >)[] = ['school', 'grade', 'career_aspiration', 'interests'];
 
       const missingStudentFields = studentRequiredFields.filter(
-        (field) => !(data as StudentSignupRequest)[field]
+        (field) => !(data as StudentSignupRequestParams)[field]
       );
 
       if (missingStudentFields.length > 0) {
@@ -97,12 +97,12 @@ export const handlers = [
       }
     } else {
       const teacherRequiredFields: (keyof Omit<
-        TeacherSignupRequest,
-        keyof BaseSignupRequest
+        TeacherSignupRequestParams,
+        keyof BaseSignupRequestParams
       >)[] = ['organization_type', 'organization_name', 'position'];
 
       const missingTeacherFields = teacherRequiredFields.filter(
-        (field) => !(data as TeacherSignupRequest)[field]
+        (field) => !(data as TeacherSignupRequestParams)[field]
       );
 
       if (missingTeacherFields.length > 0) {
@@ -205,10 +205,12 @@ export const handlers = [
   }),
 
   // (선택사항) 로그인 체크용 API
-  http.get('/api/me', async ({ request }) => {
+  http.get('/api/me', async ({ request, cookies }) => {
     const authHeader = request.headers.get('Authorization');
+    const sessionToken = cookies;
 
-    if (!authHeader?.startsWith('Bearer ')) {
+    // Authorization 헤더나 세션 쿠키 중 하나라도 없으면 인증 실패
+    if (!authHeader?.startsWith('Bearer ') && !sessionToken) {
       return HttpResponse.json(
         {
           success: false,
@@ -221,10 +223,22 @@ export const handlers = [
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { password, ...userWithoutPassword } = MOCK_USER;
 
-    return HttpResponse.json({
-      success: true,
-      user: userWithoutPassword,
+    // 응답에 쿠키 설정하기 (필요한 경우)
+    const headers = new Headers({
+      'Set-Cookie':
+        'session-token=some-token; Path=/; HttpOnly; Secure; SameSite=Strict',
     });
+
+    return new HttpResponse(
+      JSON.stringify({
+        success: true,
+        user: userWithoutPassword,
+      }),
+      {
+        headers,
+        status: 200,
+      }
+    );
   }),
   // 인증 코드 발송 API
   http.post('/api/email/send-verification', async ({ request }) => {

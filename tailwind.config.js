@@ -32,6 +32,8 @@ export default {
         postBorderColor: "#C1C1C1",
         chatListHoverColor:"#F5F6F7",
         chatBubbleColor: "#E7F0FF",
+        postTextBorderColor:"#D2D2D2"
+
       },
       fontFamily: {
         pre: ['Pretendard Variable'],
@@ -39,8 +41,8 @@ export default {
       },
       boxShadow: {
         navShadow: '0px -4px 10px 0px rgba(142, 139, 139, 0.15)',
+        ToggleButtonShadow: '1px 4px 6px rgba(0, 0, 0, 0.25)',
         profileInfoShadow: '0px 0px 10px 0px rgba(0, 0, 0, 0.20)',
-        feedShadow: '0px 0px 1px 0px rgba(0, 0, 0, 0.25)',
       },
       animation: {
         'icon-hover': 'scale-opacity 0.2s ease-in-out',

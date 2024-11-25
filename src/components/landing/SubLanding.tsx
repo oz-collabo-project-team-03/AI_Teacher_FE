@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion'; // framer-motion import 추가
-import { iphone } from '../../assets/assets';
+import { iphone } from '@/assets/assets';
 
 const SubLanding = () => {
   return (

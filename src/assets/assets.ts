@@ -3,7 +3,9 @@ import chatActiveIcon from './navBar/chat_active.svg';
 import chatBubbleIcon from './header/chat.svg';
 import chatDeleteIcon from './chat/chat_delete.svg';
 import chatPlusIcon from './chat/chat_plus.svg'
+import toggleIcon from './myPage/toggleIcon.svg';
 import editIcon from './myPage/editIcon.svg';
+import logoutIcon from './myPage/logoutIcon.svg';
 import googleLogo from './auth/google_login.svg';
 import homeActiveIcon from './navBar/home_active.svg';
 import iphone from './landing/iphone.svg';
