@@ -2,6 +2,7 @@ import backIcon from './header/back.svg';
 import chatActiveIcon from './navBar/chat_active.svg';
 import chatBubbleIcon from './header/chat.svg';
 import chatDeleteIcon from './chat/chat_delete.svg';
+import chatPlusIcon from './chat/chat_plus.svg'
 import editIcon from './myPage/editIcon.svg';
 import googleLogo from './auth/google_login.svg';
 import homeActiveIcon from './navBar/home_active.svg';
@@ -35,5 +36,6 @@ export {
   userActiveIcon,
   iphone,
   chatDeleteIcon,
+  chatPlusIcon,
   modalCloseIcon,
 };
