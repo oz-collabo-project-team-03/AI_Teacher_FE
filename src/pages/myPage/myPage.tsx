@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useProfileStore } from '@/stores/editProfile/useProfileStore';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useToast } from '@/hooks/useToast';
 import ProfileHeader from '@/components/myPage/ProfileHeader';
 import CommunityInfo from '@/components/myPage/CommunityInfo';
@@ -9,13 +9,18 @@ import { useProfileQuery } from '@/api/myPage/myPage.hooks';
 import { AxiosError } from 'axios';
 
 const MyPage = () => {
+  const { userId } = useParams();
   const { showToast } = useToast();
   const navigate = useNavigate();
   const { userInfo, setUserInfo } = useProfileStore();
-  const { data, error } = useProfileQuery();
+
+  // userId가 있으면 해당 유저의 프로필을, 없으면 내 프로필을 조회
+  const { data, error } = useProfileQuery(userId);
+  const isOwnProfile = !userId;
+  const profileData = isOwnProfile ? userInfo : data;
 
   useEffect(() => {
-    if (data && !userInfo) {
+    if (data && !userInfo && isOwnProfile) {
       setUserInfo(data);
     }
     if (error instanceof AxiosError) {
@@ -28,34 +33,35 @@ const MyPage = () => {
         navigate('/login');
       }
     }
-  }, [data, error]);
+  }, [data, error, isOwnProfile, userInfo]);
 
-  if (!userInfo) {
+  if (!profileData) {
     return null;
   }
 
   return (
     <div className='m-auto flex w-full max-w-[360px] flex-col items-center gap-9 py-12'>
       <ProfileHeader
-        profileImage={userInfo.profile_image}
-        nickname={userInfo.nickname}
+        profileImage={profileData.profile_image}
+        nickname={profileData.nickname}
         description={
-          userInfo.role === 'student'
-            ? `${userInfo.career_aspiration}, ${userInfo.interest}`
-            : `${userInfo.organization_type}, ${userInfo.organization_name}`
+          profileData.role === 'student'
+            ? `${profileData.career_aspiration}, ${profileData.interest}`
+            : `${profileData.organization_type}, ${profileData.organization_name}`
         }
         subDescription={
-          userInfo.role === 'student'
-            ? userInfo.description
-            : userInfo.organization_position
+          profileData.role === 'student'
+            ? profileData.description
+            : profileData.organization_position
         }
+        isOwnProfile={isOwnProfile}
       />
 
-      <CommunityInfo userInfo={userInfo} />
+      <CommunityInfo userInfo={profileData} />
 
       <PostGrid
-        posts={userInfo.posts}
-        title={userInfo.role === 'student' ? '내 게시글' : '협업 게시글'}
+        posts={profileData.posts}
+        title={profileData.role === 'student' ? '내 게시글' : '협업 게시글'}
       />
     </div>
   );
