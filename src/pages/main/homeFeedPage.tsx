@@ -8,7 +8,7 @@ const HomeFeedPage = () => {
 
   return (
     <div className='h-svh'>
-      <MainHeader className='fixed top-0 z-10 w-full' />
+      <MainHeader />
       <div
         className={twMerge(
           'h-full overflow-auto pb-[62px] pt-[72px]',
