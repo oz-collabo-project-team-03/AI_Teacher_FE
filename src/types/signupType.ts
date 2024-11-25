@@ -5,7 +5,7 @@ export type BaseSignupRequestParams = {
   nickname: string;
   phone: string;
   is_privacy_accepted: boolean;
-  role: 'student' | 'teacher'; // 리터럴 타입으로 역할 제한
+  role: Role; // 리터럴 타입으로 역할 제한
 };
 
 // 학생 전용 필드
@@ -38,7 +38,7 @@ export type BaseUserResponseDto = {
   nickname: string;
   phone: string;
   is_privacy_accepted: boolean;
-  role: 'teacher' | 'student';
+  role: Role;
 };
 
 // 선생님 응답 타입
@@ -60,3 +60,5 @@ export type StudentResponseDto = BaseUserResponseDto & {
 
 // 통합 응답 타입 (선생님 또는 학생)
 export type SignupResponseDto = TeacherResponseDto | StudentResponseDto;
+
+export type Role = 'student' | 'teacher';
