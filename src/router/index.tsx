@@ -44,7 +44,6 @@ const TeacherChatRoomPage = lazy(
 
 const CreatePostPage = lazy(() => import('../pages/post/createPostPage'));
 
-
 const Router = () => {
   return (
     <>
@@ -141,57 +140,58 @@ const Router = () => {
             }
           />
 
-        <Route
-          path='/student/post'
+          <Route
+            path='/student/post'
             element={
               <Suspense fallback={<LoadingPage />}>
                 <CreatePostPage />
               </Suspense>
             }
           />
-        <Route element={<StudentLayout />}>
-          <Route
-            path='/my-page'
-            element={
-              <Suspense fallback={<LoadingPage />}>
-                <MyPage />
-              </Suspense>
-            }
-          />
-          <Route
-            path='/student-main'
-            element={
-              <Suspense fallback={<LoadingPage />}>
-                <HomeFeedPage />
-              </Suspense>
-            }
-          />
-          <Route
-            path='/student/chats'
-            element={
-              <Suspense fallback={<LoadingPage />}>
-                <StudentChatListPage />
-              </Suspense>
-            }
-          />
-        </Route>
-        <Route element={<TeacherLayout />}>
-          <Route
-            path='/teacher-main'
-            element={
-              <Suspense fallback={<LoadingPage />}>
-                <ManagedStudentListPage />
-              </Suspense>
-            }
-          />
-          <Route
-            path='/teacher/chats'
-            element={
-              <Suspense fallback={<LoadingPage />}>
-                <TeacherChatListPage />
-              </Suspense>
-            }
-          />
+          <Route element={<StudentLayout />}>
+            <Route
+              path='/my-page'
+              element={
+                <Suspense fallback={<LoadingPage />}>
+                  <MyPage />
+                </Suspense>
+              }
+            />
+            <Route
+              path='/student-main'
+              element={
+                <Suspense fallback={<LoadingPage />}>
+                  <HomeFeedPage />
+                </Suspense>
+              }
+            />
+            <Route
+              path='/student/chats'
+              element={
+                <Suspense fallback={<LoadingPage />}>
+                  <StudentChatListPage />
+                </Suspense>
+              }
+            />
+          </Route>
+          <Route element={<TeacherLayout />}>
+            <Route
+              path='/teacher-main'
+              element={
+                <Suspense fallback={<LoadingPage />}>
+                  <ManagedStudentListPage />
+                </Suspense>
+              }
+            />
+            <Route
+              path='/teacher/chats'
+              element={
+                <Suspense fallback={<LoadingPage />}>
+                  <TeacherChatListPage />
+                </Suspense>
+              }
+            />
+          </Route>
         </Route>
       </Routes>
     </>
