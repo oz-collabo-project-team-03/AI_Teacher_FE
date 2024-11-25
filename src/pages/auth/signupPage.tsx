@@ -6,8 +6,9 @@ import { useSignupMutation } from '@/api/auth/signup/signup.hooks';
 import AuthInput from '@/components/auth/AuthInput';
 import { GradeSelector } from '@/components/auth/GradeButton';
 import Button from '@/components/common/Button';
-import useCountdown from '@/hooks/useCountDown';
+import useCountdown from '@/hooks/signup/useCountDown';
 import { useToast } from '@/hooks/useToast';
+import { signupFormSchema } from '@/schemas/signupValidationSchemas';
 import { useTermsStore } from '@/stores/useTermsStore';
 import { ApiErrorResponseDto } from '@/types/apiErrorType';
 import { SignupRequestParams } from '@/types/signupType';
@@ -15,7 +16,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
-import { z as zod } from 'zod';
 
 const STEP = {
   ACCOUNT_INFO: 1,
@@ -35,54 +35,7 @@ const SignupPage = () => {
   const { start, formatTime, reset } = useCountdown(300); // 300초 카운트다운
   const { showToast } = useToast();
 
-  /** 회원가입 폼 스키마 정의 (학생 및 선생님 스키마로 확장)*/
-  const baseSignupSchema = zod.object({
-    //이메일 형식 지정
-    email: zod.string().email({ message: '올바른 이메일 형식이 아닙니다.' }),
-    code: zod.string().min(1, { message: '인증코드를 입력해주세요.' }),
-    password: zod
-      .string()
-      .regex(
-        /^(?=.*[a-zA-Z])(?=.*\d).{8,20}$/,
-        '영문,숫자가 혼합된 10~20자리의 비밀번호를 입력해주세요.'
-      )
-      .min(10, { message: '비밀번호는 10자 이상이어야 합니다.' })
-      .max(20, { message: '비밀번호는 20자 이하여야 합니다.' }),
-    confirmPassword: zod.string(),
-    nickname: zod.string().min(1, { message: '닉네임은 필수 입력값입니다.' }),
-    phone: zod
-      .string()
-      .regex(/^0\d{9,10}$/, '전화번호 형식이 유효하지 않습니다.'),
-  });
-
-  const studentSignupSchema = baseSignupSchema.extend({
-    school: zod.string().min(1, { message: '학교명을 입력해주세요.' }),
-    grade: zod.number().min(1, { message: '학년은 1 이상이어야 합니다.' }),
-    careeraspiration: zod
-      .string()
-      .min(1, { message: '희망진로를 입력해주세요.' }),
-    interestrade: zod.string().min(1, { message: '흥미를 입력해주세요.' }),
-  });
-
-  const teacherSignupSchema = baseSignupSchema.extend({
-    organization_type: zod
-      .string()
-      .min(1, { message: '소속종류를 입력해주세요.' }),
-    organization_name: zod
-      .string()
-      .min(1, { message: '소속이름을 입력해주세요.' }),
-    position: zod.string().min(1, { message: '직급을 입력해주세요.' }),
-  });
-  /** 학생/선생님 공통으로 사용할 스키마 정의*/
-  const signupFormSchema = zod
-    .union([studentSignupSchema, teacherSignupSchema])
-    .refine((data) => data.password === data.confirmPassword, {
-      path: ['confirmPassword'],
-      message: '비밀번호가 일치하지 않습니다.',
-    });
-
   // useForm 훅으로 폼 상태 관리
-
   const form = useForm({
     resolver: zodResolver(signupFormSchema),
     defaultValues: {
