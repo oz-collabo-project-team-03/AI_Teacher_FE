@@ -2,15 +2,23 @@ import Button from '../common/Button';
 
 type DeleteChatModalProps = {
   onClose: () => void;
+  onDelete: () => void;
 };
 
-const DeleteChatModal = ({ onClose }: DeleteChatModalProps) => {
+const DeleteChatModal = ({ onClose, onDelete }: DeleteChatModalProps) => {
+  const handleModalClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    e.stopPropagation();
+  };
+
   return (
     <div
       className='absolute inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50'
       onClick={onClose}
     >
-      <div className='mt-[250px] h-[210px] w-[337px] rounded-[16px] border border-inputBorderColor bg-white p-[8px]'>
+      <div
+        className='h-[210px] w-[337px] rounded-[16px] border border-inputBorderColor bg-white p-[8px]'
+        onClick={handleModalClick}
+      >
         <div className='flex flex-col items-center justify-center space-y-2 py-[40px]'>
           <div className='text-[18px] font-normal text-textMainColor'>
             채팅방을 삭제하시겠습니까?
@@ -23,7 +31,9 @@ const DeleteChatModal = ({ onClose }: DeleteChatModalProps) => {
           <Button variant='cancel' onClick={onClose}>
             취소
           </Button>
-          <Button variant='active'>삭제하기</Button>
+          <Button variant='active' onClick={onDelete}>
+            삭제하기
+          </Button>
         </div>
       </div>
     </div>
