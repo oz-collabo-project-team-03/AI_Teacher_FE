@@ -2,21 +2,20 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { z as zod } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Link, useNavigate } from 'react-router-dom';
-import Button from '../../components/common/Button';
-import Header from '../../components/common/Header';
+import Button from '@/components/common/Button';
+import Header from '@/components/common/Header';
 import ProfileImages, {
   profileImages,
-} from '../../components/editProfile/ProfileImages';
-import CommonFields from '../../components/editProfile/inputFields/CommonFields';
-import StudentProfileFields from '../../components/editProfile/inputFields/StudentProfileFields';
-// import TeacherProfileFields from '../../components/editProfile/inputFields/TeacherProfileFields';
-import axios from 'axios';
-import { useToast } from '../../hooks/useToast';
+} from '@/components/editProfile/ProfileImages';
+import CommonFields from '@/components/editProfile/inputFields/CommonFields';
+import StudentProfileFields from '@/components/editProfile/inputFields/StudentProfileFields';
+import TeacherProfileFields from '@/components/editProfile/inputFields/TeacherProfileFields';
+import { AxiosError } from 'axios';
+import { useToast } from '@/hooks/useToast';
 import { useEffect, useState } from 'react';
-import { useEditProfileMutation } from '../../api/editProfile/editProfile.hooks';
-import { EditProfileRequestData } from '../../types/editProfile';
-import { useProfileStore } from '../../stores/editProfile/useProfileStore';
-import TeacherProfileFields from '../../components/editProfile/inputFields/TeacherProfileFields';
+import { useEditProfileMutation } from '@/api/editProfile/editProfile.hooks';
+import { EditProfileRequestData } from '@/types/editProfile';
+import { useProfileStore } from '@/stores/editProfile/useProfileStore';
 
 const profileFormSchema = zod.discriminatedUnion('role', [
   zod.object({
@@ -102,17 +101,17 @@ const EditProfile = () => {
   const editProfileMutation = useEditProfileMutation({
     onSuccess: (data) => {
       updateProfile(data);
-      showToast('프로필이 성공적으로 업데이트되었습니다.');
       navigate('/my-page');
     },
     onError: (error) => {
-      if (axios.isAxiosError(error) && error.response) {
-        const { message } = error.response.data;
-        showToast(`업데이트 실패: ${message}`);
+      if (error instanceof AxiosError) {
+        const errorMessage =
+          error.response?.data || '알 수 없는 오류가 발생했습니다';
+        showToast(`업데이트 실패: ${errorMessage}`);
       } else {
-        console.error('프로필 업데이트 중 오류 발생:', error);
         showToast('프로필 업데이트 중 오류가 발생했습니다.');
       }
+      console.error('프로필 업데이트 오류:', error);
     },
   });
 
@@ -130,9 +129,7 @@ const EditProfile = () => {
       ...data,
       profile_image: selectedImageUrl,
     };
-
     editProfileMutation.mutate(profileData);
-    updateProfile(profileData);
   };
 
   if (!userInfo) {
@@ -143,12 +140,12 @@ const EditProfile = () => {
     <FormProvider {...form}>
       <form
         onSubmit={form.handleSubmit(handleEditProfile, handleInvalid)}
-        className='flex h-full flex-col'
+        className='flex flex-col h-full'
         autoComplete='off'
       >
         <Header title='프로필 수정' />
 
-        <div className='flex h-full w-full flex-col overflow-y-scroll px-4 pb-12 pt-9'>
+        <div className='flex flex-col w-full h-full px-4 pb-12 overflow-y-scroll pt-9'>
           <ProfileImages
             selectedIndex={selectedImageIndex}
             onImageSelect={handleImageSelect}

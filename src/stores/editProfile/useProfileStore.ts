@@ -1,6 +1,6 @@
 import { create } from 'zustand';
-import { MyPageResponseData } from '../../types/myPageType';
-import { EditProfileRequestData } from '../../types/editProfile';
+import { MyPageResponseData } from '@/types/myPageType';
+import { EditProfileRequestData } from '@/types/editProfile';
 
 type ProfileStore = {
   userInfo: MyPageResponseData | null;

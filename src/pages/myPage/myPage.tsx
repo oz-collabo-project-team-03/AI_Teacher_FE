@@ -1,57 +1,34 @@
-import { useEffect, useState } from 'react';
-import {
-  StudentMyPageResponse,
-  TeacherMyPageResponse,
-} from '../../types/myPageType.ts';
-import StudentPage from '../../components/myPage/StudentPage.tsx';
-import TeacherPage from '../../components/myPage/TeacherPage.tsx';
-import { useProfileStore } from '../../stores/editProfile/useProfileStore.ts';
+import { useEffect } from 'react';
+import { useProfileStore } from '@/stores/editProfile/useProfileStore';
+import { useNavigate } from 'react-router-dom';
+import { useToast } from '@/hooks/useToast';
+import ProfileHeader from '@/components/myPage/ProfileHeader';
+import CommunityInfo from '@/components/myPage/CommunityInfo';
+import PostGrid from '@/components/myPage/PostGrid';
+import { useProfileQuery } from '@/api/myPage/myPage.hooks';
+import { AxiosError } from 'axios';
 
 const MyPage = () => {
+  const { showToast } = useToast();
+  const navigate = useNavigate();
   const { userInfo, setUserInfo } = useProfileStore();
-  const [communityInfo, setCommunityInfo] = useState<
-    { label: string; value: number }[]
-  >([]);
+  const { data, error } = useProfileQuery();
 
   useEffect(() => {
-    const fetchProfileData = async () => {
-      if (!userInfo) {
-        try {
-          const response = await fetch('/api/profile/me');
-          const result = await response.json();
-
-          if (result.success) {
-            setUserInfo(result.data);
-          }
-        } catch (error) {
-          console.error(
-            '프로필 데이터를 불러오는 중 오류가 발생했습니다:',
-            error
-          );
-        }
-      }
-    };
-
-    fetchProfileData();
-  }, [userInfo, setUserInfo]);
-
-  useEffect(() => {
-    if (userInfo) {
-      setCommunityInfo(
-        userInfo.role === 'student'
-          ? [
-              { label: '게시글', value: userInfo.post_count },
-              { label: '좋아요', value: userInfo.like_count },
-              { label: '작성 댓글', value: userInfo.comment_count },
-            ]
-          : [
-              { label: '협업 게시글', value: userInfo.post_count },
-              { label: '좋아요', value: userInfo.like_count },
-              { label: '작성 댓글', value: userInfo.comment_count },
-            ]
-      );
+    if (data && !userInfo) {
+      setUserInfo(data);
     }
-  }, [userInfo]);
+    if (error instanceof AxiosError) {
+      const message =
+        error.response?.status === 401
+          ? '로그인 후 이용바랍니다.'
+          : '프로필 정보를 불러오는데 실패했습니다.';
+      showToast(message);
+      if (error.response?.status === 401) {
+        navigate('/login');
+      }
+    }
+  }, [data, error]);
 
   if (!userInfo) {
     return null;
@@ -59,17 +36,27 @@ const MyPage = () => {
 
   return (
     <div className='m-auto flex w-full max-w-[360px] flex-col items-center gap-9 py-12'>
-      {userInfo.role === 'student' ? (
-        <StudentPage
-          userInfo={userInfo as StudentMyPageResponse}
-          communityInfo={communityInfo}
-        />
-      ) : (
-        <TeacherPage
-          userInfo={userInfo as TeacherMyPageResponse}
-          communityInfo={communityInfo}
-        />
-      )}
+      <ProfileHeader
+        profileImage={userInfo.profile_image}
+        nickname={userInfo.nickname}
+        description={
+          userInfo.role === 'student'
+            ? `${userInfo.career_aspiration}, ${userInfo.interest}`
+            : `${userInfo.organization_type}, ${userInfo.organization_name}`
+        }
+        subDescription={
+          userInfo.role === 'student'
+            ? userInfo.description
+            : userInfo.organization_position
+        }
+      />
+
+      <CommunityInfo userInfo={userInfo} />
+
+      <PostGrid
+        posts={userInfo.posts}
+        title={userInfo.role === 'student' ? '내 게시글' : '협업 게시글'}
+      />
     </div>
   );
 };

@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { twMerge } from 'tailwind-merge';
-import MainLanding from '../../components/landing/MainLanding';
-import SubLanding from '../../components/landing/SubLanding';
-import { useGestureControl } from '../../hooks/useGestureControl';
+import MainLanding from '@/components/landing/MainLanding';
+import SubLanding from '@/components/landing/SubLanding';
+import { useGestureControl } from '@/hooks/useGestureControl';
 
 const Landing = () => {
   const [showSub, setShowSub] = useState(false);
@@ -16,7 +16,7 @@ const Landing = () => {
   };
 
   return (
-    <div className='relative flex h-full w-full select-none items-center justify-center overflow-hidden'>
+    <div className='relative flex items-center justify-center w-full h-full overflow-hidden select-none'>
       <MainLanding onClick={handleClick} />
       <div
         className={twMerge(
