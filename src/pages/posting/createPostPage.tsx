@@ -1,8 +1,8 @@
 import Button from '../../components/common/Button';
 import CheckBox from '../../components/common/CheckBox';
 import Header from '../../components/common/Header';
-import PostImageUpload from '../../components/post/PostImageUpload';
-import PostTextEditor from '../../components/post/PostTextEditor';
+import PostImageUpload from '../../components/posting/PostImageUpload';
+import PostTextEditor from '../../components/posting/PostTextEditor';
 
 const CreatePostPage = () => {
   return (

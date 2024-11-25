@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react';
 
-import deleteIcon from '../../assets/post/deleteIcon.svg';
-import photo from '../../assets/post/photo.svg';
+import deleteIcon from '../../assets/posting/deleteIcon.svg';
+import photo from '../../assets/posting/photo.svg';
 
 function PostImageUpload() {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
