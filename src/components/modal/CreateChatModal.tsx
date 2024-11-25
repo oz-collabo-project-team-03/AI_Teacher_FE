@@ -1,12 +1,29 @@
+import React, { useState } from 'react';
+
 import Button from '../common/Button';
 import Input from '../common/Input';
 import { modalCloseIcon } from '../../assets/assets';
 
 type CreateChatModalProps = {
   onClose: () => void;
+  onCreateChat: (roomName: string) => void;
 };
 
-const CreateChatModal = ({ onClose }: CreateChatModalProps) => {
+const CreateChatModal = ({ onClose, onCreateChat }: CreateChatModalProps) => {
+  const [roomName, setRoomName] = useState('');
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setRoomName(e.target.value);
+  };
+
+  const handleCreateChat = () => {
+    if (roomName.trim()) {
+      onCreateChat(roomName); // 부모로 전달
+    } else {
+      alert('채팅방 제목을 입력하세요.');
+    }
+  };
+
   const handleModalClick = (e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
   };
@@ -32,9 +49,16 @@ const CreateChatModal = ({ onClose }: CreateChatModalProps) => {
           생성할 채팅방 제목을 입력하세요
         </div>
         <div className='mb-[12px]'>
-          <Input type='text' placeholder='국어 수행평가' />
+          <Input
+            type='text'
+            value={roomName}
+            onChange={handleInputChange}
+            placeholder='국어 수행평가'
+          />
         </div>
-        <Button variant='active'>수행평가 보러가기</Button>
+        <Button variant='active' onClick={handleCreateChat}>
+          수행평가 보러가기
+        </Button>
       </div>
     </div>
   );
