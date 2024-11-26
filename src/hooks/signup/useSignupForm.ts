@@ -20,7 +20,9 @@ export const useSignupForm = (roleParam: 'student' | 'teacher' | undefined) => {
   const navigate = useNavigate();
   const { showToast } = useToast();
 
-  const { isAllTermsAccepted } = useTermsStore();
+  const isAllTermsAccepted = useTermsStore(
+    (state) => state.stack.isAllTermsAccepted
+  );
 
   const form = useForm({
     resolver: zodResolver(signupFormSchema),

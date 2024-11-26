@@ -14,7 +14,11 @@ const TermsOfServicePage = () => {
   const [isThirdPartyChecked, setIsThirdPartyChecked] = useState(false);
 
   const { showToast } = useToast();
-  const { setAllTermsAccepted } = useTermsStore();
+
+  const setAllTermsAccepted = useTermsStore(
+    (state) => state.setAllTermsAccepted
+  );
+
   const navigate = useNavigate();
 
   const handleAllCheck = () => {
@@ -44,16 +48,12 @@ const TermsOfServicePage = () => {
 
   // 상태 변경 감지용 useEffect
   useEffect(() => {
-    if (isPrivacyChecked && isThirdPartyChecked) {
-      setAllTermsAccepted(true);
-    } else {
-      setAllTermsAccepted(false);
-    }
+    setAllTermsAccepted(isPrivacyChecked && isThirdPartyChecked);
   }, [isPrivacyChecked, isThirdPartyChecked, setAllTermsAccepted]);
 
   return (
     <div className='flex h-lvh w-full flex-col items-center px-[28px] pb-[30px] text-textMainColor'>
-      <div className='flex-grow'>
+      <div className='w-full flex-grow'>
         <div className='flex flex-col py-[25px]'>
           <h1 className='mb-1 text-2xl font-semibold'>수행쌤</h1>
           <h1 className='text-2xl font-semibold'>이용약관 동의</h1>

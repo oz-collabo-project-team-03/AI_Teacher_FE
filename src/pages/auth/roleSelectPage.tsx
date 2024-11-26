@@ -17,7 +17,9 @@ const RoleSelectPage = () => {
   const [isTeacherHovered, setIsTeacherHovered] = useState(false);
   const [selectedRole, setSelectedRole] = useState<TRole>(null);
 
-  const { isAllTermsAccepted } = useTermsStore();
+  const isAllTermsAccepted = useTermsStore(
+    (state) => state.stack.isAllTermsAccepted
+  );
   const { showToast } = useToast();
   const navigate = useNavigate();
 
