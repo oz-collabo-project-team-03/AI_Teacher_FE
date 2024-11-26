@@ -5,7 +5,7 @@ import { useToast } from '@/hooks/useToast';
 import ProfileHeader from '@/components/myPage/ProfileHeader';
 import CommunityInfo from '@/components/myPage/CommunityInfo';
 import PostGrid from '@/components/myPage/PostGrid';
-import { useProfileQuery } from '@/api/myPage/myPage.hooks';
+import { useProfileGetQuery } from '@/api/myPage/myPage.hooks';
 import { AxiosError } from 'axios';
 
 const MyPage = () => {
@@ -15,7 +15,7 @@ const MyPage = () => {
   const { userInfo, setUserInfo } = useProfileStore();
 
   // userId가 있으면 해당 유저의 프로필을, 없으면 내 프로필을 조회
-  const { data, error } = useProfileQuery(userId);
+  const { data, error } = useProfileGetQuery(userId);
   const isOwnProfile = !userId;
   const profileData = isOwnProfile ? userInfo : data;
 

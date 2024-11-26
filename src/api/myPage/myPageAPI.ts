@@ -7,7 +7,7 @@ type ProfileResponse = {
   data: MyPageResponseData;
 };
 
-export const fetchProfileAPI = async () => {
+export const getMyProfileAPI = async () => {
   const { data } = await axios.get<ProfileResponse>('/api/profile/me');
 
   if (!data.success) {
@@ -17,7 +17,7 @@ export const fetchProfileAPI = async () => {
   return data.data;
 };
 
-export const fetchUserProfileAPI = async (userId: string) => {
+export const getUserProfileAPI = async (userId: string) => {
   const { data } = await axios.get<ProfileResponse>(`/api/profile/${userId}`);
 
   if (!data.success) {

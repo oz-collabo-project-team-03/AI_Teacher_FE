@@ -1,9 +1,9 @@
 import { UseQueryOptions, useQuery } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { MyPageResponseData } from '@/types/myPageType';
-import { fetchProfileAPI, fetchUserProfileAPI } from './myPageAPI';
+import { getMyProfileAPI, getUserProfileAPI } from './myPageAPI';
 
-export const useProfileQuery = (
+export const useProfileGetQuery = (
   userId?: string,
   options?: UseQueryOptions<MyPageResponseData, AxiosError, MyPageResponseData>
 ) => {
@@ -11,9 +11,9 @@ export const useProfileQuery = (
     queryKey: ['profile', userId],
     queryFn: () => {
       if (userId) {
-        return fetchUserProfileAPI(userId);
+        return getUserProfileAPI(userId);
       }
-      return fetchProfileAPI();
+      return getMyProfileAPI();
     },
     enabled: userId === undefined || Boolean(userId),
     ...options,
