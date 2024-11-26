@@ -1,15 +1,51 @@
-import { chatActiveIcon, homeActiveIcon, plusActiveIcon } from "../../assets/assets";
+import BaseNavBar from './BaseNavBar';
+import { layoutNavItem } from '@/types/layoutNav';
+import {
+  chatActiveIcon,
+  homeActiveIcon,
+  plusActiveIcon,
+  chatOutlineIcon,
+  homeOutlineIcon,
+  plusOutlineIcon,
+} from '@/assets/assets';
+import studentDefaultIcon from '@/assets/editProfile/student/studentDefaultIcon.png';
+
+// 네비게이션 설정
+const STUDENT_NAV_ITEMS: layoutNavItem[] = [
+  {
+    id: 'main',
+    path: '/student-main',
+    icons: {
+      outline: homeOutlineIcon,
+      active: homeActiveIcon,
+    },
+  },
+  {
+    id: 'post',
+    path: '/student/post',
+    icons: {
+      outline: plusOutlineIcon,
+      active: plusActiveIcon,
+    },
+  },
+  {
+    id: 'chats',
+    path: '/student/chats',
+    icons: {
+      outline: chatOutlineIcon,
+      active: chatActiveIcon,
+    },
+  },
+];
 
 const StudentNavBar = () => {
   return (
-    <>
-      <div className="py-4 px-[42px] flex justify-between shadow-navShadow">
-        <img src={homeActiveIcon} alt="" className="cursor-pointer" />
-        <img src={plusActiveIcon} alt="" className="cursor-pointer" />
-        <img src={chatActiveIcon} alt="" className="cursor-pointer" />
-        <div className="w-7 h-7 rounded-full bg-slate-100" />
-      </div>
-    </>
+    <BaseNavBar
+      items={STUDENT_NAV_ITEMS}
+      profilePath='/my-page'
+      profileImg={studentDefaultIcon}
+    />
   );
-}
-export default StudentNavBar
+};
+
+export default StudentNavBar;
