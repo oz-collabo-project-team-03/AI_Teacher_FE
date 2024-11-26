@@ -43,7 +43,7 @@ const TeacherChatRoomPage = lazy(
   () => import('../pages/chat/teacherChatRoomPage')
 );
 
-const CreatePostPage = lazy(() => import('../pages/post/createPostPage'));
+const CreatePostPage = lazy(() => import('../pages/posting/createPostPage'));
 
 const Router = () => {
   return (
