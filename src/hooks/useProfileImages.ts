@@ -32,7 +32,7 @@ const images = {
     studentIcon12,
   ],
   teacher: [teacherDefaultIcon, teacherIcon2, teacherIcon3],
-} as const;
+};
 
 export const useProfileImages = (
   userType: UserType,
