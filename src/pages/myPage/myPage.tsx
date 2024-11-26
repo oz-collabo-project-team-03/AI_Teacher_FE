@@ -62,6 +62,7 @@ const MyPage = () => {
       <PostGrid
         posts={profileData.posts}
         title={profileData.role === 'student' ? '내 게시글' : '협업 게시글'}
+        userId={userId}
       />
     </div>
   );
