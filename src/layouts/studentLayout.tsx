@@ -3,7 +3,7 @@ import StudentNavBar from '../components/navigatorBar/StudentNavBar';
 
 const StudentLayout = () => {
   return (
-    <div className='flex min-h-screen items-center justify-center bg-slate-50 font-pre'>
+    <div className='flex min-h-screen items-center justify-center bg-gray-50 font-pre'>
       <div className='relative flex h-screen w-full flex-col bg-white md:w-[425px] lg:w-[425px]'>
         <div className='flex-grow overflow-auto'>
           <Outlet />
