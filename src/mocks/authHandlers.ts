@@ -43,9 +43,9 @@ const MOCK_USER = {
   interests: '과학',
 };
 
-export const handlers = [
+export const AuthHandlers = [
   // 회원가입
-  http.post('/api/signup', async ({ request }) => {
+  http.post('/auth/register', async ({ request }) => {
     const data = (await request.json()) as SignupRequestParams;
 
     // 공통 필수 필드 체크
@@ -166,7 +166,7 @@ export const handlers = [
   }),
 
   // 로그인
-  http.post('/api/login', async ({ request }) => {
+  http.post('/auth/login', async ({ request }) => {
     const data = (await request.json()) as LoginRequest;
 
     // 이메일과 비밀번호 확인
@@ -205,7 +205,7 @@ export const handlers = [
   }),
 
   // (선택사항) 로그인 체크용 API
-  http.get('/api/me', async ({ request, cookies }) => {
+  http.get('/auth/me', async ({ request, cookies }) => {
     const authHeader = request.headers.get('Authorization');
     const sessionToken = cookies;
 
@@ -241,7 +241,7 @@ export const handlers = [
     );
   }),
   // 인증 코드 발송 API
-  http.post('/api/email/send-verification', async ({ request }) => {
+  http.post('/auth/register/email/send', async ({ request }) => {
     const { email } = (await request.json()) as SendVerificationRequest;
 
     // 이메일 형식 검증
@@ -265,7 +265,7 @@ export const handlers = [
       code: verificationCode, // 실제 구현에서는 이 코드를 응답에 포함하지 않음
     });
   }),
-  http.post('/api/email/verify-code', async ({ request }) => {
+  http.post('/auth/register/email/verify', async ({ request }) => {
     const { email, code } = (await request.json()) as VerifyCodeRequest;
 
     // 이메일 중복 재확인 (인증 과정 중 다른 사용자가 가입했을 수 있음)
@@ -297,6 +297,53 @@ export const handlers = [
         verified: false,
       },
       { status: 400 }
+    );
+  }),
+
+  // 이메일 찾기
+  http.post('/auth/find/email', async ({ request }) => {
+    const body = await request.json();
+    const { phone } = body as { phone: string };
+
+    // 실제 앱에서는 더 복잡한 로직을 넣을 수 있습니다.
+    if (phone === '01012345678') {
+      return HttpResponse.json({
+        email: 'sexydynamite@test.com',
+        message: '이메일을 찾았습니다.',
+      });
+    }
+
+    // 일치하는 번호가 없는 경우
+    return HttpResponse.json(
+      {
+        email: null,
+        message: '이메일을 찾을 수 없습니다.',
+      },
+      { status: 404 }
+    );
+  }),
+  //비밀번호 재설정
+  http.post('/auth/reset/password', async ({ request }) => {
+    const body = await request.json();
+    const { email } = body as { email: string };
+
+    // 실제 앱에서는 더 복잡한 로직을 넣을 수 있습니다.
+    if (email === 'gw@test.com') {
+      return HttpResponse.json({
+        message: '비밀번호 재설정이 성공적으로 완료되었습니다.',
+        email: 'gw@test.com',
+        new_password: 'aB1cD2eF3gH4iJ5kL6m',
+      });
+    }
+
+    // 일치하는 이메일이 없는 경우
+    return HttpResponse.json(
+      {
+        message: '존재하지 않는 이메일입니다.',
+        email: null,
+        new_password: null,
+      },
+      { status: 404 }
     );
   }),
 ];

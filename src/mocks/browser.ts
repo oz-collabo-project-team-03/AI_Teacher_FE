@@ -1,11 +1,11 @@
 import { setupWorker } from 'msw/browser';
-import { handlers } from './handlers';
-import { myPageHandlers } from './myPageHandlers';
+import { AuthHandlers } from './authHandlers';
 import { editProfileHandlers } from './editProfileHandlers';
+import { myPageHandlers } from './myPageHandlers';
 import { postDetailHandlers } from './postDetailHandlers';
 
 export const worker = setupWorker(
-  ...handlers,
+  ...AuthHandlers,
   ...myPageHandlers,
   ...editProfileHandlers,
   ...postDetailHandlers
