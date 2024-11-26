@@ -1,6 +1,7 @@
 // 공통된 마이페이지 응답 타입
 export type BaseMyPageResponse = {
   role: 'student' | 'teacher';
+  id: string;
   nickname: string;
   profile_image: string;
   post_count: number;

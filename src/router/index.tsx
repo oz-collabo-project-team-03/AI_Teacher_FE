@@ -14,6 +14,7 @@ const ManagedStudentListPage = lazy(
 );
 const LoginPage = lazy(() => import('../pages/auth/loginPage'));
 const MyPage = lazy(() => import('../pages/myPage/myPage'));
+const PostDetail = lazy(() => import('../pages/postDetail/postDetail'));
 const EditProfile = lazy(() => import('../pages/editProfile/editProfile'));
 const ChangeProfile = lazy(
   () => import('../pages/changeProfile/changeProfile')
@@ -42,8 +43,7 @@ const TeacherChatRoomPage = lazy(
   () => import('../pages/chat/teacherChatRoomPage')
 );
 
-const CreatePostPage = lazy(() => import('../pages/post/createPostPage'));
-
+const CreatePostPage = lazy(() => import('../pages/posting/createPostPage'));
 
 const Router = () => {
   return (
@@ -140,58 +140,86 @@ const Router = () => {
               </Suspense>
             }
           />
-
-        <Route
-          path='/student/post'
+          <Route
+            path='/student/post'
             element={
               <Suspense fallback={<LoadingPage />}>
                 <CreatePostPage />
               </Suspense>
             }
           />
-        <Route element={<StudentLayout />}>
-          <Route
-            path='/my-page'
-            element={
-              <Suspense fallback={<LoadingPage />}>
-                <MyPage />
-              </Suspense>
-            }
-          />
-          <Route
-            path='/student-main'
-            element={
-              <Suspense fallback={<LoadingPage />}>
-                <HomeFeedPage />
-              </Suspense>
-            }
-          />
-          <Route
-            path='/student/chats'
-            element={
-              <Suspense fallback={<LoadingPage />}>
-                <StudentChatListPage />
-              </Suspense>
-            }
-          />
-        </Route>
-        <Route element={<TeacherLayout />}>
-          <Route
-            path='/teacher-main'
-            element={
-              <Suspense fallback={<LoadingPage />}>
-                <ManagedStudentListPage />
-              </Suspense>
-            }
-          />
-          <Route
-            path='/teacher/chats'
-            element={
-              <Suspense fallback={<LoadingPage />}>
-                <TeacherChatListPage />
-              </Suspense>
-            }
-          />
+          <Route element={<StudentLayout />}>
+            {/* 본인의 마이페이지 */}
+            <Route
+              path='/my-page'
+              element={
+                <Suspense fallback={<LoadingPage />}>
+                  <MyPage />
+                </Suspense>
+              }
+            />
+            {/* 다른 사용자의 프로필 페이지 */}
+            <Route
+              path='/my-page/:userId'
+              element={
+                <Suspense fallback={<LoadingPage />}>
+                  <MyPage />
+                </Suspense>
+              }
+            />
+            {/* 본인의 게시글 상세 페이지*/}
+            <Route
+              path='/posts'
+              element={
+                <Suspense fallback={<LoadingPage />}>
+                  <PostDetail />
+                </Suspense>
+              }
+            />
+            {/* 다른 사용자의 게시글 상세 페이지*/}
+            <Route
+              path='/posts/:userId'
+              element={
+                <Suspense fallback={<LoadingPage />}>
+                  <PostDetail />
+                </Suspense>
+              }
+            />
+            <Route
+              path='/student-main'
+              element={
+                <Suspense fallback={<LoadingPage />}>
+                  <HomeFeedPage />
+                </Suspense>
+              }
+            />
+            <Route
+              path='/student/chats'
+              element={
+                <Suspense fallback={<LoadingPage />}>
+                  <StudentChatListPage />
+                </Suspense>
+              }
+            />
+          </Route>
+          <Route element={<TeacherLayout />}>
+            <Route
+              path='/teacher-main'
+              element={
+                <Suspense fallback={<LoadingPage />}>
+                  <ManagedStudentListPage />
+                </Suspense>
+              }
+            />
+            <Route
+              path='/teacher/chats'
+              element={
+                <Suspense fallback={<LoadingPage />}>
+                  <TeacherChatListPage />
+                </Suspense>
+              }
+            />
+          </Route>
         </Route>
       </Routes>
     </>

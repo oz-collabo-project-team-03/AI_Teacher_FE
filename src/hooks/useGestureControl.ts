@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 
-interface UseGestureControlProps {
+type UseGestureControlProps = {
   onShowChange: (show: boolean) => void;
-}
+};
 
 export const useGestureControl = ({ onShowChange }: UseGestureControlProps) => {
   const [isDragging, setIsDragging] = useState(false);
