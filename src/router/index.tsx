@@ -7,7 +7,6 @@ import TeacherLayout from '../layouts/teacherLayout';
 
 import Landing from '../pages/landing/landing';
 import LoadingPage from '../pages/loadingPage';
-import MyPost from '@/pages/myPost/myPost';
 
 const HomeFeedPage = lazy(() => import('../pages/main/homeFeedPage'));
 const ManagedStudentListPage = lazy(
@@ -15,6 +14,7 @@ const ManagedStudentListPage = lazy(
 );
 const LoginPage = lazy(() => import('../pages/auth/loginPage'));
 const MyPage = lazy(() => import('../pages/myPage/myPage'));
+const PostDetail = lazy(() => import('../pages/postDetail/postDetail'));
 const EditProfile = lazy(() => import('../pages/editProfile/editProfile'));
 const ChangeProfile = lazy(
   () => import('../pages/changeProfile/changeProfile')
@@ -140,7 +140,6 @@ const Router = () => {
               </Suspense>
             }
           />
-
           <Route
             path='/student/post'
             element={
@@ -168,21 +167,21 @@ const Router = () => {
                 </Suspense>
               }
             />
-            {/* 본인의 포스트 페이지*/}
+            {/* 본인의 게시글 상세 페이지*/}
             <Route
-              path='/my-post'
+              path='/posts'
               element={
                 <Suspense fallback={<LoadingPage />}>
-                  <MyPost />
+                  <PostDetail />
                 </Suspense>
               }
             />
-            {/* 다른 사용자의 포스트 페이지 */}
+            {/* 다른 사용자의 게시글 상세 페이지*/}
             <Route
-              path='/my-page/:userId'
+              path='/posts/:userId'
               element={
                 <Suspense fallback={<LoadingPage />}>
-                  <MyPage />
+                  <PostDetail />
                 </Suspense>
               }
             />
