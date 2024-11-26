@@ -127,7 +127,7 @@ const FindEmailPage = () => {
               </Button>
               <Button
                 variant='cancel'
-                onClick={() => navigate('/find/password')}
+                onClick={() => navigate('/reset/password')}
               >
                 비밀번호 찾기
               </Button>
