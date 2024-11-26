@@ -35,7 +35,7 @@ const ShowThirdPartyTerms = ({
       <div>
         <div
           className={twMerge(
-            'h-[126px] w-[355px] overflow-scroll rounded-[5px] border border-unFocusColor p-[14px]',
+            'h-[126px] w-full overflow-scroll rounded-[5px] border border-unFocusColor p-[14px]',
             showThirdPartyTerms ? '' : 'hidden'
           )}
         >

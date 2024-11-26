@@ -21,16 +21,6 @@ const FindPasswordPage = () => {
     }
   };
 
-  // 로그인하기 버튼 클릭 핸들러
-  const handleLogin = () => {
-    navigate('/login'); // 로그인 페이지로 이동
-  };
-
-  // 비밀번호 찾기 버튼 클릭 핸들러
-  const handleFindEmail = () => {
-    navigate('/find/email');
-  };
-
   return (
     <form className='flex h-svh flex-col px-[28px] py-[30px]'>
       <div className='flex-grow'>
@@ -70,8 +60,8 @@ const FindPasswordPage = () => {
         )}
         {step === STEP.DISPLAY_EMAIL && (
           <>
-            <Button onClick={handleLogin}>로그인하기</Button>
-            <Button variant='cancel' onClick={handleFindEmail}>
+            <Button onClick={() => navigate('/login')}>로그인하기</Button>
+            <Button variant='cancel' onClick={() => navigate('/find/email')}>
               아이디 찾기
             </Button>
           </>

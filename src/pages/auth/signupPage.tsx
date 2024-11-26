@@ -1,21 +1,12 @@
-import {
-  useEmailVerificationCodeMutation,
-  useEmailVerificationMutation,
-} from '@/api/auth/sendEmail/sendEmail.hooks';
-import { useSignupMutation } from '@/api/auth/signup/signup.hooks';
 import AuthInput from '@/components/auth/AuthInput';
 import { GradeSelector } from '@/components/auth/GradeButton';
 import Button from '@/components/common/Button';
-import useCountdown from '@/hooks/useCountDown';
-import { useToast } from '@/hooks/useToast';
-import { useTermsStore } from '@/stores/useTermsStore';
-import { ApiErrorResponseDto } from '@/types/apiErrorType';
-import { SignupRequestParams } from '@/types/signupType';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useEffect, useState } from 'react';
-import { FormProvider, useForm } from 'react-hook-form';
+import { useEmailVerification } from '@/hooks/signup/useEmailVerification';
+import { useSignupForm } from '@/hooks/signup/useSignupForm';
+import { useEffect } from 'react';
+import { FormProvider } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
-import { z as zod } from 'zod';
+import Landing from '../landing/landing';
 
 const STEP = {
   ACCOUNT_INFO: 1,
@@ -23,233 +14,39 @@ const STEP = {
 };
 
 const SignupPage = () => {
-  const [role, setRole] = useState<'student' | 'teacher' | null>(null);
-  const [step, setStep] = useState(STEP.ACCOUNT_INFO);
-  const [showVerificationInput, setShowVerificationInput] = useState(false);
-  const [selectedGrade, setSelectedGrade] = useState(1);
-
   const { role: roleParam } = useParams<{ role: 'student' | 'teacher' }>();
   const navigate = useNavigate();
 
-  const { isAllTermsAccepted } = useTermsStore();
-  const { start, formatTime, reset } = useCountdown(300); // 300초 카운트다운
-  const { showToast } = useToast();
-
-  /** 회원가입 폼 스키마 정의 (학생 및 선생님 스키마로 확장)*/
-  const baseSignupSchema = zod.object({
-    //이메일 형식 지정
-    email: zod.string().email({ message: '올바른 이메일 형식이 아닙니다.' }),
-    code: zod.string().min(1, { message: '인증코드를 입력해주세요.' }),
-    password: zod
-      .string()
-      .regex(
-        /^(?=.*[a-zA-Z])(?=.*\d).{8,20}$/,
-        '영문,숫자가 혼합된 10~20자리의 비밀번호를 입력해주세요.'
-      )
-      .min(10, { message: '비밀번호는 10자 이상이어야 합니다.' })
-      .max(20, { message: '비밀번호는 20자 이하여야 합니다.' }),
-    confirmPassword: zod.string(),
-    nickname: zod.string().min(1, { message: '닉네임은 필수 입력값입니다.' }),
-    phone: zod
-      .string()
-      .regex(/^0\d{9,10}$/, '전화번호 형식이 유효하지 않습니다.'),
-  });
-
-  const studentSignupSchema = baseSignupSchema.extend({
-    school: zod.string().min(1, { message: '학교명을 입력해주세요.' }),
-    grade: zod.number().min(1, { message: '학년은 1 이상이어야 합니다.' }),
-    careeraspiration: zod
-      .string()
-      .min(1, { message: '희망진로를 입력해주세요.' }),
-    interestrade: zod.string().min(1, { message: '흥미를 입력해주세요.' }),
-  });
-
-  const teacherSignupSchema = baseSignupSchema.extend({
-    organization_type: zod
-      .string()
-      .min(1, { message: '소속종류를 입력해주세요.' }),
-    organization_name: zod
-      .string()
-      .min(1, { message: '소속이름을 입력해주세요.' }),
-    position: zod.string().min(1, { message: '직급을 입력해주세요.' }),
-  });
-  /** 학생/선생님 공통으로 사용할 스키마 정의*/
-  const signupFormSchema = zod
-    .union([studentSignupSchema, teacherSignupSchema])
-    .refine((data) => data.password === data.confirmPassword, {
-      path: ['confirmPassword'],
-      message: '비밀번호가 일치하지 않습니다.',
-    });
-
-  // useForm 훅으로 폼 상태 관리
-
-  const form = useForm({
-    resolver: zodResolver(signupFormSchema),
-    defaultValues: {
-      email: '',
-      code: '',
-      password: '',
-      confirmPassword: '',
-      nickname: '',
-      phone: '',
-      school: '',
-      grade: selectedGrade, // 학년
-      careeraspiration: '', //희망진로
-      organization_type: '', // 소속종류
-      organization_name: '', // 소속이름
-      position: '', // 직급
-      interestrade: '', // 흥미
-    },
-    mode: 'onChange',
-  });
-
+  // 회원정보 입력
   const {
+    form,
+    step,
+    selectedGrade,
+    setSelectedGrade,
+    handleSignup,
     register,
     formState: { errors },
-    getValues,
-  } = form;
+  } = useSignupForm(roleParam);
 
-  /** 회원가입 처리 */
-  const { mutate: SignupMutation } = useSignupMutation({
-    onSuccess: (data) => {
-      console.log('회원가입 완료', data);
-    },
-    onError(error) {
-      console.error('회원가입 실패', error.message);
-    },
-  });
+  // 이메일 검증
+  const {
+    showVerificationInput,
+    formatTime,
+    handleSendCode,
+    handleVerificationCode,
+  } = useEmailVerification(form.getValues);
 
-  const handleSignup = async () => {
-    const formData = getValues();
-
-    const signupData: SignupRequestParams = {
-      email: formData.email,
-      password: formData.password,
-      password_confirm: formData.confirmPassword,
-      nickname: formData.nickname,
-      phone: formData.phone,
-      is_privacy_accepted: isAllTermsAccepted,
-      role: roleParam,
-
-      // 학생 전용 필드
-      ...(roleParam === 'student' && {
-        school: formData.school,
-        grade: selectedGrade,
-        career_aspiration: formData.careeraspiration,
-        interests: formData.interestrade,
-      }),
-
-      // 선생님 전용 필드
-      ...(roleParam === 'teacher' && {
-        organization_type: formData.organization_type,
-        organization_name: formData.organization_name,
-        position: formData.position,
-      }),
-    } as SignupRequestParams;
-
-    // 첫 번째 단계: 이메일, 비밀번호 검증
-    if (step === STEP.ACCOUNT_INFO) {
-      // 이메일, 비밀번호, 비밀번호 확인 에러 체크
-      if (errors.email || errors.password || errors.confirmPassword) {
-        return;
-      }
-
-      // 인증코드 존재 여부 확인
-      const code = getValues('code');
-      if (!code) {
-        showToast('인증번호를 입력해주세요');
-        return;
-      }
-      setStep(STEP.PERSONAL_INFO); //'계정 정보'에서 '개인 정보'로 단계 전환
-    } else if (step === STEP.PERSONAL_INFO) {
-      // PERSONAL_INFO 단계에서 유효성 검증
-      if (roleParam === 'student') {
-        // 학생 전용 유효성 검증
-        if (
-          !formData.nickname ||
-          !formData.phone ||
-          !formData.school ||
-          !formData.careeraspiration ||
-          !formData.interestrade
-        ) {
-          showToast('모든 필드를 입력해주세요.');
-          return;
-        }
-      } else if (roleParam === 'teacher') {
-        // 선생님 전용 유효성 검증
-        if (
-          !formData.nickname ||
-          !formData.phone ||
-          !formData.organization_type ||
-          !formData.organization_name ||
-          !formData.position
-        ) {
-          showToast('모든 필드를 입력해주세요.');
-          return;
-        }
-      }
-
-      // 최종 회원가입 처리
-      SignupMutation(signupData);
-      navigate('/signup-complete', { replace: true });
-    }
-  };
-  /**이메일 인증코드 발송  */
-  const { mutate: EmailCodeMutation } = useEmailVerificationMutation({
-    onSuccess: (data) => {
-      console.log('Email verification sent successfully:', data);
-    },
-    onError: (error) => {
-      console.error('Error sending email verification:', error);
-    },
-  });
-
-  const handleSendCode = () => {
-    const emailData = getValues('email');
-    if (!emailData) {
-      showToast('이메일을 입력해주세요');
-      return;
-    }
-    EmailCodeMutation({ email: emailData });
-    setShowVerificationInput(true);
-    start(); // 카운트다운 시작
-  };
-
-  /** 이메일 인증 코드 확인 */
-  const { mutate: EmailVerificationMutation } =
-    useEmailVerificationCodeMutation({
-      onSuccess: () => {
-        showToast('이메일 인증이 완료되었습니다.');
-        reset(); // 카운트다운 초기화
-        // setShowVerificationInput(false); // 인증 입력 필드 숨기기
-      },
-      onError: (error) => {
-        const apiError = error as ApiErrorResponseDto;
-        const errorMessage =
-          apiError?.response?.data?.message ||
-          '인증에 실패하였습니다. 다시 시도해주세요.';
-        showToast(errorMessage);
-      },
-    });
-
-  const handlelVerificationCode = () => {
-    const emailData = getValues('email');
-    const code = getValues('code');
-    if (!code) {
-      showToast('인증번호를 입력해주세요');
-      return;
-    }
-    EmailVerificationMutation({ email: emailData, code: code }); // 인증번호 확인 처리
-  };
   // 역할 파라미터 검증 (학생/선생님)
   useEffect(() => {
-    if (roleParam === 'student' || roleParam === 'teacher') {
-      setRole(role);
-    } else {
-      // 잘못된 role 파라미터인 경우
+    if (roleParam !== 'student' && roleParam !== 'teacher') {
       navigate('/error');
     }
   }, [roleParam, navigate]);
+
+  if (!roleParam) {
+    // 파라미터가 없을 때의 처리
+    return <Landing />;
+  }
 
   return (
     <FormProvider {...form}>
@@ -316,7 +113,7 @@ const SignupPage = () => {
                   <Button
                     type='button'
                     className='w-36 text-sm'
-                    onClick={handlelVerificationCode}
+                    onClick={handleVerificationCode}
                   >
                     확인
                   </Button>
