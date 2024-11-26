@@ -146,11 +146,39 @@ const Router = () => {
         </Route>
 
         <Route element={<StudentLayout />}>
+          {/* 본인의 마이페이지 */}
           <Route
             path='/my-page'
             element={
               <Suspense fallback={<LoadingPage />}>
                 <MyPage />
+              </Suspense>
+            }
+          />
+          {/* 다른 사용자의 프로필 페이지 */}
+          <Route
+            path='/my-page/:userId'
+            element={
+              <Suspense fallback={<LoadingPage />}>
+                <MyPage />
+              </Suspense>
+            }
+          />
+          {/* 본인의 게시글 상세 페이지*/}
+          <Route
+            path='/posts'
+            element={
+              <Suspense fallback={<LoadingPage />}>
+                <PostDetail />
+              </Suspense>
+            }
+          />
+          {/* 다른 사용자의 게시글 상세 페이지*/}
+          <Route
+            path='/posts/:userId'
+            element={
+              <Suspense fallback={<LoadingPage />}>
+                <PostDetail />
               </Suspense>
             }
           />
@@ -178,78 +206,69 @@ const Router = () => {
               </Suspense>
             }
           />
-          <Route element={<StudentLayout />}>
-            {/* 본인의 마이페이지 */}
-            <Route
-              path='/my-page'
-              element={
-                <Suspense fallback={<LoadingPage />}>
-                  <MyPage />
-                </Suspense>
-              }
-            />
-            {/* 다른 사용자의 프로필 페이지 */}
-            <Route
-              path='/my-page/:userId'
-              element={
-                <Suspense fallback={<LoadingPage />}>
-                  <MyPage />
-                </Suspense>
-              }
-            />
-            {/* 본인의 게시글 상세 페이지*/}
-            <Route
-              path='/posts'
-              element={
-                <Suspense fallback={<LoadingPage />}>
-                  <PostDetail />
-                </Suspense>
-              }
-            />
-            {/* 다른 사용자의 게시글 상세 페이지*/}
-            <Route
-              path='/posts/:userId'
-              element={
-                <Suspense fallback={<LoadingPage />}>
-                  <PostDetail />
-                </Suspense>
-              }
-            />
-            <Route
-              path='/student-main'
-              element={
-                <Suspense fallback={<LoadingPage />}>
-                  <HomeFeedPage />
-                </Suspense>
-              }
-            />
-            <Route
-              path='/student/chats'
-              element={
-                <Suspense fallback={<LoadingPage />}>
-                  <StudentChatListPage />
-                </Suspense>
-              }
-            />
-          </Route>
-          <Route element={<TeacherLayout />}>
-            <Route
-              path='/teacher-main'
-              element={
-                <Suspense fallback={<LoadingPage />}>
-                  <ManagedStudentListPage />
-                </Suspense>
-              }
-            />
-            <Route
-              path='/teacher/chats'
-              element={
-                <Suspense fallback={<LoadingPage />}>
-                  <TeacherChatListPage />
-                </Suspense>
-              }
-            />
-          </Route>
+        </Route>
+
+        <Route element={<TeacherLayout />}>
+          <Route
+            path='/teacher-home'
+            element={
+              <Suspense fallback={<LoadingPage />}>
+                <HomeFeedPage />
+              </Suspense>
+            }
+          />
+          <Route
+            path='/teacher-main'
+            element={
+              <Suspense fallback={<LoadingPage />}>
+                <ManagedStudentListPage />
+              </Suspense>
+            }
+          />
+          <Route
+            path='/teacher/chats'
+            element={
+              <Suspense fallback={<LoadingPage />}>
+                <TeacherChatListPage />
+              </Suspense>
+            }
+          />
+          {/* 본인의 마이페이지 */}
+          <Route
+            path='/teacher/my-page'
+            element={
+              <Suspense fallback={<LoadingPage />}>
+                <MyPage />
+              </Suspense>
+            }
+          />
+          {/* 다른 사용자의 프로필 페이지 */}
+          <Route
+            path='/teacher/my-page/:userId'
+            element={
+              <Suspense fallback={<LoadingPage />}>
+                <MyPage />
+              </Suspense>
+            }
+          />
+          {/* 본인의 게시글 상세 페이지*/}
+          <Route
+            path='/teacher/posts'
+            element={
+              <Suspense fallback={<LoadingPage />}>
+                <PostDetail />
+              </Suspense>
+            }
+          />
+          {/* 다른 사용자의 게시글 상세 페이지*/}
+          <Route
+            path='/teacher/posts/:userId'
+            element={
+              <Suspense fallback={<LoadingPage />}>
+                <PostDetail />
+              </Suspense>
+            }
+          />
         </Route>
       </Routes>
     </>
