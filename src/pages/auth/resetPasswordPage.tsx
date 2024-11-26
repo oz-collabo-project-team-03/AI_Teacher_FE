@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 
-import { useFindEmailMutation } from '@/api/auth/findEmail/findEmail.hooks';
-import { FindEmailResponseDto } from '@/api/auth/findEmail/findEmailType';
+import { useResetPasswordMutation } from '@/api/auth/resetPassword/resetPassword.hooks';
+import { ResetPasswordResponseDto } from '@/api/auth/resetPassword/resetPasswordType';
 import AuthInput from '@/components/auth/AuthInput';
 import Button from '@/components/common/Button';
 import { useToast } from '@/hooks/useToast';
@@ -15,24 +15,20 @@ const STEP = {
   INPUT_PHONE: 1, // 전화번호 입력
   DISPLAY_EMAIL: 2, // 이메일 결과 표시
 };
-
-const phoneSchema = zod.object({
-  phone: zod
-    .string()
-    .regex(/^0\d{9,10}$/, '전화번호 형식이 유효하지 않습니다.'),
+const emailSchema = zod.object({
+  email: zod.string().email({ message: '이메일 형식이 아닙니다.' }),
 });
 
-const FindEmailPage = () => {
+const ResetPasswordPage = () => {
   const [step, setStep] = useState(STEP.INPUT_PHONE);
-  const [findEmail, setFindEmail] = useState('');
 
   const navigate = useNavigate();
   const { showToast } = useToast();
 
   const form = useForm({
-    resolver: zodResolver(phoneSchema),
+    resolver: zodResolver(emailSchema),
     defaultValues: {
-      phone: '',
+      email: '',
     },
     mode: 'onChange',
   });
@@ -43,30 +39,30 @@ const FindEmailPage = () => {
     getValues,
   } = form;
 
-  const { mutate: FindEmailMutation } = useFindEmailMutation({
-    onSuccess: (data: FindEmailResponseDto) => {
-      setFindEmail(data.email);
+  const { mutate: ResetPasswordMutation } = useResetPasswordMutation({
+    onSuccess: (data: ResetPasswordResponseDto) => {
       setStep(STEP.DISPLAY_EMAIL);
+      showToast(data.message);
     },
     onError: (error) => {
       const apiError = error as ApiErrorResponseDto;
       const errorMessage =
         apiError?.response?.data?.message ||
-        '이메일찾기에 실패하였습니다. 다시 시도해주세요.';
+        '비밀번호 재설정에 실패했습니다. 다시 시도해주세요.';
       showToast(errorMessage);
     },
   });
 
-  const handleFindEmail = async () => {
-    const phone = getValues();
-    FindEmailMutation(phone);
+  const handleResetPassword = async () => {
+    const email = getValues();
+    ResetPasswordMutation(email);
   };
 
   return (
     <FormProvider {...form}>
       <form
         className='flex h-svh flex-col px-[28px] py-[30px]'
-        onSubmit={form.handleSubmit(handleFindEmail)}
+        onSubmit={form.handleSubmit(handleResetPassword)}
         autoComplete='off'
       >
         <div className='flex-grow'>
@@ -75,20 +71,13 @@ const FindEmailPage = () => {
               수행쌤
             </h1>
             <div className='mb-[50px] text-lg text-captionColor'>
-              <p className='font-semibold text-textMainColor'>이메일 찾기</p>
+              <p className='font-semibold text-textMainColor'>비밀번호 찾기</p>
               {step === STEP.INPUT_PHONE && (
                 <div className='mt-3'>
                   <p className='text-base'>
-                    이메일 주소를 찾으려면 가입 시 사용한
+                    비밀번호를 찾으려면 가입 시 사용한
                   </p>
-                  <p className='text-base'>전화번호를 입력해주세요.</p>
-                </div>
-              )}
-              {step === STEP.DISPLAY_EMAIL && (
-                <div className='mt-3'>
-                  <p className='text-base'>
-                    고객님의 정보와 일치하는 아이디 목록입니다.
-                  </p>
+                  <p className='text-base'>이메일을 입력해주세요.</p>
                 </div>
               )}
             </div>
@@ -96,40 +85,38 @@ const FindEmailPage = () => {
               <>
                 <div className='flex flex-col gap-4'>
                   <AuthInput
-                    type='text'
-                    placeholder='-없이 입력해주세요.'
-                    label='연락처'
-                    {...register('phone')}
+                    type='email'
+                    placeholder='example@email.com'
+                    label='이메일'
+                    {...register('email')}
                   />
                 </div>
-                {errors.phone && (
+                {errors.email && (
                   <p className='mt-1 text-sm text-errorTextColor'>
-                    {errors.phone.message}
+                    {errors.email.message}
                   </p>
                 )}
               </>
             )}
             {step === STEP.DISPLAY_EMAIL && (
-              <ul className='flex flex-col items-center gap-4'>
-                <li className='font-medium'>{findEmail}</li>
-              </ul>
+              <div className='flex h-full flex-col items-center gap-1'>
+                <p>입력하신 이메일로 임시비밀번호를 발송했습니다.</p>
+                <p>메일함을 확인해주세요.</p>
+              </div>
             )}
           </div>
         </div>
         <div className='mt-auto flex flex-col gap-4'>
           {step === STEP.INPUT_PHONE && (
-            <Button onClick={handleFindEmail}>다음</Button>
+            <Button onClick={handleResetPassword}>다음</Button>
           )}
           {step === STEP.DISPLAY_EMAIL && (
             <>
               <Button onClick={() => navigate('/login', { replace: true })}>
                 로그인하기
               </Button>
-              <Button
-                variant='cancel'
-                onClick={() => navigate('/reset/password')}
-              >
-                비밀번호 찾기
+              <Button variant='cancel' onClick={() => navigate('/find/email')}>
+                아이디 찾기
               </Button>
             </>
           )}
@@ -139,4 +126,4 @@ const FindEmailPage = () => {
   );
 };
 
-export default FindEmailPage;
+export default ResetPasswordPage;

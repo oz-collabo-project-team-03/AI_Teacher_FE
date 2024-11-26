@@ -30,7 +30,7 @@ const SignupCompletePage = lazy(
   () => import('../pages/auth/signupCompletePage')
 );
 const FindEmailPage = lazy(() => import('../pages/auth/findEmailPage'));
-const FindPasswordPage = lazy(() => import('@pages/auth/findPasswordPage'));
+const ResetPasswordPage = lazy(() => import('@/pages/auth/resetPasswordPage'));
 const StudentChatListPage = lazy(
   () => import('../pages/chat/studentChatListPage')
 );
@@ -120,10 +120,10 @@ const Router = () => {
             }
           />
           <Route
-            path='/find/password'
+            path='/reset/password'
             element={
               <Suspense fallback={<LoadingPage />}>
-                <FindPasswordPage />
+                <ResetPasswordPage />
               </Suspense>
             }
           />
