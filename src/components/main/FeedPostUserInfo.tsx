@@ -8,7 +8,7 @@ const FeedPostUserInfo = () => {
         alt='studentProfileImage'
         className='mr-[9px] h-[40px] w-[40px] rounded-full'
       />
-      <div className='flex flex-col'>
+      <div className='flex flex-col gap-1'>
         <p className='text-[20px] font-medium leading-none'>oh_sam</p>
         <p className='text-[12px] font-medium leading-none text-hobbyText'>
           축구, 게임
