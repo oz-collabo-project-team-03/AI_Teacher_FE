@@ -2,12 +2,12 @@ import CommentModal from '@components/modal/CommentModal';
 import FeedPost from '../../components/main/FeedPost';
 import MainHeader from '../../components/main/MainHeader';
 import { twMerge } from 'tailwind-merge';
-import useFeedPostStore from '@/stores/useFeedPostStore';
+import useCommentModalStore from '@/stores/useCommentModalStore';
 
 const HomeFeedPage = () => {
   const posts = [1, 2, 3]; //임시배열
   const hideScrollbar = true;
-  const { isModalOpen, setIsModalOpen } = useFeedPostStore();
+  const { isModalOpen, setIsModalOpen } = useCommentModalStore();
   const closeCommentModal = () => setIsModalOpen(false);
   return (
     <div className='h-svh'>

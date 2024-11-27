@@ -3,14 +3,14 @@ import { useCallback, useState } from 'react';
 import Heart from '../../assets/feedPost/heart.svg';
 import chat from '../../assets/feedPost/chat.svg';
 import fullHeart from '../../assets/feedPost/fullHeart.svg';
-import useFeedPostStore from '@/stores/useFeedPostStore';
+import useCommentModalStore from '@/stores/useCommentModalStore';
 
 // import CommentModal from '../modal/CommentModal';
 
 const FeedPostButton = () => {
   const [isLiked, setIsLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(13);
-  const { setIsModalOpen } = useFeedPostStore();
+  const { setIsModalOpen } = useCommentModalStore();
 
   const toggleHeart = useCallback(() => {
     setIsLiked((prev) => {
