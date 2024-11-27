@@ -37,3 +37,30 @@ input[type='number']::-webkit-outer-spin-button {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
+/* 댓글 스크롤 */
+.custom-scrollbar {
+  overflow-y: auto;
+}
+.custom-scrollbar::-webkit-scrollbar {
+  width: 3px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: transparent;
+  border-radius: 10px;
+  transition: background 0.5s ease;
+}
+
+.custom-scrollbar:hover::-webkit-scrollbar-thumb,
+.custom-scrollbar:active::-webkit-scrollbar-thumb {
+  background: #a6a4e9;
+}
+
+.custom-scrollbar::-webkit-scrollbar-button {
+  display: none;
+}
