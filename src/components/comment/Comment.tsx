@@ -6,10 +6,10 @@ type CommentProps = {
 
 const Comment = ({ comments }: CommentProps) => {
   return (
-    <section>
+    <section className='flex h-full flex-col'>
       {comments.length === 0 ? (
-        <div className='flex flex-col'>
-          <p className=''>아직 댓글이 없습니다. </p>
+        <div className='flex h-full flex-col items-center justify-center'>
+          <p className='text-[20px] font-bold'>아직 댓글이 없습니다. </p>
           <p className=''>댓글을 남겨주세요.</p>
         </div>
       ) : (
