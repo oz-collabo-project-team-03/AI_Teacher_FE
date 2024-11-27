@@ -1,67 +1,69 @@
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { useRef, useState } from 'react';
 
 import Comment from '../comment/Comment';
 import CommentHeader from '../comment/CommentHeader';
+import sendIcon from '../../assets/comment/send.svg';
 import student1 from '../../assets/editProfile/student/studentIcon2.png';
-import { useState } from 'react';
 
-// import Reply from '../comment/Reply';
-// import axios from 'axios';
-
-type FormData = {
+type commentFormData = {
   comment: string;
 };
 
 const CommentModal = () => {
   const [comments, setComments] = useState<string[]>([]);
+  const [isInputEmpty, setIsInputEmpty] = useState(true);
+  const [commentValue, setCommentValue] = useState('');
+  const textareaRef = useRef<HTMLTextAreaElement | null>(null);
+
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm<FormData>();
+    setValue,
+  } = useForm<commentFormData>();
 
-  // 댓글 제출
-  const commentOnSubmit: SubmitHandler<FormData> = (data) => {
-    const newComment = data.comment;
-    if (newComment.trim()) {
-      try {
-        setComments((prevComments) => [...prevComments, newComment]);
-        reset();
-        const textarea = document.querySelector('textarea');
-        if (textarea) {
-          textarea.style.height = '30px'; // 기본 높이로 설정
-        }
-      } catch (error) {
-        console.error('댓글 제출 실패:', error);
-      }
-    }
-  };
-
-  //textarea 자동높이조절
+  //textarea 높이제한 변수
   const MAX_ROWS = 7;
   const LINE_HEIGHT = 20;
   const MAX_HEIGHT = LINE_HEIGHT * MAX_ROWS;
   const MAX_LENGTH = 300;
 
-  const handleTextareaInput = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const target = e.target;
-    target.style.height = '30px';
-    target.style.height = `${Math.min(target.scrollHeight, MAX_HEIGHT)}px`;
-
-    if (target.value.length > MAX_LENGTH) {
-      target.value = target.value.substring(0, MAX_LENGTH);
+  // 댓글 제출
+  const commentOnSubmit: SubmitHandler<commentFormData> = (data) => {
+    const newComment = data.comment?.trim();
+    if (newComment) {
+      setComments((prevComments) => [...prevComments, newComment]);
+      reset();
+      setIsInputEmpty(true);
+      setCommentValue('');
+      if (textareaRef.current) {
+        textareaRef.current.style.height = '30px'; // textarea 높이 초기화
+      }
+    } else {
+      console.log('댓글이 비어있습니다.');
     }
   };
 
-  return (
-    <section className='h-[700px]'>
-      <CommentHeader />
-      <section className='px-[21px] py-[28px]'>
-        <Comment comments={comments} />
-        {/* <Reply /> */}
-      </section>
+  //textarea 높이조절
+  const handleTextareaInput = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const target = e.target;
+    const value = target.value.substring(0, MAX_LENGTH);
+    target.style.height = '30px';
+    target.style.height = `${Math.min(target.scrollHeight, MAX_HEIGHT)}px`;
 
+    setValue('comment', value);
+    setCommentValue(value);
+    setIsInputEmpty(value.trim() === '');
+  };
+
+  return (
+    <section className='flex h-[70vh] flex-col'>
+      <CommentHeader />
+      <section className='custom-scrollbar flex-1 overflow-y-auto px-[21px] py-[21px]'>
+        <Comment comments={comments} />
+      </section>
       <form
         onSubmit={handleSubmit(commentOnSubmit)}
         className='bottom-0 flex items-center gap-3 border-t border-chatListHoverColor px-[17px] py-[16px]'
@@ -69,21 +71,35 @@ const CommentModal = () => {
         <img src={student1} alt='comment user' className='h-[35px]' />
         <div className='relative flex w-full items-center rounded-[15px] bg-commuInputColor p-[14px]'>
           <textarea
-            {...register('comment')}
-            className='scrollbar-hide h-[30px] w-[300px] resize-none border-none bg-transparent p-0 text-[14px] focus:ring-0'
-            placeholder='댓글입력'
-            autoComplete='off'
-            autoCorrect='off'
-            onInput={handleTextareaInput}
+            value={commentValue}
+            {...register('comment', { required: '댓글을 입력해주세요.' })}
+            onChange={handleTextareaInput}
+            className='scrollbar-hide h-[30px] w-[80%] resize-none border-none bg-transparent p-0 text-[14px] focus:ring-0'
+            placeholder='댓글을 입력해주세요'
+            aria-label='댓글 입력'
+            maxLength={MAX_LENGTH}
+            ref={(el) => {
+              textareaRef.current = el;
+            }}
           />
           {errors.comment && (
             <p className='text-red-500'>{errors.comment.message}</p>
           )}
           <button
             type='submit'
-            className='absolute right-2 rounded bg-blue-500 p-2 text-white'
+            className='absolute right-1 transform rounded p-2 transition-transform'
           >
-            올리기
+            <img
+              src={sendIcon}
+              alt='Send Icon'
+              className='h-[30px] w-[30px]'
+              style={{
+                filter:
+                  isInputEmpty || !!errors.comment
+                    ? ''
+                    : 'invert(36%) sepia(66%) saturate(338%) hue-rotate(200deg) brightness(90%) contrast(92%)',
+              }}
+            />
           </button>
         </div>
       </form>
