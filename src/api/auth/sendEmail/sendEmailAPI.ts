@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axiosInstance from '@/api/axiosInstance';
 import {
   EmailVerificationCodeRequestParams,
   EmailVerificationCodeResponseDto,
@@ -11,8 +11,8 @@ export const sendEmailVerificationAPI = async (
   emailData: EmailVerificationRequestParams
 ): Promise<EmailVerificationResponseDto> => {
   console.log('요청 데이터:', emailData);
-  const response = await axios.post<EmailVerificationResponseDto>(
-    '/register/email/send',
+  const response = await axiosInstance.post<EmailVerificationResponseDto>(
+    '/auth/email/send',
     emailData
   );
   return response.data;
@@ -22,6 +22,9 @@ export const sendEmailVerificationAPI = async (
 export const verifyEmailCodeAPI = async (
   verificationData: EmailVerificationCodeRequestParams
 ): Promise<EmailVerificationCodeResponseDto> => {
-  const response = await axios.post('/register/email/verify', verificationData);
+  const response = await axiosInstance.post(
+    '/auth/email/verify',
+    verificationData
+  );
   return response.data;
 };

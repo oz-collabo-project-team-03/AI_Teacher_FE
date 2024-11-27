@@ -8,10 +8,11 @@ import Input from '@/components/common/Input';
 import { useToast } from '@/hooks/useToast';
 import { ApiErrorResponseDto } from '@/types/apiErrorType';
 import { zodResolver } from '@hookform/resolvers/zod';
+import axios from 'axios';
+import { Cookies } from 'react-cookie';
 import { FormProvider, useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import { z as zod } from 'zod';
-
 //소셜로그인 버튼
 const socialLogin = [
   { name: 'google', src: googleLogo, url: '/' },
@@ -19,16 +20,18 @@ const socialLogin = [
   { name: 'naver', src: naverLogo, url: '/' },
 ];
 
+// 로그인 폼 스키마 정의
+const loginFormSchema = zod.object({
+  // 이메일 형식 지정
+  email: zod.string().email({ message: '이메일 형식이 아닙니다.' }),
+  password: zod.string().min(1, { message: '비밀번호를 입력해주세요.' }),
+});
+
 const LoginPage = () => {
   const navigate = useNavigate();
   const { showToast } = useToast();
 
-  // 로그인 폼 스키마 정의
-  const loginFormSchema = zod.object({
-    // 이메일 형식 지정
-    email: zod.string().email({ message: '이메일 형식이 아닙니다.' }),
-    password: zod.string().min(1, { message: '비밀번호를 입력해주세요.' }),
-  });
+  const cookies = new Cookies();
 
   const form = useForm({
     resolver: zodResolver(loginFormSchema),
@@ -53,9 +56,21 @@ const LoginPage = () => {
       } else if (data.user.role === 'teacher') {
         navigate('/teacher-main', { replace: true });
       }
-      // 선생인지 학생인지 로그인할때 어떤걸로구별을 해야하는가..? 로그인과 동시에 리스폰스로 내려오는 롤로 비교해서 옮겨줘야하는건가? 일단구현함.
+      cookies.set('accessToken', data.user.access_token);
+      cookies.set('refreshToken', data.user.refresh_token);
     },
     onError: (error) => {
+      console.error('Login Error:', error); // 에러 상세 로깅
+
+      // Axios 에러인 경우 더 상세한 로깅
+      if (axios.isAxiosError(error)) {
+        console.error('Axios Error Details:', {
+          response: error.response?.data,
+          status: error.response?.status,
+          headers: error.response?.headers,
+        });
+      }
+
       const apiError = error as ApiErrorResponseDto;
       const errorMessage =
         apiError?.response?.data?.message ||
@@ -65,6 +80,7 @@ const LoginPage = () => {
   });
 
   const handleLogin = async () => {
+    console.log('Login Attempt:', getValues());
     const form = getValues();
     LoginMutation(form);
   };
