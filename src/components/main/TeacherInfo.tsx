@@ -7,7 +7,7 @@ type TeacherInfoProps = {
 
 const TeacherInfo = ({ name, profileImage }: TeacherInfoProps) => {
   return (
-    <div className='h-[112px]gap-4 border-b border-inputBorderColor'>
+    <div className='mt-[72px] h-[112px] gap-4 border-b border-inputBorderColor'>
       <div className='m-[16px] flex items-center gap-4'>
         <img
           src={profileImage || teacherDefaultIcon}
