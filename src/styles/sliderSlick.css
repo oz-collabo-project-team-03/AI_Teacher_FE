@@ -19,9 +19,30 @@
 .slick-dots {
   bottom: -12px;
   height: 12px;
+  position: relative;
+  z-index: 3;
 }
 
-/* 이미지 클릭시 테두리생기는 이벤트 */
+/* 슬라이더 */
 .slick-slide img {
   pointer-events: none !important;
+}
+
+.slick-slider {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  z-index: 1;
+}
+
+.slick-slide {
+  display: flex;
+  justify-content: center;
+}
+
+.slick-track {
+  display: flex;
+  z-index: 1;
+  height: auto;
+  max-height: 230px;
 }

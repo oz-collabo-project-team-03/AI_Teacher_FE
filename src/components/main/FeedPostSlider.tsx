@@ -1,6 +1,6 @@
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import '../../styles/sliderDots.css';
+import '../../styles/sliderSlick.css';
 
 import Slider from 'react-slick';
 import img1 from '../../assets/slider/daily1.webp';
@@ -12,13 +12,14 @@ const FeedPostSlider = () => {
     dots: true, //하단 페이지네이션 점 표시
     infinite: false, // 무한반복 여부
     speed: 500, //전환속도
+    arrows: false,
     slidesToShow: 1, //화면에 보여줄 슬라이드 수
     slidesToScroll: 1, //한번에 넘길 슬라드 수
   };
 
   return (
-    <div className='h-[233px] w-full shadow-navShadow'>
-      <Slider {...settings} className='h-[210px] w-full'>
+    <div className='h-[233px] w-full'>
+      <Slider {...settings} className='w-full'>
         <div className='h-[210px] w-full overflow-hidden'>
           <img
             src={img1}

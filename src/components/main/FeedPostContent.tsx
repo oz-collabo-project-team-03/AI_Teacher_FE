@@ -1,42 +1,10 @@
-import Heart from '../../assets/feedPost/heart.svg';
-import chat from '../../assets/feedPost/chat.svg';
-import fullHeart from '../../assets/feedPost/fullHeart.svg';
+import FeedPostButton from '../../components/main/FeedPostButton';
 import teacher from '../../assets/editProfile/teacher/teacherDefaultIcon.png';
-import useFeedPostStore from '../../stores/useFeedPostStore';
 
 const FeedPostContent = () => {
-  const { isLiked, toggleHeart, likeCount, commentCount, addComment } =
-    useFeedPostStore();
-
-  const feedPostHandleClick = (e: React.MouseEvent, action: () => void) => {
-    e.preventDefault();
-    action();
-  };
-
   return (
     <ul className='h-[102px] w-full px-[12px] py-[7px] font-medium'>
-      <li className='flex h-[20px] w-full items-center'>
-        <button
-          onClick={(e) => feedPostHandleClick(e, toggleHeart)}
-          className='h-[20px] w-[20px]'
-        >
-          {!isLiked ? (
-            <img src={Heart} alt='HeartIcon' />
-          ) : (
-            <img src={fullHeart} alt='fullHeartIcon' />
-          )}
-        </button>
-        <span className='ml-[3px] mr-[25px]'>{likeCount}</span>
-        <button
-          className='h-[17px] w-[17px]'
-          onClick={(e) => feedPostHandleClick(e, addComment)}
-        >
-          <img src={chat} alt='fullHeartIcon' />
-        </button>
-
-        <span className='ml-[3px]'>{commentCount}</span>
-      </li>
-
+      <FeedPostButton />
       {/* 협업멘트 */}
       <li className='mt-[6px] flex h-[20px] w-full items-center text-[14px]'>
         <img
