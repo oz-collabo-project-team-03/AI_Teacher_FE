@@ -28,6 +28,7 @@ const ManagedStudentListPage = () => {
         name={teacherData.name}
         profileImage={teacherData.profileImage}
       />
+
       <ManagedList />
     </div>
   );
