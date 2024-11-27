@@ -6,6 +6,7 @@ export type LoginRequestParams = {
 export type LoginResponseDto = {
   user: {
     access_token: string;
+    refresh_token: string;
     token_type: string;
     expired_in: number;
     role: string;

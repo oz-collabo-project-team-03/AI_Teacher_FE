@@ -1,9 +1,12 @@
-import axios from 'axios';
+import axiosInstance from '@/api/axiosInstance';
 import { LoginRequestParams, LoginResponseDto } from './loginType';
 
 export const loginAPI = async (
   userData: LoginRequestParams
 ): Promise<LoginResponseDto> => {
-  const response = await axios.post<LoginResponseDto>('/auth/login', userData);
+  const response = await axiosInstance.post<LoginResponseDto>(
+    '/auth/login',
+    userData
+  );
   return response.data;
 };
