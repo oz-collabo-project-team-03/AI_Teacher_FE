@@ -22,7 +22,7 @@ const Comment = ({ comments }: CommentProps) => {
                 className='h-[30px] w-[30px] rounded-full'
               />
               <div className='w-full'>
-                <p className='text-[16px]'>대기고쌤</p>
+                <p className='text-[16px] font-semibold'>대기고쌤</p>
                 <div
                   key={index}
                   className='whitespace-normal break-words text-[14px]'
