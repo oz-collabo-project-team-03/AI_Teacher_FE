@@ -3,6 +3,7 @@ import chatPlusIcon from './chat/chat_plus.svg';
 import backIcon from './header/back.svg';
 import chatBubbleIcon from './header/chat.svg';
 import iphone from './landing/iphone.svg';
+import bottomArrow from './landing/bottomArrow.svg';
 import modalCloseIcon from './modal/modal_close.svg';
 import editIcon from './myPage/editIcon.svg';
 import logoutIcon from './myPage/logoutIcon.svg';
@@ -22,6 +23,7 @@ export {
   backIcon,
   chatBubbleIcon,
   iphone,
+  bottomArrow,
   modalCloseIcon,
   editIcon,
   logoutIcon,
