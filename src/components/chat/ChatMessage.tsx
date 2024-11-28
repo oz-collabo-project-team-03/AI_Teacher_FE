@@ -3,10 +3,19 @@ import { ChatAiBubble, ChatMyBubble, ChatTeacherBubble } from './bubbles';
 import { ChatMessageProps } from '../../types/index';
 import React from 'react';
 
-const ChatMessage = ({ message, nickname, userType }: ChatMessageProps) => {
+const ChatMessage = ({
+  message,
+  nickname,
+  userType,
+  isLast,
+}: ChatMessageProps) => {
   if (userType === 'system') {
     return (
-      <div className='py-[20px] text-center text-[12px] text-captionColor'>
+      <div
+        className={`py-[20px] text-center text-[12px] text-captionColor ${
+          isLast ? 'border-t border-commuInputColor' : ''
+        }`}
+      >
         {message}
       </div>
     );
