@@ -23,7 +23,7 @@ const ProfileHeader = ({
     <li className='flex flex-col items-center'>
       <p className='text-xl font-bold text-textMainColor'>{nickname}</p>
       <p className='mb-2 text-captionColor'>{description}</p>
-      <p className='text-[13px] font-medium text-textMainColor'>
+      <p className='text-[14px] font-medium text-textMainColor'>
         {subDescription}
       </p>
     </li>
