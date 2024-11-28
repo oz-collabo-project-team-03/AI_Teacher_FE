@@ -1,10 +1,9 @@
-// hooks/useInfiniteScroll.ts
 import { useEffect, useRef, useCallback } from 'react';
 
-interface UseInfiniteScrollProps {
+type UseInfiniteScrollProps = {
   fetchNextPage: () => void;
   hasNextPage: boolean | undefined;
-}
+};
 
 export const useInfiniteScroll = ({
   fetchNextPage,
