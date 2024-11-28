@@ -34,7 +34,7 @@ const CreateChatModal = ({ onClose, onCreateChat }: CreateChatModalProps) => {
       onClick={onClose}
     >
       <div
-        className='h-auto w-full max-w-[90%] rounded-[16px] border border-inputBorderColor bg-white p-[16px]'
+        className='h-auto w-full max-w-[390px] rounded-[16px] border border-inputBorderColor bg-white p-[16px]'
         onClick={handleModalClick}
       >
         <div className='flex justify-end'>

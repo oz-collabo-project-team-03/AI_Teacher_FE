@@ -3,10 +3,12 @@ export type ChatBubbleProps = {
   };
 
 
-export type ChatMessageProps = {
-  message: string;
-  nickname: string;
-  profileImage: string;
-  isMe: boolean;
-  userType: 'ai' | 'teacher' | 'user' | 'system';
-};
+  export type ChatMessageProps = {
+    message: string;
+    nickname: string;
+    profileImage?: string;
+    isMe: boolean;
+    userType: 'user' | 'ai' | 'teacher' | 'system';
+    isLast?: boolean; // system 만 사용
+  };
+  

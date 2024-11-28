@@ -42,6 +42,7 @@ const StudentChatRoomPage = () => {
             profileImage: '',
             isMe: false,
             userType: 'system',
+            isLast: false,
           },
           {
             message: '담임 선생님과 메시지가 연결되었습니다.',
@@ -49,6 +50,7 @@ const StudentChatRoomPage = () => {
             profileImage: '',
             isMe: false,
             userType: 'system',
+            isLast: true, // 마지막 메시지
           },
         ];
       } else {
@@ -60,6 +62,7 @@ const StudentChatRoomPage = () => {
             profileImage: '',
             isMe: false,
             userType: 'system',
+            isLast: false,
           },
           {
             message: 'AI와 메시지가 연결되었습니다.',
@@ -67,6 +70,7 @@ const StudentChatRoomPage = () => {
             profileImage: '',
             isMe: false,
             userType: 'system',
+            isLast: true, // 마지막 메시지
           },
         ];
       }
@@ -113,7 +117,7 @@ const StudentChatRoomPage = () => {
           <HelpButton type={buttonType} onClick={handleHelpButtonClick} />
         }
       />
-      <div className='flex-grow overflow-y-auto'>
+      <div className='custom-scrollbar flex-grow overflow-y-auto'>
         {chatMessages.map((msg, index) => (
           <ChatMessage
             key={index}
@@ -122,12 +126,13 @@ const StudentChatRoomPage = () => {
             profileImage={msg.profileImage}
             isMe={msg.isMe}
             userType={msg.userType}
+            {...(msg.userType === 'system' ? { isLast: msg.isLast } : {})}
           />
         ))}
         <div ref={chatEndRef} />
       </div>
 
-      <div className='sticky bottom-0 mx-auto bg-white p-[18px] shadow-navShadow md:w-[425px] lg:w-[425px]'>
+      <div className='sticky bottom-0 mx-auto w-full bg-white p-[18px] shadow-navShadow'>
         <ChatInput onSendMessage={handleSendMessage} />
 
         <button
