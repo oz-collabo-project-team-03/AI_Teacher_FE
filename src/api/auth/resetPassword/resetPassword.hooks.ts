@@ -15,5 +15,6 @@ export const useResetPasswordMutation = (
   return useMutation({
     mutationFn: resetPasswordAPI,
     ...options,
+    throwOnError: true,
   });
 };
