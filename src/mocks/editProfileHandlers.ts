@@ -1,5 +1,5 @@
 import { http, HttpResponse } from 'msw';
-import { EditProfileRequestData } from '@/types/editProfile';
+import { EditProfileRequestData } from '@/types/editProfileType';
 
 export const editProfileHandlers = [
   http.patch('/api/profile/me', async ({ request }) => {

@@ -1,4 +1,4 @@
-import { EditProfileRequestData } from '@/types/editProfile';
+import { EditProfileRequestData } from '@/types/editProfileType';
 import { MyPageResponseData } from '@/types/myPageType';
 import axios from 'axios';
 
