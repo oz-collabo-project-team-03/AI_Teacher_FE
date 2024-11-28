@@ -7,9 +7,17 @@ import useCommentModalStore from '@/stores/useCommentModalStore';
 
 // import CommentModal from '../modal/CommentModal';
 
-const FeedPostButton = () => {
+type FeedPostButtonProps = {
+  like_count: number;
+  comment_count: number;
+};
+
+const FeedPostButton: React.FC<FeedPostButtonProps> = ({
+  like_count,
+  comment_count,
+}) => {
   const [isLiked, setIsLiked] = useState(false);
-  const [likeCount, setLikeCount] = useState(13);
+  const [likeCount, setLikeCount] = useState(like_count);
   const { setIsModalOpen } = useCommentModalStore();
 
   const toggleHeart = useCallback(() => {
@@ -35,10 +43,11 @@ const FeedPostButton = () => {
           )}
         </button>
         <span className='ml-[3px] mr-[25px]'>{likeCount}</span>
+
         <button className='h-[17px] w-[17px]' onClick={openCommentModal}>
           <img src={chat} alt='fullHeartIcon' />
         </button>
-        <p className='ml-[3px]'>13</p>
+        <p className='ml-[3px]'>{comment_count}</p>
 
         {/* <span className='ml-[3px]'>{commentCount}</span> */}
       </li>
