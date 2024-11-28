@@ -48,6 +48,13 @@ export const createAxiosInterceptor = (axiosInstance: AxiosInstance) => {
       if (accessToken) {
         config.headers['Authorization'] = `Bearer ${accessToken}`;
       }
+      // 폼 데이터를 보낼 때만 Content-Type을 "multipart/form-data"로 설정
+      if (config.data instanceof FormData) {
+        config.headers['Content-Type'] = 'multipart/form-data';
+      } else {
+        config.headers['Content-Type'] = 'application/json';
+      }
+
       return config;
     },
     (error) => Promise.reject(error)
