@@ -110,7 +110,7 @@ const StudentChatRoomPage = () => {
   };
 
   return (
-    <div className='flex h-full flex-col'>
+    <div className='flex h-full flex-col pt-[72px]'>
       <Header
         title='국어 독후감 수행평가'
         rightElement={

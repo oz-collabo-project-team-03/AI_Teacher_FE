@@ -162,7 +162,7 @@ const StudentChatListPage = () => {
   );
 
   return (
-    <div className='flex h-full flex-col'>
+    <div className='flex h-full flex-col pt-[72px]'>
       <Header
         title='수행평가 챗 리스트'
         rightElement={

@@ -106,7 +106,7 @@ const TeacherChatRoomPage = () => {
   };
 
   return (
-    <div className='flex h-full flex-col'>
+    <div className='flex h-full flex-col pt-[72px]'>
       <Header
         title='경원핑'
         rightElement={

@@ -128,7 +128,7 @@ const EditProfile = () => {
     <FormProvider {...form}>
       <form
         onSubmit={form.handleSubmit(handleEditProfile, handleInvalid)}
-        className='flex flex-col h-full'
+        className='flex h-full flex-col pt-[72px]'
         autoComplete='off'
       >
         <Header title='프로필 수정' />
