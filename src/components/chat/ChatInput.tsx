@@ -8,9 +8,12 @@ const ChatInput = ({ onSendMessage }: ChatInputProps) => {
   const [inputValue, setInputValue] = useState('');
 
   const handleSendOnEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter' && inputValue.trim() !== '') {
-      onSendMessage(inputValue);
-      setInputValue('');
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      if (inputValue.trim() !== '') {
+        onSendMessage(inputValue);
+        setInputValue('');
+      }
     }
   };
 
