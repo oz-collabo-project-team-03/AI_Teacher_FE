@@ -5,6 +5,7 @@ import {
 import useCountdown from '@/hooks/signup/useCountDown';
 import { useToast } from '@/hooks/useToast';
 import { ApiErrorResponseDto } from '@/types/apiErrorType';
+import axios from 'axios';
 import { useState } from 'react';
 
 type FormValues = {
@@ -15,7 +16,7 @@ type FormValues = {
 export const useEmailVerification = (getValues: () => FormValues) => {
   const [showVerificationInput, setShowVerificationInput] = useState(false);
   const { showToast } = useToast();
-  const { start, formatTime, reset } = useCountdown(300);
+  const { start, formatTime, reset } = useCountdown(180);
 
   const { mutate: EmailCodeMutation } = useEmailVerificationMutation({
     onSuccess: (data) => {
@@ -33,6 +34,17 @@ export const useEmailVerification = (getValues: () => FormValues) => {
         reset();
       },
       onError: (error) => {
+        console.error('Login Error:', error); // 에러 상세 로깅
+
+        // Axios 에러인 경우 더 상세한 로깅
+        if (axios.isAxiosError(error)) {
+          console.error('Axios Error Details:', {
+            response: error.response?.data,
+            status: error.response?.status,
+            headers: error.response?.headers,
+          });
+        }
+
         const apiError = error as ApiErrorResponseDto;
         const errorMessage =
           apiError?.response?.data?.message ||
