@@ -1,28 +1,17 @@
 import { MyPageResponseData } from '@/types/myPageType';
-import axios from 'axios';
-
-type ProfileResponse = {
-  success: boolean;
-  message: string;
-  data: MyPageResponseData;
-};
+import axiosInstance from '../axiosInstance';
 
 export const getMyProfileAPI = async () => {
-  const { data } = await axios.get<ProfileResponse>('/api/profile/me');
+  const response =
+    await axiosInstance.get<MyPageResponseData>('/users/profile/me');
 
-  if (!data.success) {
-    throw new Error(data.message);
-  }
-
-  return data.data;
+  return response.data;
 };
 
 export const getUserProfileAPI = async (userId: string) => {
-  const { data } = await axios.get<ProfileResponse>(`/api/profile/${userId}`);
+  const response = await axiosInstance.get<MyPageResponseData>(
+    `/users/profile/${userId}`
+  );
 
-  if (!data.success) {
-    throw new Error(data.message);
-  }
-
-  return data.data;
+  return response.data;
 };

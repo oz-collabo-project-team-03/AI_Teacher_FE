@@ -1,24 +1,14 @@
 import { EditProfileRequestData } from '@/types/editProfileType';
 import { MyPageResponseData } from '@/types/myPageType';
-import axios from 'axios';
-
-type EditProfileResponse = {
-  success: boolean;
-  message: string;
-  data: MyPageResponseData;
-};
+import axiosInstance from '../axiosInstance';
 
 export const editProfileAPI = async (
   profileData: EditProfileRequestData
 ): Promise<MyPageResponseData> => {
-  const { data } = await axios.patch<EditProfileResponse>(
-    '/api/profile/me',
+  const response = await axiosInstance.patch<MyPageResponseData>(
+    '/users/profile/me',
     profileData
   );
 
-  if (!data.success) {
-    throw new Error(data.message);
-  }
-
-  return data.data;
+  return response.data;
 };
