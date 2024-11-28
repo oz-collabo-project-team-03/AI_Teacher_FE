@@ -12,5 +12,6 @@ export const useFindEmailMutation = (
   return useMutation({
     mutationFn: findEmailAPI,
     ...options,
+    throwOnError: true,
   });
 };
