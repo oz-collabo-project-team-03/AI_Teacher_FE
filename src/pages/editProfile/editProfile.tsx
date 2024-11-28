@@ -128,12 +128,12 @@ const EditProfile = () => {
     <FormProvider {...form}>
       <form
         onSubmit={form.handleSubmit(handleEditProfile, handleInvalid)}
-        className='flex h-full flex-col'
+        className='flex flex-col h-full'
         autoComplete='off'
       >
         <Header title='프로필 수정' />
 
-        <div className='flex h-full w-full flex-col overflow-y-scroll px-4 pb-12 pt-9'>
+        <div className='flex flex-col w-full h-full px-4 pb-12 overflow-y-scroll pt-9'>
           <ProfileImages
             selectedIndex={selectedImageIndex}
             onImageSelect={handleImageSelect}
