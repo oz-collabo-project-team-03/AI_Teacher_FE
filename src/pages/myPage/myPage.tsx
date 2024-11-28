@@ -1,21 +1,21 @@
 import { useEffect } from 'react';
 import { useProfileStore } from '@/stores/editProfile/useProfileStore';
-import { useNavigate, useParams } from 'react-router-dom';
-import { useToast } from '@/hooks/useToast';
+import { useParams } from 'react-router-dom';
 import ProfileHeader from '@/components/myPage/ProfileHeader';
 import CommunityInfo from '@/components/myPage/CommunityInfo';
 import PostGrid from '@/components/myPage/PostGrid';
 import { useProfileGetQuery } from '@/api/myPage/myPage.hooks';
-import { AxiosError } from 'axios';
+import LoadingPage from '../status/loadingPage';
+import ErrorPage from '../status/errorPage';
+import NotfoundPage from '../status/notfoundPage';
 
 const MyPage = () => {
   const { userId } = useParams();
-  const { showToast } = useToast();
-  const navigate = useNavigate();
   const { userInfo, setUserInfo } = useProfileStore();
 
   // userId가 있으면 해당 유저의 프로필을, 없으면 내 프로필을 조회
-  const { data, isLoading, error } = useProfileGetQuery(userId);
+  const { data, isLoading, isError, error, refetch } =
+    useProfileGetQuery(userId);
   const isOwnProfile = !userId;
   const profileData = isOwnProfile ? userInfo || data : data;
 
@@ -23,22 +23,16 @@ const MyPage = () => {
     if (data && isOwnProfile) {
       setUserInfo(data);
     }
-    if (error instanceof AxiosError) {
-      const message =
-        error.response?.status === 401
-          ? '로그인 후 이용바랍니다.'
-          : '프로필 정보를 불러오는데 실패했습니다.';
-      showToast(message);
-      if (error.response?.status === 401) {
-        navigate('/login');
-      }
-    }
-  }, [data, error, isOwnProfile]);
+  }, [data, isOwnProfile]);
 
-  if (isLoading) return <div>로딩 중...</div>;
+  if (isLoading) return <LoadingPage />;
 
-  if (!data || !profileData) {
-    return <div>데이터가 없습니다.</div>;
+  if (isError) {
+    return <ErrorPage error={error as Error} resetError={() => refetch()} />;
+  }
+
+  if (!profileData) {
+    return <NotfoundPage />;
   }
 
   const profileHeaderProps = {

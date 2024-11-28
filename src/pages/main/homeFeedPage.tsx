@@ -6,31 +6,37 @@ import MainHeader from '../../components/main/MainHeader';
 import useCommentModalStore from '@/stores/useCommentModalStore';
 import { useAllPostsInfiniteGetQuery } from '@/api/homeFeed/homeFeed.hooks';
 import { useInfiniteScroll } from '@/hooks/useInfiniteScroll';
+import LoadingPage from '../status/loadingPage';
+import ErrorPage from '../status/errorPage';
+import NotfoundPage from '../status/notfoundPage';
 
 const HomeFeedPage = () => {
   const { isModalOpen, setIsModalOpen } = useCommentModalStore();
   const closeCommentModal = () => setIsModalOpen(false);
 
-  const { data, isLoading, isError, hasNextPage, fetchNextPage } =
-    useAllPostsInfiniteGetQuery();
+  const {
+    data,
+    isLoading,
+    isError,
+    hasNextPage,
+    fetchNextPage,
+    error,
+    refetch,
+  } = useAllPostsInfiniteGetQuery();
 
   const observerRef = useInfiniteScroll({
     fetchNextPage,
     hasNextPage,
   });
 
-  if (isLoading) return <div>로딩 중...</div>;
+  if (isLoading) return <LoadingPage />;
 
   if (isError) {
-    return (
-      <div className='flex h-full items-center justify-center'>
-        <p>데이터를 불러오는데 실패했습니다. 다시 시도해주세요.</p>
-      </div>
-    );
+    return <ErrorPage error={error as Error} resetError={() => refetch()} />;
   }
 
   if (!data || !data.pages) {
-    return <div>데이터가 없습니다.</div>;
+    return <NotfoundPage />;
   }
 
   const modalVariants = {
@@ -68,7 +74,7 @@ const HomeFeedPage = () => {
           >
             <div className='relative w-full rounded-t-[15px] bg-white md:w-[425px] lg:w-[425px]'>
               <button
-                className='absolute right-4 top-1 text-3xl'
+                className='absolute text-3xl right-4 top-1'
                 onClick={closeCommentModal}
               >
                 &times;

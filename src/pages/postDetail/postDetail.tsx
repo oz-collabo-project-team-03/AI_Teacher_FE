@@ -6,6 +6,9 @@ import { useInfiniteScroll } from '@/hooks/useInfiniteScroll';
 import { useLocation, useParams } from 'react-router-dom';
 import { useEffect } from 'react';
 import Header from '@/components/common/Header';
+import NotfoundPage from '../status/notfoundPage';
+import ErrorPage from '../status/errorPage';
+import LoadingPage from '../status/loadingPage';
 
 const PostDetail = () => {
   const { userId } = useParams();
@@ -16,8 +19,15 @@ const PostDetail = () => {
   const { isModalOpen, setIsModalOpen } = useCommentModalStore();
   const closeCommentModal = () => setIsModalOpen(false);
 
-  const { data, isLoading, isError, hasNextPage, fetchNextPage } =
-    useDetailPostsInfiniteGetQuery(userId);
+  const {
+    data,
+    isLoading,
+    isError,
+    hasNextPage,
+    fetchNextPage,
+    error,
+    refetch,
+  } = useDetailPostsInfiniteGetQuery(userId);
 
   const observerRef = useInfiniteScroll({
     fetchNextPage,
@@ -33,18 +43,14 @@ const PostDetail = () => {
     }
   }, [selectedPostId]);
 
-  if (isLoading) return <div>로딩 중...</div>;
+  if (isLoading) return <LoadingPage />;
 
   if (isError) {
-    return (
-      <div className='flex items-center justify-center h-full'>
-        <p>데이터를 불러오는데 실패했습니다. 다시 시도해주세요.</p>
-      </div>
-    );
+    return <ErrorPage error={error as Error} resetError={() => refetch()} />;
   }
 
   if (!data || !data.pages) {
-    return <div>데이터가 없습니다.</div>;
+    return <NotfoundPage />;
   }
 
   const headerTitle =
