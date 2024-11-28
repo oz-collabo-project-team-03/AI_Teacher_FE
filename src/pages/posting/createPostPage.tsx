@@ -6,7 +6,7 @@ import PostTextEditor from '../../components/posting/PostTextEditor';
 
 const CreatePostPage = () => {
   return (
-    <main className='space-y-3'>
+    <main className='space-y-3 pt-[72px]'>
       <Header title='포스팅하기' />
       <section>
         <PostImageUpload />

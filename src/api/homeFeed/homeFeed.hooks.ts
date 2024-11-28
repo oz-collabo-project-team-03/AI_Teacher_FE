@@ -5,10 +5,9 @@ import {
 } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { PostListResponse } from '@/types/postType';
-import { getMyPostsAPI, getUserPostsAPI } from './postDetailAPI';
+import { getAllPostsAPI } from './homeFeedAPI';
 
-export const useDetailPostsInfiniteGetQuery = (
-  userId?: string,
+export const useAllPostsInfiniteGetQuery = (
   options?: UseInfiniteQueryOptions<
     PostListResponse,
     AxiosError,
@@ -18,11 +17,9 @@ export const useDetailPostsInfiniteGetQuery = (
   >
 ) => {
   return useInfiniteQuery({
-    queryKey: ['posts', userId],
+    queryKey: ['posts'],
     queryFn: async ({ pageParam = 1 }) => {
-      const response = userId
-        ? await getUserPostsAPI(userId, pageParam as number)
-        : await getMyPostsAPI(pageParam as number);
+      const response = await getAllPostsAPI(pageParam as number);
 
       return response;
     },

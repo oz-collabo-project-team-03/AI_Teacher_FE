@@ -11,7 +11,7 @@ const ChangeProfile = () => {
   };
 
   return (
-    <div className='flex h-full w-full flex-col'>
+    <div className='flex h-full w-full flex-col pt-[72px]'>
       <Header title='회원정보 변경' />
       {!isVerified ? (
         <PwCheck onUserPwVerification={handleUserPwVerification} />

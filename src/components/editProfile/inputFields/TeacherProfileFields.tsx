@@ -1,11 +1,24 @@
 import AuthInput from '@/components/auth/AuthInput';
-import { ProfileInputFieldsProps } from '@/types/editProfile';
+import { ProfileInputFieldsProps } from '@/types/editProfileType';
 
 const TeacherProfileFields: React.FC<ProfileInputFieldsProps> = ({
   register,
   errors,
 }) => (
   <>
+    <div className='flex flex-col items-start gap-1'>
+      <AuthInput
+        type='text'
+        label='이름'
+        placeholder='이름을 입력해주세요.'
+        {...register('nickname')}
+      />
+      {errors.nickname && (
+        <span className='text-sm text-errorTextColor'>
+          {errors.nickname.message}
+        </span>
+      )}
+    </div>
     <div className='flex flex-col items-start gap-1'>
       <AuthInput
         type='text'

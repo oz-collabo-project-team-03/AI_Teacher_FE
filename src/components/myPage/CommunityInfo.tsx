@@ -24,13 +24,13 @@ const CommunityInfo = ({ userInfo }: CommunityInfoProps) => {
   }, [userInfo]);
 
   return (
-    <ul className='flex items-center justify-center gap-6'>
+    <ul className='flex items-center justify-center w-full gap-6 px-4'>
       {communityInfo.map((info, index) => (
         <li
           key={index}
-          className='flex h-[50px] w-[83px] flex-col items-center justify-center rounded-[10px] shadow-profileInfoShadow'
+          className='flex w-[30%] flex-col items-center justify-center rounded-[10px] py-[1%] shadow-profileInfoShadow'
         >
-          <p className='text-[13px] font-normal text-textMainColor'>
+          <p className='text-[14px] font-normal text-textMainColor'>
             {info.label}
           </p>
           <p className='text-[15px] font-bold text-profilePointTextColor'>

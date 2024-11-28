@@ -5,14 +5,13 @@ import { Link, useNavigate } from 'react-router-dom';
 import Button from '@/components/common/Button';
 import Header from '@/components/common/Header';
 import ProfileImages from '@/components/editProfile/ProfileImages';
-import CommonFields from '@/components/editProfile/inputFields/CommonFields';
 import StudentProfileFields from '@/components/editProfile/inputFields/StudentProfileFields';
 import TeacherProfileFields from '@/components/editProfile/inputFields/TeacherProfileFields';
 import { AxiosError } from 'axios';
 import { useToast } from '@/hooks/useToast';
 import { useEffect, useState } from 'react';
 import { useEditProfileMutation } from '@/api/editProfile/editProfile.hooks';
-import { EditProfileRequestData } from '@/types/editProfile';
+import { EditProfileRequestData } from '@/types/editProfileType';
 import { useProfileStore } from '@/stores/editProfile/useProfileStore';
 
 const profileFormSchema = zod.discriminatedUnion('role', [
@@ -129,7 +128,7 @@ const EditProfile = () => {
     <FormProvider {...form}>
       <form
         onSubmit={form.handleSubmit(handleEditProfile, handleInvalid)}
-        className='flex flex-col h-full'
+        className='flex h-full flex-col pt-[72px]'
         autoComplete='off'
       >
         <Header title='프로필 수정' />
@@ -143,7 +142,6 @@ const EditProfile = () => {
           />
 
           <div className='flex flex-col gap-4 pb-4'>
-            <CommonFields register={register} errors={errors} />
             {role === 'student' && (
               <StudentProfileFields register={register} errors={errors} />
             )}

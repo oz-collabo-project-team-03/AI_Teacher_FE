@@ -1,32 +1,21 @@
-import { PostDetailResponse } from '@/types/postDetail';
-import axios from 'axios';
+import { PostListResponse } from '@/types/postType';
+import axiosInstance from '../axiosInstance';
 
-type PostsApiResponse = {
-  success: boolean;
-  message: string;
-  data: PostDetailResponse;
-};
-
-export const getMyPostsAPI = async (page: number = 1) => {
-  const { data } = await axios.get<PostsApiResponse>('/api/posts/me', {
-    params: { page },
+export const getMyPostsAPI = async (pageParam: number) => {
+  const response = await axiosInstance.get<PostListResponse>('/posts/me', {
+    params: { page: pageParam },
   });
 
-  if (!data.success) {
-    throw new Error(data.message);
-  }
-
-  return data.data;
+  return response.data;
 };
 
-export const getUserPostsAPI = async (userId: string, page: number = 1) => {
-  const { data } = await axios.get<PostsApiResponse>(`/api/posts/${userId}`, {
-    params: { page },
-  });
+export const getUserPostsAPI = async (userId: string, pageParam: number) => {
+  const response = await axiosInstance.get<PostListResponse>(
+    `/posts/users/${userId}`,
+    {
+      params: { page: pageParam },
+    }
+  );
 
-  if (!data.success) {
-    throw new Error(data.message);
-  }
-
-  return data.data;
+  return response.data;
 };

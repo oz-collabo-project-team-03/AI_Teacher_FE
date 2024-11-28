@@ -3,14 +3,41 @@ import { AnimatePresence, motion } from 'framer-motion';
 import CommentModal from '@components/modal/CommentModal';
 import FeedPost from '../../components/main/FeedPost';
 import MainHeader from '../../components/main/MainHeader';
-import { twMerge } from 'tailwind-merge';
 import useCommentModalStore from '@/stores/useCommentModalStore';
+import { useAllPostsInfiniteGetQuery } from '@/api/homeFeed/homeFeed.hooks';
+import { useInfiniteScroll } from '@/hooks/useInfiniteScroll';
+import LoadingPage from '../status/loadingPage';
+import ErrorPage from '../status/errorPage';
+import NotfoundPage from '../status/notfoundPage';
 
 const HomeFeedPage = () => {
-  const posts = [1, 2, 3]; //임시배열
-  const hideScrollbar = true;
   const { isModalOpen, setIsModalOpen } = useCommentModalStore();
   const closeCommentModal = () => setIsModalOpen(false);
+
+  const {
+    data,
+    isLoading,
+    isError,
+    hasNextPage,
+    fetchNextPage,
+    error,
+    refetch,
+  } = useAllPostsInfiniteGetQuery();
+
+  const observerRef = useInfiniteScroll({
+    fetchNextPage,
+    hasNextPage,
+  });
+
+  if (isLoading) return <LoadingPage />;
+
+  if (isError) {
+    return <ErrorPage error={error as Error} resetError={() => refetch()} />;
+  }
+
+  if (!data || !data.pages) {
+    return <NotfoundPage />;
+  }
 
   const modalVariants = {
     open: {
@@ -26,22 +53,14 @@ const HomeFeedPage = () => {
   };
 
   return (
-    <div className='h-svh'>
+    <div className='h-full overflow-auto pb-[64px] pt-[72px]'>
       <MainHeader />
-      <div
-        className={twMerge(
-          'h-full overflow-auto pb-[82px] pt-[72px]',
-          hideScrollbar && 'scrollbar-hide'
-        )}
-      >
-        <div className='space-y-8'>
-          {' '}
-          {/* 각 게시물 간 여백 추가 */}
-          {posts.map((index) => (
-            <FeedPost key={index} />
-          ))}
-        </div>
-      </div>
+      {data.pages.map((page) =>
+        page.posts.map((post) => <FeedPost key={post.post_id} posts={post} />)
+      )}
+
+      <div ref={observerRef} className='h-2' />
+
       {/* 모달 */}
       <AnimatePresence mode='wait'>
         {isModalOpen && (
@@ -55,7 +74,7 @@ const HomeFeedPage = () => {
           >
             <div className='relative w-full rounded-t-[15px] bg-white md:w-[425px] lg:w-[425px]'>
               <button
-                className='absolute right-4 top-1 text-3xl'
+                className='absolute text-3xl right-4 top-1'
                 onClick={closeCommentModal}
               >
                 &times;

@@ -13,7 +13,7 @@ const Header = ({ title, rightElement }: HeaderProps) => {
   //   navigate(-1);
   // };
   return (
-    <header className='flex items-center justify-between border-b border-borderColor bg-white px-2 py-6'>
+    <header className='fixed top-0 z-10 flex h-[72px] w-full items-center justify-between border-b border-borderColor bg-white px-2 md:w-[425px]'>
       <div className='flex items-center'>
         <button onClick={() => navigate(-1)} type='button' className='mr-2'>
           <img src={backIcon} alt='' />
