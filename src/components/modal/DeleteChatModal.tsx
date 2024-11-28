@@ -16,7 +16,7 @@ const DeleteChatModal = ({ onClose, onDelete }: DeleteChatModalProps) => {
       onClick={onClose}
     >
       <div
-        className='h-[210px] w-[337px] rounded-[16px] border border-inputBorderColor bg-white p-[8px]'
+        className='h-[210px] w-full max-w-[390px] rounded-[16px] border border-inputBorderColor bg-white p-[8px]'
         onClick={handleModalClick}
       >
         <div className='flex flex-col items-center justify-center space-y-2 py-[40px]'>
