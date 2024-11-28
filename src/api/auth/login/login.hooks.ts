@@ -12,5 +12,6 @@ export const useLoginMutation = (
   return useMutation({
     mutationFn: loginAPI,
     ...options,
+    throwOnError: true,
   });
 };
