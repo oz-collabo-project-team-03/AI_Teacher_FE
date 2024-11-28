@@ -13,5 +13,6 @@ export const useSignupMutation = (
   return useMutation({
     mutationFn: signupAPI,
     ...options,
+    throwOnError: true,
   });
 };

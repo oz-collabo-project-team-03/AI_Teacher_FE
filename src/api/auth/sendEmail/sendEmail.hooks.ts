@@ -18,6 +18,7 @@ export const useEmailVerificationMutation = (
   return useMutation({
     mutationFn: sendEmailVerificationAPI,
     ...options,
+    throwOnError: true,
   });
 };
 
@@ -32,5 +33,6 @@ export const useEmailVerificationCodeMutation = (
   return useMutation({
     mutationFn: verifyEmailCodeAPI,
     ...options,
+    throwOnError: true,
   });
 };
