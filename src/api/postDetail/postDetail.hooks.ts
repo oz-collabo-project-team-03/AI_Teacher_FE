@@ -7,7 +7,7 @@ import { AxiosError } from 'axios';
 import { PostListResponse } from '@/types/postType';
 import { getMyPostsAPI, getUserPostsAPI } from './postDetailAPI';
 
-export const usePostsInfiniteGetQuery = (
+export const useDetailPostsInfiniteGetQuery = (
   userId?: string,
   options?: UseInfiniteQueryOptions<
     PostListResponse,
