@@ -127,8 +127,13 @@ const SignupPage = () => {
                   {...register('password')}
                 />
                 {errors.password && (
-                  <p className='mt-1 text-sm text-errorTextColor'>
+                  <p className='mt-1 whitespace-pre text-sm text-errorTextColor'>
                     {errors.password.message}
+                  </p>
+                )}
+                {!errors.password && (
+                  <p className='mt-1 whitespace-pre text-xs text-captionColor'>
+                    문자, 숫자, 특수문자(!@#$%^&*)포함 10~20자리 이내
                   </p>
                 )}
               </div>
@@ -226,8 +231,8 @@ const SignupPage = () => {
               <div>
                 <AuthInput
                   type='text'
-                  placeholder='닉네임을 입력해주세요.'
-                  label='닉네임'
+                  placeholder='이름을 입력해주세요. ex)김수행'
+                  label='이름'
                   {...register('nickname')}
                 />
                 {errors.nickname && (
