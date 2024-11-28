@@ -1,10 +1,11 @@
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import Comment from '../comment/Comment';
 import CommentHeader from '../comment/CommentHeader';
 import sendIcon from '../../assets/comment/send.svg';
 import student1 from '../../assets/editProfile/student/studentIcon2.png';
+import { useToast } from '@/hooks/useToast';
 
 type commentFormData = {
   comment: string;
@@ -15,6 +16,7 @@ const CommentModal = () => {
   const [isInputEmpty, setIsInputEmpty] = useState(true);
   const [commentValue, setCommentValue] = useState('');
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
+  const { showToast } = useToast();
 
   const {
     register,
@@ -36,13 +38,14 @@ const CommentModal = () => {
     if (newComment) {
       setComments((prevComments) => [...prevComments, newComment]);
       reset();
-      setIsInputEmpty(true);
       setCommentValue('');
+      setIsInputEmpty(true);
       if (textareaRef.current) {
         textareaRef.current.style.height = '30px'; // textarea 높이 초기화
       }
     } else {
-      console.log('댓글이 비어있습니다.');
+      showToast('댓글을 입력해주세요.');
+      setIsInputEmpty(true);
     }
   };
 
@@ -58,6 +61,13 @@ const CommentModal = () => {
     setIsInputEmpty(value.trim() === '');
   };
 
+  //에러처리
+  useEffect(() => {
+    if (errors.comment) {
+      showToast('댓글을 입력해주세요.');
+    }
+  }, [errors.comment, showToast]);
+
   return (
     <section className='flex h-[70vh] flex-col'>
       <CommentHeader />
@@ -69,12 +79,12 @@ const CommentModal = () => {
         className='bottom-0 flex items-center gap-3 border-t border-chatListHoverColor px-[17px] py-[16px]'
       >
         <img src={student1} alt='comment user' className='h-[35px]' />
-        <div className='relative flex w-full items-center rounded-[15px] bg-commuInputColor p-[14px]'>
+        <div className='relative flex w-full items-center rounded-[15px] bg-commuInputColor p-[14px] placeholder:text-center'>
           <textarea
             value={commentValue}
             {...register('comment', { required: '댓글을 입력해주세요.' })}
             onChange={handleTextareaInput}
-            className='scrollbar-hide h-[30px] w-[80%] resize-none border-none bg-transparent p-0 text-[14px] focus:ring-0'
+            className='scrollbar-hide mt-[7px] h-[30px] w-[90%] resize-none border-none bg-transparent p-0 text-[14px] focus:ring-0'
             placeholder='댓글을 입력해주세요'
             aria-label='댓글 입력'
             maxLength={MAX_LENGTH}
@@ -82,9 +92,7 @@ const CommentModal = () => {
               textareaRef.current = el;
             }}
           />
-          {errors.comment && (
-            <p className='text-red-500'>{errors.comment.message}</p>
-          )}
+
           <button
             type='submit'
             className='absolute right-1 transform rounded p-2 transition-transform'
