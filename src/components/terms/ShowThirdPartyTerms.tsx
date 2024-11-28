@@ -25,12 +25,21 @@ const ShowThirdPartyTerms = ({
         >
           [필수] 개인정보 제3자 제공에 동의
         </CheckBox>
-        <button
-          className='ml-2 text-sm text-captionColor'
-          onClick={toggleThirdPartyTerms}
-        >
-          더보기
-        </button>
+        {!showThirdPartyTerms ? (
+          <button
+            className='ml-2 text-sm text-captionColor'
+            onClick={toggleThirdPartyTerms}
+          >
+            더보기
+          </button>
+        ) : (
+          <button
+            className='ml-2 text-sm text-captionColor'
+            onClick={toggleThirdPartyTerms}
+          >
+            간략히
+          </button>
+        )}
       </div>
       <div>
         <div

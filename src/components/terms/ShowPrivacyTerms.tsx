@@ -26,12 +26,21 @@ const ShowPrivacyTerms = ({
         >
           [필수] 개인정보 수집 및 이용동의
         </CheckBox>
-        <button
-          className='ml-2 text-sm text-captionColor'
-          onClick={togglePrivacyTerms}
-        >
-          더보기
-        </button>
+        {!showPrivacyTerms ? (
+          <button
+            className='ml-2 text-sm text-captionColor'
+            onClick={togglePrivacyTerms}
+          >
+            더보기
+          </button>
+        ) : (
+          <button
+            className='ml-2 text-sm text-captionColor'
+            onClick={togglePrivacyTerms}
+          >
+            간략히
+          </button>
+        )}
       </div>
       <div>
         <div
