@@ -5,11 +5,28 @@ type PostGridProps = {
   title: string;
   posts: Post[];
   userId?: string;
+  post_count: number;
+  isOwnProfile: boolean;
 };
 
-const PostGrid = ({ posts, title, userId }: PostGridProps) => (
+const PostGrid = ({
+  posts,
+  title,
+  userId,
+  post_count,
+  isOwnProfile,
+}: PostGridProps) => (
   <div className='flex w-[360px] flex-col gap-3'>
-    <p className='text-left text-xs font-medium text-captionColor'>{title}</p>
+    <div className='flex items-center gap-1'>
+      <span className='text-sm font-semibold text-left text-textMainColor'>
+        {title}
+      </span>
+      {!isOwnProfile && (
+        <span className='text-[15px] font-bold text-profilePointTextColor'>
+          {post_count}
+        </span>
+      )}
+    </div>
     <div className='flex flex-wrap gap-[6px]'>
       {posts.map((post) => (
         <Link
@@ -25,7 +42,7 @@ const PostGrid = ({ posts, title, userId }: PostGridProps) => (
             <img
               src={post.post_image}
               alt='게시글 이미지'
-              className='h-full w-full object-cover'
+              className='object-cover w-full h-full'
             />
           </div>
         </Link>

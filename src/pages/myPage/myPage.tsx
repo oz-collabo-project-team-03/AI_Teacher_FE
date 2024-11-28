@@ -57,12 +57,14 @@ const MyPage = () => {
         isOwnProfile={isOwnProfile}
       />
 
-      <CommunityInfo userInfo={profileData} />
+      {isOwnProfile && <CommunityInfo userInfo={profileData} />}
 
       <PostGrid
         posts={profileData.posts}
         title={profileData.role === 'student' ? '내 게시글' : '협업 게시글'}
         userId={userId}
+        post_count={profileData.post_count}
+        isOwnProfile={isOwnProfile}
       />
     </div>
   );

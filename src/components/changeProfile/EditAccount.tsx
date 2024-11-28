@@ -14,11 +14,7 @@ const EditAccount = ({ userType }: EditAccountProps) => {
     <div className='flex h-full flex-col justify-between gap-4 px-4 pb-[48px] pt-[38px]'>
       <form className='flex flex-col gap-4'>
         {/* 공통 입력 필드 */}
-        <AuthInput
-          type='text'
-          label='아이디(이메일)'
-          placeholder='example@email.com'
-        />
+        <AuthInput type='text' label='이메일' placeholder='example@email.com' />
         <AuthInput
           type='password'
           label='패스워드'
