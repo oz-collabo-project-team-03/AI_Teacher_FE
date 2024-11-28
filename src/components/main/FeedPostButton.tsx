@@ -12,10 +12,7 @@ type FeedPostButtonProps = {
   comment_count: number;
 };
 
-const FeedPostButton: React.FC<FeedPostButtonProps> = ({
-  like_count,
-  comment_count,
-}) => {
+const FeedPostButton = ({ like_count, comment_count }: FeedPostButtonProps) => {
   const [isLiked, setIsLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(like_count);
   const { setIsModalOpen } = useCommentModalStore();

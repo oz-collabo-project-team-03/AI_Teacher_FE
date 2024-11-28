@@ -7,7 +7,7 @@ type FeedPostProps = {
   posts: PostDetail;
 };
 
-const FeedPost: React.FC<FeedPostProps> = ({ posts }) => {
+const FeedPost = ({ posts }: FeedPostProps) => {
   const feedPostuserInfoProps = {
     nickname: posts.nickname,
     profile_image: posts.profile_image,

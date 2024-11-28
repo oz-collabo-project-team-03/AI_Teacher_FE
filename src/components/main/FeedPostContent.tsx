@@ -11,13 +11,13 @@ type FeedPostContentProps = {
   created_at: string;
 };
 
-const FeedPostContent: React.FC<FeedPostContentProps> = ({
+const FeedPostContent = ({
   like_count,
   comment_count,
   content,
   teacher,
   created_at,
-}) => {
+}: FeedPostContentProps) => {
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     return `${date.getFullYear().toString().slice(2)}년 ${(date.getMonth() + 1).toString().padStart(2, '0')}월 ${date.getDate().toString().padStart(2, '0')}일`;

@@ -10,11 +10,7 @@ type FeedPostSliderProps = {
   image3: string | null;
 };
 
-const FeedPostSlider: React.FC<FeedPostSliderProps> = ({
-  image1,
-  image2,
-  image3,
-}) => {
+const FeedPostSlider = ({ image1, image2, image3 }: FeedPostSliderProps) => {
   const settings = {
     dots: true, //하단 페이지네이션 점 표시
     infinite: false, // 무한반복 여부

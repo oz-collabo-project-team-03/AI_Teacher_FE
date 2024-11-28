@@ -5,12 +5,12 @@ type FeedPostUserInfoProps = {
   interest: string;
 };
 
-const FeedPostUserInfo: React.FC<FeedPostUserInfoProps> = ({
+const FeedPostUserInfo = ({
   nickname,
   profile_image,
   career_aspiration,
   interest,
-}) => {
+}: FeedPostUserInfoProps) => {
   return (
     <header className='flex h-[54px] w-full items-center px-[7px] py-[8px]'>
       <img
