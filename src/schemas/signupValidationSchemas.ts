@@ -8,19 +8,22 @@ export const baseSignupSchema = zod.object({
   password: zod
     .string()
     .regex(
-      /^(?=.*[a-zA-Z])(?=.*\d).{8,20}$/,
-      '영문,숫자가 혼합된 10~20자리의 비밀번호를 입력해주세요.'
+      /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*]).{10,20}$/,
+      '문자, 특수문자, 숫자가 혼합된 10~20자리의 비밀번호를 입력해주세요.'
     )
     .min(10, { message: '비밀번호는 10자 이상이어야 합니다.' })
     .max(20, { message: '비밀번호는 20자 이하여야 합니다.' }),
   confirmPassword: zod.string(),
-  nickname: zod.string().min(1, { message: '닉네임은 필수 입력값입니다.' }),
   phone: zod
     .string()
     .regex(/^0\d{9,10}$/, '전화번호 형식이 유효하지 않습니다.'),
 });
 
 export const studentSignupSchema = baseSignupSchema.extend({
+  nickname: zod
+    .string()
+    .min(1, { message: '닉네임은 필수 입력값입니다. 20자 이내' })
+    .max(20),
   school: zod.string().min(1, { message: '학교명을 입력해주세요.' }),
   grade: zod.number().min(1, { message: '학년은 1 이상이어야 합니다.' }),
   careeraspiration: zod
@@ -30,6 +33,7 @@ export const studentSignupSchema = baseSignupSchema.extend({
 });
 
 export const teacherSignupSchema = baseSignupSchema.extend({
+  name: zod.string().min(1, { message: '이름은 필수 입력값입니다.' }).max(10),
   organization_type: zod
     .string()
     .min(1, { message: '소속종류를 입력해주세요.' }),

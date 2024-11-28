@@ -1,0 +1,48 @@
+import { useLogoutMutation } from '@/api/auth/logout/logout.hooks';
+import { LogoutResponseDto } from '@/api/auth/logout/logoutType';
+import { useToast } from '@/hooks/useToast';
+import { ApiErrorResponseDto } from '@/types/apiErrorType';
+import axios from 'axios';
+import { Cookies } from 'react-cookie';
+import { useNavigate } from 'react-router-dom';
+
+export const useLogout = () => {
+  const navigate = useNavigate();
+  const { showToast } = useToast();
+  const cookies = new Cookies();
+
+  const { mutate: LogoutMutation } = useLogoutMutation({
+    onSuccess: (data: LogoutResponseDto) => {
+      showToast(data.message);
+      const allCookies = cookies.getAll();
+      Object.keys(allCookies).forEach((cookieName) =>
+        cookies.remove(cookieName, { path: '/' })
+      );
+      navigate('/', { replace: true });
+    },
+    onError: (error) => {
+      console.error('Logout Error:', error);
+
+      if (axios.isAxiosError(error)) {
+        console.error('Axios Error Details:', {
+          response: error.response?.data,
+          status: error.response?.status,
+          headers: error.response?.headers,
+        });
+      }
+
+      const apiError = error as ApiErrorResponseDto;
+      const errorMessage =
+        apiError?.response?.data?.message ||
+        '로그아웃에 실패하였습니다. 다시 시도해주세요.';
+      showToast(errorMessage);
+    },
+  });
+
+  const handleLogout = () => {
+    const accessToken = cookies.get('accessToken');
+    LogoutMutation(accessToken);
+  };
+
+  return { handleLogout };
+};

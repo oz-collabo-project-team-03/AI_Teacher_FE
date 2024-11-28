@@ -1,62 +1,18 @@
-import { useNavigate } from 'react-router-dom';
-
-import { useResetPasswordMutation } from '@/api/auth/resetPassword/resetPassword.hooks';
-import { ResetPasswordResponseDto } from '@/api/auth/resetPassword/resetPasswordType';
 import AuthInput from '@/components/auth/AuthInput';
 import Button from '@/components/common/Button';
-import { useToast } from '@/hooks/useToast';
-import { ApiErrorResponseDto } from '@/types/apiErrorType';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useState } from 'react';
-import { FormProvider, useForm } from 'react-hook-form';
-import { z as zod } from 'zod';
-
-const STEP = {
-  INPUT_PHONE: 1, // 전화번호 입력
-  DISPLAY_EMAIL: 2, // 이메일 결과 표시
-};
-const emailSchema = zod.object({
-  email: zod.string().email({ message: '이메일 형식이 아닙니다.' }),
-});
+import { useResetPassword } from '@/hooks/resetPassword/useResetPassword';
+import { FormProvider } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
 
 const ResetPasswordPage = () => {
-  const [step, setStep] = useState(STEP.INPUT_PHONE);
-
   const navigate = useNavigate();
-  const { showToast } = useToast();
-
-  const form = useForm({
-    resolver: zodResolver(emailSchema),
-    defaultValues: {
-      email: '',
-    },
-    mode: 'onChange',
-  });
+  const { form, step, tempEmail, handleResetPassword, RESET_PASSWORD_STEP } =
+    useResetPassword();
 
   const {
     register,
     formState: { errors },
-    getValues,
   } = form;
-
-  const { mutate: ResetPasswordMutation } = useResetPasswordMutation({
-    onSuccess: (data: ResetPasswordResponseDto) => {
-      setStep(STEP.DISPLAY_EMAIL);
-      showToast(data.message);
-    },
-    onError: (error) => {
-      const apiError = error as ApiErrorResponseDto;
-      const errorMessage =
-        apiError?.response?.data?.message ||
-        '비밀번호 재설정에 실패했습니다. 다시 시도해주세요.';
-      showToast(errorMessage);
-    },
-  });
-
-  const handleResetPassword = async () => {
-    const email = getValues();
-    ResetPasswordMutation(email);
-  };
 
   return (
     <FormProvider {...form}>
@@ -72,7 +28,7 @@ const ResetPasswordPage = () => {
             </h1>
             <div className='mb-[50px] text-lg text-captionColor'>
               <p className='font-semibold text-textMainColor'>비밀번호 찾기</p>
-              {step === STEP.INPUT_PHONE && (
+              {step === RESET_PASSWORD_STEP.INPUT_EMAIL && (
                 <div className='mt-3'>
                   <p className='text-base'>
                     비밀번호를 찾으려면 가입 시 사용한
@@ -81,7 +37,7 @@ const ResetPasswordPage = () => {
                 </div>
               )}
             </div>
-            {step === STEP.INPUT_PHONE && (
+            {step === RESET_PASSWORD_STEP.INPUT_EMAIL && (
               <>
                 <div className='flex flex-col gap-4'>
                   <AuthInput
@@ -98,19 +54,30 @@ const ResetPasswordPage = () => {
                 )}
               </>
             )}
-            {step === STEP.DISPLAY_EMAIL && (
-              <div className='flex h-full flex-col items-center gap-1'>
-                <p>입력하신 이메일로 임시비밀번호를 발송했습니다.</p>
-                <p>메일함을 확인해주세요.</p>
+            {step === RESET_PASSWORD_STEP.DISPLAY_TEMP_PASSWORD && (
+              <div className='flex h-full flex-col items-center gap-4'>
+                <div className='text-center'>
+                  <p className='mb-2'>임시 비밀번호가 발급되었습니다.</p>
+                  <p className='text-sm text-repleText'>
+                    발급된 임시 비밀번호로 로그인한 후,
+                    <br /> 반드시 새 비밀번호로 변경해 주세요.
+                  </p>
+                </div>
+                <div className='rounded-lg bg-gray-100 p-4'>
+                  <p className='text-center'>
+                    임시 비밀번호:{' '}
+                    <span className='font-bold'>{tempEmail}</span>
+                  </p>
+                </div>
               </div>
             )}
           </div>
         </div>
         <div className='mt-auto flex flex-col gap-4'>
-          {step === STEP.INPUT_PHONE && (
+          {step === RESET_PASSWORD_STEP.INPUT_EMAIL && (
             <Button onClick={handleResetPassword}>다음</Button>
           )}
-          {step === STEP.DISPLAY_EMAIL && (
+          {step === RESET_PASSWORD_STEP.DISPLAY_TEMP_PASSWORD && (
             <>
               <Button onClick={() => navigate('/login', { replace: true })}>
                 로그인하기

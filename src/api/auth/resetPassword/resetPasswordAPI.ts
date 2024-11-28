@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axiosInstance from '@/api/axiosInstance';
 import {
   ResetPasswordParams,
   ResetPasswordResponseDto,
@@ -7,8 +7,8 @@ import {
 export const resetPasswordAPI = async (
   resetPasswordData: ResetPasswordParams
 ): Promise<ResetPasswordResponseDto> => {
-  const response = await axios.post<ResetPasswordResponseDto>(
-    '/auth/reset/password',
+  const response = await axiosInstance.post<ResetPasswordResponseDto>(
+    '/auth/verify/password',
     resetPasswordData
   );
   return response.data;

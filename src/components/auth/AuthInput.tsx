@@ -47,7 +47,7 @@ const AuthInput = forwardRef<HTMLInputElement, TInputProps>(
         <input
           ref={ref}
           className={twMerge(
-            'w-9/12 rounded-[10px] border-0 outline-none ring-0 ring-inset ring-inputBorderColor placeholder:text-inputBorderColor focus:ring-0 focus:ring-inset',
+            'w-9/12 rounded-[10px] border-0 outline-none ring-0 ring-inset ring-inputBorderColor placeholder:font-pre placeholder:text-inputBorderColor focus:ring-0 focus:ring-inset',
             className
           )}
           onFocus={() => setIsFocused(true)}

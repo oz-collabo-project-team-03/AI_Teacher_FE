@@ -5,5 +5,5 @@ export type ResetPasswordParams = {
 export type ResetPasswordResponseDto = {
   message: string;
   email: string;
-  new_password: string;
+  temp_password: string;
 };
