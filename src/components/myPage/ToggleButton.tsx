@@ -1,10 +1,13 @@
-import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
 import { editIcon, logoutIcon, toggleIcon } from '@/assets/assets';
+import { useLogout } from '@/hooks/logout/useLogout';
+import { AnimatePresence, motion } from 'framer-motion';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 const ToggleButton = () => {
   const [isOpen, setIsOpen] = useState(false);
+
+  const { handleLogout } = useLogout();
 
   const containerVariants = {
     // 초기 상태: 컨테이너가 완전히 투명한 상태
@@ -58,7 +61,7 @@ const ToggleButton = () => {
         onMouseEnter={() => setIsOpen(true)}
         onMouseLeave={() => setIsOpen(false)}
       >
-        <div className='shadow-ToggleButtonShadow relative z-20 h-[25px] w-[25px] rounded-full'>
+        <div className='relative z-20 h-[25px] w-[25px] rounded-full shadow-ToggleButtonShadow'>
           <img
             src={toggleIcon}
             alt='설정 아이콘'
@@ -77,7 +80,7 @@ const ToggleButton = () => {
             >
               <motion.div
                 variants={itemVariants}
-                className='shadow-ToggleButtonShadow h-[25px] w-[25px] rounded-full'
+                className='h-[25px] w-[25px] rounded-full shadow-ToggleButtonShadow'
               >
                 <Link to='/edit-profile'>
                   <img
@@ -89,7 +92,8 @@ const ToggleButton = () => {
               </motion.div>
               <motion.div
                 variants={itemVariants}
-                className='shadow-ToggleButtonShadow h-[25px] w-[25px] rounded-full'
+                onClick={handleLogout}
+                className='h-[25px] w-[25px] rounded-full shadow-ToggleButtonShadow'
               >
                 <img
                   src={logoutIcon}
