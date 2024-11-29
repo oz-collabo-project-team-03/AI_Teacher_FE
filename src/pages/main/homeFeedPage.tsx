@@ -102,7 +102,6 @@ const HomeFeedPage = () => {
               <CommentModal />
             </div>
           </motion.div>
-          // </div>
         )}
       </AnimatePresence>
       {isFirstLogin && (
