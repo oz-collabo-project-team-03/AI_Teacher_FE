@@ -74,7 +74,7 @@ const HomeFeedPage = () => {
           >
             <div className='relative w-full rounded-t-[15px] bg-white md:w-[425px] lg:w-[425px]'>
               <button
-                className='absolute text-3xl right-4 top-1'
+                className='absolute right-4 top-1 text-3xl'
                 onClick={closeCommentModal}
               >
                 &times;

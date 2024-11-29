@@ -58,7 +58,7 @@ const MyPage = () => {
   };
 
   return (
-    <div className='flex flex-col items-center w-full px-4 pt-12 pb-20 m-auto gap-9'>
+    <div className='m-auto flex w-full flex-col items-center gap-9 px-4 pb-20 pt-12'>
       <ProfileHeader {...profileHeaderProps} />
 
       {isOwnProfile && <CommunityInfo userInfo={profileData} />}
