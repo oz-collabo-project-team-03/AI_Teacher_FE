@@ -1,16 +1,24 @@
 import { AnimatePresence, motion } from 'framer-motion';
 
+import { useAllPostsInfiniteGetQuery } from '@/api/homeFeed/homeFeed.hooks';
+import TeacherListModal from '@/components/modal/TeacherListModal';
+import { useInfiniteScroll } from '@/hooks/useInfiniteScroll';
+import useCommentModalStore from '@/stores/useCommentModalStore';
 import CommentModal from '@components/modal/CommentModal';
+import { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import FeedPost from '../../components/main/FeedPost';
 import MainHeader from '../../components/main/MainHeader';
-import useCommentModalStore from '@/stores/useCommentModalStore';
-import { useAllPostsInfiniteGetQuery } from '@/api/homeFeed/homeFeed.hooks';
-import { useInfiniteScroll } from '@/hooks/useInfiniteScroll';
-import LoadingPage from '../status/loadingPage';
 import ErrorPage from '../status/errorPage';
+import LoadingPage from '../status/loadingPage';
 import NotfoundPage from '../status/notfoundPage';
 
 const HomeFeedPage = () => {
+  const location = useLocation();
+  const [isFirstLogin, setIsFirstLogin] = useState(
+    location.state?.isFirstLogin || false
+  );
+
   const { isModalOpen, setIsModalOpen } = useCommentModalStore();
   const closeCommentModal = () => setIsModalOpen(false);
 
@@ -28,6 +36,18 @@ const HomeFeedPage = () => {
     fetchNextPage,
     hasNextPage,
   });
+
+  // 선생님 모달 닫는 함수
+  const closeTeacherModal = () => {
+    setIsFirstLogin(false); // 모달을 닫으면 최초 로그인 상태 해제
+  };
+
+  useEffect(() => {
+    // 최초 로그인 시 한 번만 실행되도록 보장
+    if (isFirstLogin) {
+      console.log('First login detected');
+    }
+  }, [isFirstLogin]);
 
   if (isLoading) return <LoadingPage />;
 
@@ -85,6 +105,9 @@ const HomeFeedPage = () => {
           // </div>
         )}
       </AnimatePresence>
+      {isFirstLogin && (
+        <TeacherListModal closeTeacherModal={closeTeacherModal} />
+      )}
     </div>
   );
 };
