@@ -16,7 +16,7 @@ const Landing = () => {
   };
 
   return (
-    <div className='relative flex items-center justify-center w-full h-full overflow-hidden select-none'>
+    <div className='relative flex h-full w-full select-none items-center justify-center overflow-hidden'>
       <MainLanding onClick={handleClick} />
       <div
         className={twMerge(

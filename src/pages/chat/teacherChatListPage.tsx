@@ -30,7 +30,7 @@ const TeacherChatListPage = () => {
   return (
     <div className='flex h-full flex-col pt-[72px]'>
       <Header title='최신 채팅' />
-      <div className='flex-grow overflow-y-auto scrollbar-hide'>
+      <div className='scrollbar-hide flex-grow overflow-y-auto'>
         {chatList.map((chat) => (
           <ChatItem
             key={chat.id}

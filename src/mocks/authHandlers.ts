@@ -184,7 +184,6 @@ export const AuthHandlers = [
     }
 
     // 로그인 성공 시 토큰과 함께 유저 정보 반환
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { password: _, ...userWithoutPassword } = MOCK_USER;
 
     return HttpResponse.json(
@@ -220,7 +219,6 @@ export const AuthHandlers = [
       );
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { password, ...userWithoutPassword } = MOCK_USER;
 
     // 응답에 쿠키 설정하기 (필요한 경우)
