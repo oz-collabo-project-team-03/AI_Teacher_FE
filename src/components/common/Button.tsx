@@ -6,17 +6,23 @@ type ButtonProps = Omit<React.ComponentPropsWithoutRef<'button'>, 'variant'> & {
   variant?: ButtonVariant;
 };
 const Button = (props: ButtonProps) => {
-  const { children, className, variant = 'active', ...rest } = props;
+  const {
+    children,
+    className,
+    variant = props.disabled ? 'cancel' : 'active',
+    ...rest
+  } = props;
 
   const variantStyles = {
     active: 'bg-primaryColor text-white hover:bg-primaryHoverColor',
     cancel: 'bg-cancelButtonColor text-white',
   };
+
   return (
     <>
       <button
         className={twMerge(
-          `flex w-full items-center justify-center rounded-lg py-3.5 transition-colors`,
+          `flex w-full cursor-pointer items-center justify-center rounded-lg py-3.5 transition-colors`,
           variantStyles[variant],
           className
         )}
