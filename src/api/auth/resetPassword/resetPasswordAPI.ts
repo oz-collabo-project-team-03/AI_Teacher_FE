@@ -8,7 +8,7 @@ export const resetPasswordAPI = async (
   resetPasswordData: ResetPasswordParams
 ): Promise<ResetPasswordResponseDto> => {
   const response = await axiosInstance.post<ResetPasswordResponseDto>(
-    '/auth/verify/password',
+    '/auth/reset/password',
     resetPasswordData
   );
   return response.data;

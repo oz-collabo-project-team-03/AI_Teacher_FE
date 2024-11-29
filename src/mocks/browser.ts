@@ -1,16 +1,18 @@
 import { setupWorker } from 'msw/browser';
 import { AuthHandlers } from './authHandlers';
 import { editProfileHandlers } from './editProfileHandlers';
+import { homeFeedHandlers } from './homeFeedHandlers';
 import { myPageHandlers } from './myPageHandlers';
 import { postDetailHandlers } from './postDetailHandlers';
-import { homeFeedHandlers } from './homeFeedHandlers';
+import { teachersAndGroupsHandler } from './teachersAndGroupsHandlers';
 
 export const worker = setupWorker(
   ...AuthHandlers,
   ...myPageHandlers,
   ...editProfileHandlers,
   ...postDetailHandlers,
-  ...homeFeedHandlers
+  ...homeFeedHandlers,
+  ...teachersAndGroupsHandler
 );
 
 worker.start();

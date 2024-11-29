@@ -34,10 +34,21 @@ export const useLogin = () => {
   /**로그인 함수 */
   const { mutate: LoginMutation } = useLoginMutation({
     onSuccess: (data: LoginResponseDto) => {
-      if (data.role === 'student') {
-        navigate('/student-main', { replace: true });
-      } else if (data.role === 'teacher') {
-        navigate('/teacher-main', { replace: true });
+      if (data.first_login) {
+        if (data.role === 'student') {
+          navigate('/student-main', {
+            replace: true,
+            state: { isFirstLogin: true },
+          });
+        } else if (data.role === 'teacher') {
+          navigate('/teacher-main', { replace: true });
+        }
+      } else {
+        if (data.role === 'student') {
+          navigate('/student-main', { replace: true });
+        } else if (data.role === 'teacher') {
+          navigate('/teacher-main', { replace: true });
+        }
       }
       cookies.set('accessToken', data.access_token);
       cookies.set('refreshToken', data.refresh_token);

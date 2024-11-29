@@ -9,5 +9,6 @@ export type LoginResponseDto = {
   token_type: string;
   expired_in: number;
   role: string;
+  first_login: boolean;
   message: string;
 };
