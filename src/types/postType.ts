@@ -1,3 +1,10 @@
+// 게시글 목록 응답 타입
+export type PostListResponseDto = {
+  next: string | null;
+  previous: string | null;
+  posts: PostDetail[];
+};
+
 // 게시글 상세 정보 타입
 export type PostDetail = {
   post_id: string;
@@ -17,11 +24,4 @@ export type PostDetail = {
     profile_image: string;
   };
   created_at: string;
-};
-
-// 게시글 목록 응답 타입
-export type PostListResponse = {
-  next: string | null;
-  previous: string | null;
-  posts: PostDetail[];
 };
