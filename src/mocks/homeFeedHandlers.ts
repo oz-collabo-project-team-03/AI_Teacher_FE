@@ -103,7 +103,7 @@ export const homeFeedHandlers = [
     const page = Number(url.searchParams.get('page')) || 1;
     const myPosts = MOCK_POSTS_1;
 
-    return HttpResponse.json({
+    return HttpResponse.json<PostListResponseDto>({
       next: page < 3 ? `/posts?page=${page + 1}` : null,
       previous: page > 1 ? `/posts?page=${page - 1}` : null,
       posts: myPosts.posts,

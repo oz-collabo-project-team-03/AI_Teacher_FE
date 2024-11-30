@@ -1,12 +1,18 @@
 import { http, HttpResponse } from 'msw';
-import { PostListResponse } from '@/types/postType';
+import { PostListResponseDto } from '@/types/postType';
 import teacherDefaultIcon from '@/assets/editProfile/teacher/teacherDefaultIcon.png';
 import studentDefaultIcon from '@/assets/editProfile/student/studentDefaultIcon.png';
 import img1 from '@/assets/slider/daily1.webp';
 import img2 from '@/assets/slider/daily2.webp';
 import img3 from '@/assets/slider/daily3.webp';
 
-const MOCK_POSTS_1: PostListResponse = {
+type PostDetailResponse = {
+  success: boolean;
+  message: string;
+  error?: string;
+};
+
+const MOCK_POSTS_1: PostListResponseDto = {
   next: '/posts/me?page=2',
   previous: null,
   posts: [
@@ -107,6 +113,17 @@ export const postDetailHandlers = [
     const page = Number(url.searchParams.get('page')) || 1;
     const myPosts = MOCK_POSTS_1;
 
+    if (!myPosts) {
+      return HttpResponse.json<PostDetailResponse>(
+        {
+          success: false,
+          message: '사용자를 찾을 수 없습니다.',
+          error: 'USER_NOT_FOUND',
+        },
+        { status: 404 }
+      );
+    }
+
     return HttpResponse.json({
       next: page < 3 ? `/posts/me?page=${page + 1}` : null,
       previous: page > 1 ? `/posts/me?page=${page - 1}` : null,
@@ -121,7 +138,7 @@ export const postDetailHandlers = [
     const userPosts = MOCK_POSTS_1;
 
     if (!userPosts) {
-      return HttpResponse.json(
+      return HttpResponse.json<PostDetailResponse>(
         {
           success: false,
           message: '사용자를 찾을 수 없습니다.',
