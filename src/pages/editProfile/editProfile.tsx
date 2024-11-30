@@ -1,5 +1,4 @@
 import { FormProvider, useForm } from 'react-hook-form';
-import { z as zod } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Link, useNavigate } from 'react-router-dom';
 import Button from '@/components/common/Button';
@@ -13,37 +12,7 @@ import { useEffect, useState } from 'react';
 import { useEditProfileMutation } from '@/api/editProfile/editProfile.hooks';
 import { EditProfileRequestParams } from '@/types/editProfileType';
 import { useProfileStore } from '@/stores/editProfile/useProfileStore';
-
-const profileFormSchema = zod.discriminatedUnion('role', [
-  zod.object({
-    role: zod.literal('student'),
-    nickname: zod
-      .string()
-      .min(2, { message: '닉네임은 최소 2글자 이상이어야 합니다.' }),
-    description: zod
-      .string()
-      .min(1, { message: '상태 메세지는 필수 입력값입니다.' }),
-    career_aspiration: zod
-      .string()
-      .min(1, { message: '희망 진로는 필수 입력값입니다.' }),
-    interest: zod.string().min(1, { message: '흥미는 필수 입력값입니다.' }),
-  }),
-  zod.object({
-    role: zod.literal('teacher'),
-    nickname: zod
-      .string()
-      .min(2, { message: '닉네임은 최소 2글자 이상이어야 합니다.' }),
-    organization_name: zod
-      .string()
-      .min(1, { message: '소속 종류는 필수 입력값입니다.' }),
-    organization_type: zod
-      .string()
-      .min(1, { message: '소속 이름은 필수 입력값입니다.' }),
-    organization_position: zod
-      .string()
-      .min(1, { message: '직급는 필수 입력값입니다.' }),
-  }),
-]);
+import { profileFormSchema } from '@/schemas/editProfileSchemas';
 
 const EditProfile = () => {
   const { userInfo, updateProfile } = useProfileStore();
@@ -86,7 +55,7 @@ const EditProfile = () => {
     formState: { errors },
   } = form;
 
-  const editProfileMutation = useEditProfileMutation({
+  const { mutate: editProfileMutation } = useEditProfileMutation({
     onSuccess: () => {
       updateProfile(form.getValues(), selectedImageUrl);
       navigate('/my-page', { replace: true });
@@ -112,12 +81,12 @@ const EditProfile = () => {
     showToast('모든 필드를 채워주세요.');
   };
 
-  const handleEditProfile = (data: EditProfileRequestParams) => {
-    const profileData: EditProfileRequestParams = {
-      ...data,
+  const handleEditProfile = () => {
+    const profileData = {
+      ...form.getValues(),
       profile_image: selectedImageUrl,
     };
-    editProfileMutation.mutate(profileData);
+    editProfileMutation(profileData);
   };
 
   if (!userInfo) {
