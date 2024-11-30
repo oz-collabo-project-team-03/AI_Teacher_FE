@@ -1,7 +1,7 @@
 import { http, HttpResponse } from 'msw';
 import { EditProfileRequestParams } from '@/types/editProfileType';
 
-type EditProfileResponse = {
+type ApiResponse = {
   success: boolean;
   message: string;
   error?: string;
@@ -12,7 +12,7 @@ export const editProfileHandlers = [
     const data = await request.json();
 
     if (!data || typeof data !== 'object') {
-      return HttpResponse.json<EditProfileResponse>(
+      return HttpResponse.json<ApiResponse>(
         {
           success: false,
           message: '유효하지 않은 요청 데이터입니다.',
@@ -23,7 +23,7 @@ export const editProfileHandlers = [
     }
 
     if (!('role' in data)) {
-      return HttpResponse.json<EditProfileResponse>(
+      return HttpResponse.json<ApiResponse>(
         {
           success: false,
           message: 'role 필드가 누락되었습니다.',
@@ -45,7 +45,7 @@ export const editProfileHandlers = [
 
       const missingFields = requiredFields.filter((field) => !data[field]);
       if (missingFields.length > 0) {
-        return HttpResponse.json<EditProfileResponse>(
+        return HttpResponse.json<ApiResponse>(
           {
             success: false,
             message: `필수 정보가 누락되었습니다: ${missingFields.join(', ')}`,
@@ -71,7 +71,7 @@ export const editProfileHandlers = [
 
       const missingFields = requiredFields.filter((field) => !data[field]);
       if (missingFields.length > 0) {
-        return HttpResponse.json<EditProfileResponse>(
+        return HttpResponse.json<ApiResponse>(
           {
             success: false,
             message: `필수 정보가 누락되었습니다: ${missingFields.join(', ')}`,
@@ -86,7 +86,7 @@ export const editProfileHandlers = [
     }
 
     // 지원되지 않는 역할 처리
-    return HttpResponse.json<EditProfileResponse>(
+    return HttpResponse.json<ApiResponse>(
       {
         success: false,
         message: '지원되지 않는 역할(role)입니다.',

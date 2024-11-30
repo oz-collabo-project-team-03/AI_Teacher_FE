@@ -1,6 +1,5 @@
 import { http, HttpResponse } from 'msw';
 import {
-  MyPageResponseDto,
   StudentMyPageResponse,
   TeacherMyPageResponse,
 } from '@/types/myPageType';
@@ -9,84 +8,106 @@ import img1 from '@/assets/slider/daily1.webp';
 import studentDefaultIcon from '@/assets/editProfile/student/studentDefaultIcon.png';
 import teacherDefaultIcon from '@/assets/editProfile/teacher/teacherDefaultIcon.png';
 
-type MyPageResponse = {
+type ApiResponse = {
   success: boolean;
   message: string;
   error?: string;
 };
 
-const MOCK_STUDENT_PROFILE: StudentMyPageResponse = {
-  role: 'student',
-  id: '1',
-  nickname: '현주핑',
-  profile_image: studentDefaultIcon,
-  school: '학교',
-  grade: '학년',
-  career_aspiration: '프로게이머',
-  interest: '게임',
-  description: '롤 할사람 친추 ㄱㄱ',
-  post_count: 15,
-  like_count: 10,
-  comment_count: 18,
-  posts: [
-    {
-      post_id: 'POST001',
-      post_image: img1,
-    },
-    {
-      post_id: 'POST002',
-      post_image: img1,
-    },
-    {
-      post_id: 'POST003',
-      post_image: img1,
-    },
-    {
-      post_id: 'POST004',
-      post_image: img1,
-    },
-    {
-      post_id: 'POST005',
-      post_image: img1,
-    },
-  ],
-};
+const MOCK_STUDENT_PROFILE: StudentMyPageResponse[] = [
+  {
+    role: 'student',
+    id: 'guswnvld',
+    nickname: '현주핑',
+    profile_image: studentDefaultIcon,
+    school: '학교',
+    grade: '학년',
+    career_aspiration: '프로게이머',
+    interest: '게임',
+    description: '롤 할사람 친추 ㄱㄱ',
+    post_count: 15,
+    like_count: 10,
+    comment_count: 18,
+    posts: Array(3)
+      .fill(null)
+      .map((_, i) => ({
+        post_id: `POST${i + 1}`,
+        post_image: img1,
+      })),
+  },
+  {
+    role: 'student',
+    id: 'ruddnjsvld',
+    nickname: '경원핑',
+    profile_image: studentDefaultIcon,
+    school: '학교',
+    grade: '학년',
+    career_aspiration: '로또 당첨',
+    interest: '알바',
+    description: '로또 1등 당첨되고 싶어요',
+    post_count: 8,
+    like_count: 25,
+    comment_count: 12,
+    posts: Array(3)
+      .fill(null)
+      .map((_, i) => ({
+        post_id: `POST${i + 1}`,
+        post_image: img1,
+      })),
+  },
+];
 
-const MOCK_TEACHER_PROFILE: TeacherMyPageResponse = {
-  role: 'teacher',
-  id: '2',
-  nickname: '닉네임',
-  profile_image: teacherDefaultIcon,
-  organization_name: '소속 이름',
-  organization_type: '소속 종류',
-  organization_position: '직급',
-  post_count: 5,
-  like_count: 20,
-  comment_count: 45,
-  posts: [
-    {
-      post_id: 'POST101',
-      post_image: postTestImg,
-    },
-    {
-      post_id: 'POST102',
-      post_image: postTestImg,
-    },
-  ],
-};
+const MOCK_TEACHER_PROFILE: TeacherMyPageResponse[] = [
+  {
+    role: 'teacher',
+    id: 'rlaqhfk',
+    nickname: '김보라',
+    profile_image: teacherDefaultIcon,
+    organization_name: 'B 학원',
+    organization_type: '사립',
+    organization_position: '원장',
+    post_count: 5,
+    like_count: 20,
+    comment_count: 45,
+    posts: Array(2)
+      .fill(null)
+      .map((_, i) => ({
+        post_id: `POST${i + 1}`,
+        post_image: postTestImg,
+      })),
+  },
+  {
+    role: 'teacher',
+    id: 'dltlgur',
+    nickname: '이시혁',
+    profile_image: teacherDefaultIcon,
+    organization_name: 'B 학원',
+    organization_type: '사립',
+    organization_position: '강사',
+    post_count: 12,
+    like_count: 30,
+    comment_count: 25,
+    posts: Array(2)
+      .fill(null)
+      .map((_, i) => ({
+        post_id: `POST${i + 1}`,
+        post_image: postTestImg,
+      })),
+  },
+];
 
-const MOCK_PROFILES = [MOCK_STUDENT_PROFILE, MOCK_TEACHER_PROFILE];
+const ALL_MOCK_PROFILES = [...MOCK_STUDENT_PROFILE, ...MOCK_TEACHER_PROFILE];
 
 export const myPageHandlers = [
   http.get('/users/profile/me', async () => {
     const role = 'student';
     // const role = 'teacher';
 
-    const profile: MyPageResponseDto =
-      role === 'student' ? MOCK_STUDENT_PROFILE : MOCK_TEACHER_PROFILE;
+    const profile =
+      role === 'student' ? MOCK_STUDENT_PROFILE[0] : MOCK_TEACHER_PROFILE;
 
     if (!role) {
-      return HttpResponse.json<MyPageResponse>(
+      return HttpResponse.json<ApiResponse>(
         {
           success: false,
           message: '로그인 정보가 없습니다.',
@@ -104,10 +125,10 @@ export const myPageHandlers = [
     const { userId } = params;
 
     // userId로 프로필 찾기
-    const profile = MOCK_PROFILES.find((profile) => profile.id === userId);
+    const profile = ALL_MOCK_PROFILES.find((profile) => profile.id === userId);
 
     if (!profile) {
-      return HttpResponse.json<MyPageResponse>(
+      return HttpResponse.json<ApiResponse>(
         {
           success: false,
           message: '사용자를 찾을 수 없습니다.',
