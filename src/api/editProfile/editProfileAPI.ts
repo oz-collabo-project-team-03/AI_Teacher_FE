@@ -1,11 +1,13 @@
-import { EditProfileRequestData } from '@/types/editProfileType';
-import { MyPageResponseData } from '@/types/myPageType';
 import axiosInstance from '../axiosInstance';
+import {
+  EditProfileRequestParams,
+  EditProfileResponseDto,
+} from '@/types/editProfileType';
 
-export const editProfileAPI = async (
-  profileData: EditProfileRequestData
-): Promise<MyPageResponseData> => {
-  const response = await axiosInstance.patch<MyPageResponseData>(
+export const getEditProfileAPI = async (
+  profileData: EditProfileRequestParams
+): Promise<EditProfileResponseDto> => {
+  const response = await axiosInstance.patch<EditProfileResponseDto>(
     '/users/profile/me',
     profileData
   );

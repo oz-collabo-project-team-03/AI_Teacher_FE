@@ -11,7 +11,7 @@ import { AxiosError } from 'axios';
 import { useToast } from '@/hooks/useToast';
 import { useEffect, useState } from 'react';
 import { useEditProfileMutation } from '@/api/editProfile/editProfile.hooks';
-import { EditProfileRequestData } from '@/types/editProfileType';
+import { EditProfileRequestParams } from '@/types/editProfileType';
 import { useProfileStore } from '@/stores/editProfile/useProfileStore';
 
 const profileFormSchema = zod.discriminatedUnion('role', [
@@ -65,7 +65,7 @@ const EditProfile = () => {
     }
   }, [userInfo]);
 
-  const form = useForm<EditProfileRequestData>({
+  const form = useForm<EditProfileRequestParams>({
     resolver: zodResolver(profileFormSchema),
     defaultValues: {
       role: role,
@@ -87,9 +87,9 @@ const EditProfile = () => {
   } = form;
 
   const editProfileMutation = useEditProfileMutation({
-    onSuccess: (data) => {
-      updateProfile(data);
-      navigate('/my-page');
+    onSuccess: () => {
+      updateProfile(form.getValues(), selectedImageUrl);
+      navigate('/my-page', { replace: true });
     },
     onError: (error) => {
       if (error instanceof AxiosError) {
@@ -112,8 +112,8 @@ const EditProfile = () => {
     showToast('모든 필드를 채워주세요.');
   };
 
-  const handleEditProfile = (data: EditProfileRequestData) => {
-    const profileData: EditProfileRequestData = {
+  const handleEditProfile = (data: EditProfileRequestParams) => {
+    const profileData: EditProfileRequestParams = {
       ...data,
       profile_image: selectedImageUrl,
     };
@@ -133,7 +133,7 @@ const EditProfile = () => {
       >
         <Header title='프로필 수정' />
 
-        <div className='flex h-full w-full flex-col overflow-y-scroll px-4 pb-12 pt-9'>
+        <div className='flex flex-col w-full h-full px-4 pb-12 overflow-y-scroll pt-9'>
           <ProfileImages
             selectedIndex={selectedImageIndex}
             onImageSelect={handleImageSelect}

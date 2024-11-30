@@ -1,12 +1,12 @@
 import { http, HttpResponse } from 'msw';
-import { PostListResponse } from '@/types/postType';
+import { PostListResponseDto } from '@/types/postType';
 import teacherDefaultIcon from '@/assets/editProfile/teacher/teacherDefaultIcon.png';
 import student10 from '@/assets/editProfile/student/studentIcon10.png';
 import img1 from '@/assets/slider/daily1.webp';
 import img2 from '@/assets/slider/daily2.webp';
 import img3 from '@/assets/slider/daily3.webp';
 
-const MOCK_POSTS_1: PostListResponse = {
+const MOCK_POSTS_1: PostListResponseDto = {
   next: '/posts?page=2',
   previous: null,
   posts: [

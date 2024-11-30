@@ -1,18 +1,20 @@
 import { UseMutationOptions, useMutation } from '@tanstack/react-query';
-import { AxiosError } from 'axios';
-import { MyPageResponseData } from '@/types/myPageType';
-import { EditProfileRequestData } from '@/types/editProfileType';
-import { editProfileAPI } from './editProfileAPI';
+import { getEditProfileAPI } from './editProfileAPI';
+import {
+  EditProfileRequestParams,
+  EditProfileResponseDto,
+} from '@/types/editProfileType';
 
 export const useEditProfileMutation = (
   options?: UseMutationOptions<
-    MyPageResponseData,
-    AxiosError,
-    EditProfileRequestData
+    EditProfileResponseDto,
+    Error,
+    EditProfileRequestParams
   >
 ) => {
   return useMutation({
-    mutationFn: editProfileAPI,
+    mutationFn: getEditProfileAPI,
     ...options,
+    throwOnError: true,
   });
 };

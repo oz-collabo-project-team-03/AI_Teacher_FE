@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
-import { MyPageResponseData } from '@/types/myPageType';
+import { MyPageResponseDto } from '@/types/myPageType';
 
 type CommunityInfoProps = {
-  userInfo: MyPageResponseData;
+  userInfo: MyPageResponseDto;
 };
 
 const CommunityInfo = ({ userInfo }: CommunityInfoProps) => {
@@ -24,7 +24,7 @@ const CommunityInfo = ({ userInfo }: CommunityInfoProps) => {
   }, [userInfo]);
 
   return (
-    <ul className='flex items-center justify-center w-full gap-6 px-4'>
+    <ul className='flex w-full items-center justify-center gap-6 px-4'>
       {communityInfo.map((info, index) => (
         <li
           key={index}

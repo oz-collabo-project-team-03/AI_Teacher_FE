@@ -3,18 +3,15 @@ import {
   useInfiniteQuery,
   InfiniteData,
 } from '@tanstack/react-query';
-import { AxiosError } from 'axios';
-import { PostListResponse } from '@/types/postType';
 import { getMyPostsAPI, getUserPostsAPI } from './postDetailAPI';
+import { PostListResponseDto } from '@/types/postType';
 
 export const useDetailPostsInfiniteGetQuery = (
   userId?: string,
   options?: UseInfiniteQueryOptions<
-    PostListResponse,
-    AxiosError,
-    InfiniteData<PostListResponse>,
-    PostListResponse,
-    (string | undefined)[]
+    PostListResponseDto,
+    Error,
+    InfiniteData<PostListResponseDto>
   >
 ) => {
   return useInfiniteQuery({
@@ -35,5 +32,6 @@ export const useDetailPostsInfiniteGetQuery = (
     },
     initialPageParam: 1,
     ...options,
+    throwOnError: true,
   });
 };

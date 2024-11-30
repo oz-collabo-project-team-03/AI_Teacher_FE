@@ -1,11 +1,10 @@
 import { UseQueryOptions, useQuery } from '@tanstack/react-query';
-import { AxiosError } from 'axios';
-import { MyPageResponseData } from '@/types/myPageType';
 import { getMyProfileAPI, getUserProfileAPI } from './myPageAPI';
+import { MyPageResponseDto } from '@/types/myPageType';
 
 export const useProfileGetQuery = (
   userId?: string,
-  options?: UseQueryOptions<MyPageResponseData, AxiosError, MyPageResponseData>
+  options?: UseQueryOptions<MyPageResponseDto, Error>
 ) => {
   return useQuery({
     queryKey: ['profile', userId],
@@ -17,5 +16,6 @@ export const useProfileGetQuery = (
     },
     enabled: userId === undefined || Boolean(userId),
     ...options,
+    throwOnError: true,
   });
 };
