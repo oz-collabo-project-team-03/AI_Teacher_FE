@@ -6,7 +6,7 @@ import img1 from '@/assets/slider/daily1.webp';
 import img2 from '@/assets/slider/daily2.webp';
 import img3 from '@/assets/slider/daily3.webp';
 
-type PostDetailResponse = {
+type ApiResponse = {
   success: boolean;
   message: string;
   error?: string;
@@ -17,8 +17,8 @@ const MOCK_POSTS_1: PostListResponseDto = {
   previous: null,
   posts: [
     {
-      post_id: 'POST001',
-      id: 'dlguswn',
+      post_id: 'POST1',
+      user_id: 'guswnvld',
       nickname: '현주핑',
       profile_image: studentDefaultIcon,
       career_aspiration: '프로게이머',
@@ -32,8 +32,8 @@ const MOCK_POSTS_1: PostListResponseDto = {
       created_at: '2024-03-19T12:30:45.000Z',
     },
     {
-      post_id: 'POST002',
-      id: 'dlguswn',
+      post_id: 'POST2',
+      user_id: 'guswnvld',
       nickname: '현주핑',
       profile_image: studentDefaultIcon,
       career_aspiration: '프로게이머',
@@ -45,14 +45,15 @@ const MOCK_POSTS_1: PostListResponseDto = {
       image3: img3,
       content: '안녕하세요??',
       teacher: {
+        user_id: 'tlaguswns',
         nickname: '김현준',
         profile_image: teacherDefaultIcon,
       },
       created_at: '2024-03-20T12:30:45.000Z',
     },
     {
-      post_id: 'POST003',
-      id: 'dlguswn',
+      post_id: 'POST3',
+      user_id: 'guswnvld',
       nickname: '현주핑',
       profile_image: studentDefaultIcon,
       career_aspiration: '프로게이머',
@@ -64,44 +65,73 @@ const MOCK_POSTS_1: PostListResponseDto = {
       image3: img3,
       content: '안녕하세요??',
       teacher: {
-        nickname: '김현준',
+        user_id: 'rkddkssk',
+        nickname: '강안나',
         profile_image: teacherDefaultIcon,
       },
       created_at: '2024-03-21T12:30:45.000Z',
     },
+  ],
+};
+
+const MOCK_POSTS_2: PostListResponseDto = {
+  next: '/posts/users/:userId?page=2',
+  previous: null,
+  posts: [
     {
-      post_id: 'POST004',
-      id: 'dlguswn',
-      nickname: '현주핑',
+      post_id: 'POST1',
+      user_id: 'ruddnjsvld',
+      nickname: '경원핑',
       profile_image: studentDefaultIcon,
-      career_aspiration: '프로게이머',
-      interest: '게임',
-      like_count: 20,
-      comment_count: 7,
-      image1: img1,
-      image2: img2,
-      image3: img3,
-      content: '안녕하세요??',
-      teacher: {
-        nickname: '김현준',
-        profile_image: teacherDefaultIcon,
-      },
-      created_at: '2024-03-22T12:30:45.000Z',
-    },
-    {
-      post_id: 'POST005',
-      id: 'dlguswn',
-      nickname: '현주핑',
-      profile_image: studentDefaultIcon,
-      career_aspiration: '프로게이머',
-      interest: '게임',
-      like_count: 23,
+      career_aspiration: '로또 당첨',
+      interest: '알바',
+      like_count: 12,
       comment_count: 5,
       image1: img1,
       image2: img2,
       image3: img3,
       content: '안녕하세요??',
       created_at: '2024-03-19T12:30:45.000Z',
+    },
+    {
+      post_id: 'POST2',
+      user_id: 'ruddnjsvld',
+      nickname: '경원핑',
+      profile_image: studentDefaultIcon,
+      career_aspiration: '로또 당첨',
+      interest: '알바',
+      like_count: 18,
+      comment_count: 6,
+      image1: img1,
+      image2: img2,
+      image3: img3,
+      content: '안녕하세요??',
+      teacher: {
+        user_id: 'tlaguswns',
+        nickname: '김현준',
+        profile_image: teacherDefaultIcon,
+      },
+      created_at: '2024-03-20T12:30:45.000Z',
+    },
+    {
+      post_id: 'POST3',
+      user_id: 'ruddnjsvld',
+      nickname: '경원핑',
+      profile_image: studentDefaultIcon,
+      career_aspiration: '로또 당첨',
+      interest: '알바',
+      like_count: 1,
+      comment_count: 5,
+      image1: img1,
+      image2: img2,
+      image3: img3,
+      content: '안녕하세요??',
+      teacher: {
+        user_id: 'rkddkssk',
+        nickname: '강안나',
+        profile_image: teacherDefaultIcon,
+      },
+      created_at: '2024-03-21T12:30:45.000Z',
     },
   ],
 };
@@ -114,7 +144,7 @@ export const postDetailHandlers = [
     const myPosts = MOCK_POSTS_1;
 
     if (!myPosts) {
-      return HttpResponse.json<PostDetailResponse>(
+      return HttpResponse.json<ApiResponse>(
         {
           success: false,
           message: '사용자를 찾을 수 없습니다.',
@@ -135,10 +165,10 @@ export const postDetailHandlers = [
   http.get('/posts/users/:userId', async ({ request }) => {
     const url = new URL(request.url);
     const page = Number(url.searchParams.get('page')) || 1;
-    const userPosts = MOCK_POSTS_1;
+    const userPosts = MOCK_POSTS_2;
 
     if (!userPosts) {
-      return HttpResponse.json<PostDetailResponse>(
+      return HttpResponse.json<ApiResponse>(
         {
           success: false,
           message: '사용자를 찾을 수 없습니다.',

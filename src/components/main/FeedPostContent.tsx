@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import FeedPostButton from '../../components/main/FeedPostButton';
 
 type FeedPostContentProps = {
@@ -5,6 +6,7 @@ type FeedPostContentProps = {
   comment_count: number;
   content: string;
   teacher?: {
+    user_id: string;
     nickname: string;
     profile_image: string;
   };
@@ -29,11 +31,13 @@ const FeedPostContent = ({
       {/* 협업멘트 */}
       {teacher && (
         <li className='mt-[6px] flex h-[20px] w-full items-center text-[14px]'>
-          <img
-            src={teacher.profile_image}
-            alt='teacherProfileImage'
-            className='mr-[5px] h-[20px] w-[20px]'
-          />
+          <Link to={`/teacher/my-page/${teacher.user_id}`}>
+            <img
+              src={teacher.profile_image}
+              alt='teacherProfileImage'
+              className='mr-[5px] h-[20px] w-[20px]'
+            />
+          </Link>
           <span>{teacher.nickname} 선생님과 협업하였습니다.</span>
         </li>
       )}

@@ -12,7 +12,7 @@ const MOCK_POSTS_1: PostListResponseDto = {
   posts: [
     {
       post_id: 'POST001',
-      id: 'esd',
+      user_id: 'guswnvld',
       nickname: '현주핑',
       profile_image: student10,
       career_aspiration: '프로게이머',
@@ -27,7 +27,7 @@ const MOCK_POSTS_1: PostListResponseDto = {
     },
     {
       post_id: 'POST002',
-      id: 'qwesd',
+      user_id: 'ruddnjsvld',
       nickname: '경원핑',
       profile_image: student10,
       career_aspiration: '로또 당첨',
@@ -39,6 +39,7 @@ const MOCK_POSTS_1: PostListResponseDto = {
       image3: img3,
       content: '안녕하세요??',
       teacher: {
+        user_id: 'rlaqhfk',
         nickname: '김보라',
         profile_image: teacherDefaultIcon,
       },
@@ -46,7 +47,7 @@ const MOCK_POSTS_1: PostListResponseDto = {
     },
     {
       post_id: 'POST003',
-      id: 'qwQsesd',
+      user_id: 'ehdlsvld',
       nickname: '도인핑',
       profile_image: student10,
       career_aspiration: '펜트하우스 소유',
@@ -58,6 +59,7 @@ const MOCK_POSTS_1: PostListResponseDto = {
       image3: img3,
       content: '안녕하세요??',
       teacher: {
+        user_id: 'dltlgur',
         nickname: '이시혁',
         profile_image: teacherDefaultIcon,
       },
@@ -65,7 +67,7 @@ const MOCK_POSTS_1: PostListResponseDto = {
     },
     {
       post_id: 'POST004',
-      id: 'qwe23sd',
+      user_id: 'tmdgPvld',
       nickname: '승혜핑',
       profile_image: student10,
       career_aspiration: '지구 한바퀴 돌기',
@@ -80,7 +82,7 @@ const MOCK_POSTS_1: PostListResponseDto = {
     },
     {
       post_id: 'POST005',
-      id: '4qwqw1d',
+      user_id: 'tmdwlsvld',
       nickname: '승진핑',
       profile_image: student10,
       career_aspiration: '포켓몬 트레이너',
