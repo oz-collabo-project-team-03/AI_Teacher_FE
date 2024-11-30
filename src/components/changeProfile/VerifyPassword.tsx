@@ -7,12 +7,11 @@ import AuthInput from '../auth/AuthInput';
 import { ApiErrorResponseDto } from '@/types/apiErrorType';
 import { useToast } from '@/hooks/useToast';
 import axios from 'axios';
+import { VerifyPasswordRequestParams } from '@/api/auth/changeProfile/verifyPassword/verifyPasswordType';
 
 const verifyPasswordSchema = zod.object({
   password: zod.string().min(1, { message: '비밀번호를 입력해주세요.' }),
 });
-
-type VerifyPasswordFormData = zod.infer<typeof verifyPasswordSchema>;
 
 type VerifyPasswordProps = {
   onUserVerifyPassword: () => void;
@@ -21,7 +20,7 @@ type VerifyPasswordProps = {
 const VerifyPassword = ({ onUserVerifyPassword }: VerifyPasswordProps) => {
   const { showToast } = useToast();
 
-  const form = useForm<VerifyPasswordFormData>({
+  const form = useForm<VerifyPasswordRequestParams>({
     resolver: zodResolver(verifyPasswordSchema),
     defaultValues: {
       password: '',
@@ -35,31 +34,33 @@ const VerifyPassword = ({ onUserVerifyPassword }: VerifyPasswordProps) => {
     formState: { errors },
   } = form;
 
-  const verifyPasswordMutation = useVerifyPasswordMutation({
-    onSuccess: () => {
-      onUserVerifyPassword();
-    },
-    onError: (error) => {
-      console.error('Login Error:', error);
+  const { mutate: verifyPasswordMutation, isPending } =
+    useVerifyPasswordMutation({
+      onSuccess: () => {
+        onUserVerifyPassword();
+      },
+      onError: (error) => {
+        console.error('Login Error:', error);
 
-      if (axios.isAxiosError(error)) {
-        console.error('Axios Error Details:', {
-          response: error.response?.data,
-          status: error.response?.status,
-          headers: error.response?.headers,
-        });
-      }
+        if (axios.isAxiosError(error)) {
+          console.error('Axios Error Details:', {
+            response: error.response?.data,
+            status: error.response?.status,
+            headers: error.response?.headers,
+          });
+        }
 
-      const apiError = error as ApiErrorResponseDto;
-      const errorMessage =
-        apiError?.response?.data?.message ||
-        '비밀번호 확인에 실패하였습니다. 다시 시도해주세요.';
-      showToast(errorMessage);
-    },
-  });
+        const apiError = error as ApiErrorResponseDto;
+        const errorMessage =
+          apiError?.response?.data?.message ||
+          '비밀번호 확인에 실패하였습니다. 다시 시도해주세요.';
+        showToast(errorMessage);
+      },
+    });
 
-  const onSubmit = (data: VerifyPasswordFormData) => {
-    verifyPasswordMutation.mutate(data);
+  const onSubmit = () => {
+    const data = form.getValues();
+    verifyPasswordMutation(data);
   };
 
   return (
@@ -83,12 +84,8 @@ const VerifyPassword = ({ onUserVerifyPassword }: VerifyPasswordProps) => {
             </span>
           )}
         </div>
-        <Button
-          type='submit'
-          variant='active'
-          disabled={verifyPasswordMutation.isPending}
-        >
-          {verifyPasswordMutation.isPending ? '확인 중...' : '확인'}
+        <Button type='submit' variant='active' disabled={isPending}>
+          {isPending ? '확인 중...' : '확인'}
         </Button>
       </form>
     </FormProvider>
