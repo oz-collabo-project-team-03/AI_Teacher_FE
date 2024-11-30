@@ -1,7 +1,7 @@
 import { UseFormRegister, FieldErrors } from 'react-hook-form';
 
-export type EditProfileRequestData = {
-  role: 'student' | 'teacher';
+export type EditProfileRequestParams = {
+  role?: 'student' | 'teacher';
   nickname: string;
   profile_image: string;
   // 학생 전용 필드
@@ -15,6 +15,10 @@ export type EditProfileRequestData = {
 };
 
 export type ProfileInputFieldsProps = {
-  register: UseFormRegister<EditProfileRequestData>;
-  errors: FieldErrors<EditProfileRequestData>;
+  register: UseFormRegister<EditProfileRequestParams>;
+  errors: FieldErrors<EditProfileRequestParams>;
+};
+
+export type EditProfileResponseDto = {
+  message: string;
 };

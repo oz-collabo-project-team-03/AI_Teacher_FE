@@ -5,6 +5,7 @@ import { homeFeedHandlers } from './homeFeedHandlers';
 import { myPageHandlers } from './myPageHandlers';
 import { postDetailHandlers } from './postDetailHandlers';
 import { teachersAndGroupsHandler } from './teachersAndGroupsHandlers';
+import { verifyPasswordHandler } from './verifyPasswordHandlers';
 
 export const worker = setupWorker(
   ...AuthHandlers,
@@ -12,7 +13,8 @@ export const worker = setupWorker(
   ...editProfileHandlers,
   ...postDetailHandlers,
   ...homeFeedHandlers,
-  ...teachersAndGroupsHandler
+  ...teachersAndGroupsHandler,
+  ...verifyPasswordHandler
 );
 
 worker.start();

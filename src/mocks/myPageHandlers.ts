@@ -1,6 +1,6 @@
 import { http, HttpResponse } from 'msw';
 import {
-  MyPageResponseData,
+  MyPageResponseDto,
   StudentMyPageResponse,
   TeacherMyPageResponse,
 } from '@/types/myPageType';
@@ -9,9 +9,15 @@ import img1 from '@/assets/slider/daily1.webp';
 import studentDefaultIcon from '@/assets/editProfile/student/studentDefaultIcon.png';
 import teacherDefaultIcon from '@/assets/editProfile/teacher/teacherDefaultIcon.png';
 
+type MyPageResponse = {
+  success: boolean;
+  message: string;
+  error?: string;
+};
+
 const MOCK_STUDENT_PROFILE: StudentMyPageResponse = {
   role: 'student',
-  id: 'dlguswn',
+  id: '1',
   nickname: '현주핑',
   profile_image: studentDefaultIcon,
   school: '학교',
@@ -48,9 +54,9 @@ const MOCK_STUDENT_PROFILE: StudentMyPageResponse = {
 
 const MOCK_TEACHER_PROFILE: TeacherMyPageResponse = {
   role: 'teacher',
-  id: 'ID101',
+  id: '2',
   nickname: '닉네임',
-  profile_image: teacherDefaultIcon, // 임시 이미지
+  profile_image: teacherDefaultIcon,
   organization_name: '소속 이름',
   organization_type: '소속 종류',
   organization_position: '직급',
@@ -60,22 +66,35 @@ const MOCK_TEACHER_PROFILE: TeacherMyPageResponse = {
   posts: [
     {
       post_id: 'POST101',
-      post_image: postTestImg, // 임시 이미지
+      post_image: postTestImg,
     },
     {
       post_id: 'POST102',
-      post_image: postTestImg, // 임시 이미지
+      post_image: postTestImg,
     },
   ],
 };
+
+const MOCK_PROFILES = [MOCK_STUDENT_PROFILE, MOCK_TEACHER_PROFILE];
 
 export const myPageHandlers = [
   http.get('/users/profile/me', async () => {
     const role = 'student';
     // const role = 'teacher';
 
-    const profile: MyPageResponseData =
+    const profile: MyPageResponseDto =
       role === 'student' ? MOCK_STUDENT_PROFILE : MOCK_TEACHER_PROFILE;
+
+    if (!role) {
+      return HttpResponse.json<MyPageResponse>(
+        {
+          success: false,
+          message: '로그인 정보가 없습니다.',
+          error: 'USER_NOT_FOUND',
+        },
+        { status: 404 }
+      );
+    }
 
     return HttpResponse.json(profile, { status: 200 });
   }),
@@ -83,10 +102,20 @@ export const myPageHandlers = [
   // 다른 사용자 프로필
   http.get('/users/profile/:userId', async ({ params }) => {
     const { userId } = params;
-    const profile: MyPageResponseData = {
-      ...MOCK_STUDENT_PROFILE,
-      id: userId as string,
-    };
+
+    // userId로 프로필 찾기
+    const profile = MOCK_PROFILES.find((profile) => profile.id === userId);
+
+    if (!profile) {
+      return HttpResponse.json<MyPageResponse>(
+        {
+          success: false,
+          message: '사용자를 찾을 수 없습니다.',
+          error: 'USER_NOT_FOUND',
+        },
+        { status: 404 }
+      );
+    }
 
     return HttpResponse.json(profile, { status: 200 });
   }),

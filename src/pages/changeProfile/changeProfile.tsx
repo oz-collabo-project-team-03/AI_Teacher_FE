@@ -1,12 +1,16 @@
+import { useEffect, useState } from 'react';
 import EditAccount from '../../components/changeProfile/EditAccount';
-import PwCheck from '../../components/changeProfile/PwCheck';
+import VerifyPassword from '../../components/changeProfile/VerifyPassword';
 import Header from '../../components/common/Header';
-import { useState } from 'react';
 
 const ChangeProfile = () => {
   const [isVerified, setIsVerified] = useState(false);
 
-  const handleUserPwVerification = () => {
+  useEffect(() => {
+    return () => setIsVerified(false);
+  }, []);
+
+  const handleUserVerifyPassword = () => {
     setIsVerified(true);
   };
 
@@ -14,7 +18,7 @@ const ChangeProfile = () => {
     <div className='flex h-full w-full flex-col pt-[72px]'>
       <Header title='회원정보 변경' />
       {!isVerified ? (
-        <PwCheck onUserPwVerification={handleUserPwVerification} />
+        <VerifyPassword onUserVerifyPassword={handleUserVerifyPassword} />
       ) : (
         <EditAccount userType='student' />
         // <EditAccount userType='teacher' />

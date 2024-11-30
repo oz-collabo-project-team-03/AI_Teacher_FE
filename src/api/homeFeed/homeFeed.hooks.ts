@@ -3,17 +3,14 @@ import {
   useInfiniteQuery,
   InfiniteData,
 } from '@tanstack/react-query';
-import { AxiosError } from 'axios';
-import { PostListResponse } from '@/types/postType';
 import { getAllPostsAPI } from './homeFeedAPI';
+import { PostListResponseDto } from '@/types/postType';
 
 export const useAllPostsInfiniteGetQuery = (
   options?: UseInfiniteQueryOptions<
-    PostListResponse,
-    AxiosError,
-    InfiniteData<PostListResponse>,
-    PostListResponse,
-    (string | undefined)[]
+    PostListResponseDto,
+    Error,
+    InfiniteData<PostListResponseDto>
   >
 ) => {
   return useInfiniteQuery({
@@ -32,5 +29,6 @@ export const useAllPostsInfiniteGetQuery = (
     },
     initialPageParam: 1,
     ...options,
+    throwOnError: true,
   });
 };

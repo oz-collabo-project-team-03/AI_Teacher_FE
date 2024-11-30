@@ -1,31 +1,28 @@
 import { create } from 'zustand';
-import { MyPageResponseData } from '@/types/myPageType';
-import { EditProfileRequestData } from '@/types/editProfileType';
+import { MyPageResponseDto } from '@/types/myPageType';
+import { EditProfileRequestParams } from '@/types/editProfileType';
 
 type ProfileStore = {
-  userInfo: MyPageResponseData | null;
-  setUserInfo: (info: MyPageResponseData) => void;
-  updateProfile: (data: Partial<EditProfileRequestData>) => void;
+  userInfo: MyPageResponseDto | null;
+  setUserInfo: (info: MyPageResponseDto) => void;
+  updateProfile: (data: EditProfileRequestParams, imgUrl: string) => void;
 };
 
 export const useProfileStore = create<ProfileStore>((set) => ({
   userInfo: null,
   setUserInfo: (info) => set({ userInfo: info }),
-  updateProfile: (data) =>
+  updateProfile: (data, imageUrl) =>
     set((state) => {
       if (!state.userInfo) return state;
 
       const updatedInfo = {
         ...state.userInfo,
         ...data,
-        post_count: state.userInfo.post_count,
-        like_count: state.userInfo.like_count,
-        comment_count: state.userInfo.comment_count,
-        posts: state.userInfo.posts,
+        profile_image: imageUrl,
       };
 
       return {
-        userInfo: updatedInfo as MyPageResponseData,
+        userInfo: updatedInfo as MyPageResponseDto,
       };
     }),
 }));

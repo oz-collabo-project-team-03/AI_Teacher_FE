@@ -35,4 +35,4 @@ export type TeacherMyPageResponse = BaseMyPageResponse & {
 };
 
 // 통합 마이페이지 응답 타입
-export type MyPageResponseData = StudentMyPageResponse | TeacherMyPageResponse;
+export type MyPageResponseDto = StudentMyPageResponse | TeacherMyPageResponse;

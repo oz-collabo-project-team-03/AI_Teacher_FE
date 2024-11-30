@@ -1,15 +1,15 @@
-import { MyPageResponseData } from '@/types/myPageType';
 import axiosInstance from '../axiosInstance';
+import { MyPageResponseDto } from '@/types/myPageType';
 
 export const getMyProfileAPI = async () => {
   const response =
-    await axiosInstance.get<MyPageResponseData>('/users/profile/me');
+    await axiosInstance.get<MyPageResponseDto>('/users/profile/me');
 
   return response.data;
 };
 
 export const getUserProfileAPI = async (userId: string) => {
-  const response = await axiosInstance.get<MyPageResponseData>(
+  const response = await axiosInstance.get<MyPageResponseDto>(
     `/users/profile/${userId}`
   );
 

@@ -1,8 +1,8 @@
-import { PostListResponse } from '@/types/postType';
 import axiosInstance from '../axiosInstance';
+import { PostListResponseDto } from '@/types/postType';
 
 export const getMyPostsAPI = async (pageParam: number) => {
-  const response = await axiosInstance.get<PostListResponse>('/posts/me', {
+  const response = await axiosInstance.get<PostListResponseDto>('/posts/me', {
     params: { page: pageParam },
   });
 
@@ -10,7 +10,7 @@ export const getMyPostsAPI = async (pageParam: number) => {
 };
 
 export const getUserPostsAPI = async (userId: string, pageParam: number) => {
-  const response = await axiosInstance.get<PostListResponse>(
+  const response = await axiosInstance.get<PostListResponseDto>(
     `/posts/users/${userId}`,
     {
       params: { page: pageParam },

@@ -11,7 +11,7 @@ const EditAccount = ({ userType }: EditAccountProps) => {
   const [selectedGrade, setSelectedGrade] = useState<number>(1);
 
   return (
-    <div className='flex h-full flex-col justify-between gap-4 px-4 pb-[48px] pt-[38px]'>
+    <div className='flex h-full flex-col justify-between gap-4 px-4 pb-[30px] pt-[38px]'>
       <form className='flex flex-col gap-4'>
         {/* 공통 입력 필드 */}
         <AuthInput type='text' label='이메일' placeholder='example@email.com' />

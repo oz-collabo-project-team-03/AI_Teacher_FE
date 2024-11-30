@@ -12,15 +12,17 @@ import NotfoundPage from '../status/notfoundPage';
 const MyPage = () => {
   const { userId } = useParams();
   const { userInfo, setUserInfo } = useProfileStore();
+  const isOwnProfile = !userId;
 
   // userId가 있으면 해당 유저의 프로필을, 없으면 내 프로필을 조회
   const { data, isLoading, isError, error, refetch } =
     useProfileGetQuery(userId);
-  const isOwnProfile = !userId;
+
+  // 스토어의 데이터를 우선적으로 사용
   const profileData = isOwnProfile ? userInfo || data : data;
 
   useEffect(() => {
-    if (data && isOwnProfile) {
+    if (isOwnProfile && data && !userInfo) {
       setUserInfo(data);
     }
   }, [data, isOwnProfile]);
@@ -58,7 +60,7 @@ const MyPage = () => {
   };
 
   return (
-    <div className='m-auto flex w-full flex-col items-center gap-9 px-4 pb-20 pt-12'>
+    <div className='flex flex-col items-center w-full px-4 pt-12 pb-20 m-auto gap-9'>
       <ProfileHeader {...profileHeaderProps} />
 
       {isOwnProfile && <CommunityInfo userInfo={profileData} />}
