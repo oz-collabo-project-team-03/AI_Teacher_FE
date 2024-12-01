@@ -21,12 +21,6 @@ const EditProfile = () => {
   const { showToast } = useToast();
   const navigate = useNavigate();
 
-  // const role =
-  //   (sessionStorage.getItem('role') as 'student' | 'teacher') || undefined;
-
-  //? 임시 사용 변수
-  const role = userInfo?.role || 'student';
-
   useEffect(() => {
     if (!userInfo) {
       showToast('로그인 후 이용바랍니다.');
@@ -37,7 +31,7 @@ const EditProfile = () => {
   const form = useForm<EditProfileRequestParams>({
     resolver: zodResolver(profileFormSchema),
     defaultValues: {
-      role: role,
+      role: userInfo?.role,
       nickname: '',
       profile_image: '',
       description: '',
@@ -102,19 +96,19 @@ const EditProfile = () => {
       >
         <Header title='프로필 수정' />
 
-        <div className='flex flex-col w-full h-full px-4 pb-12 overflow-y-scroll pt-9'>
+        <div className='flex h-full w-full flex-col overflow-y-scroll px-4 pb-12 pt-9'>
           <ProfileImages
             selectedIndex={selectedImageIndex}
             onImageSelect={handleImageSelect}
-            userType={role}
+            userType={userInfo?.role}
             currentImageUrl={userInfo.profile_image}
           />
 
           <div className='flex flex-col gap-4 pb-4'>
-            {role === 'student' && (
+            {userInfo?.role === 'student' && (
               <StudentProfileFields register={register} errors={errors} />
             )}
-            {role === 'teacher' && (
+            {userInfo?.role === 'teacher' && (
               <TeacherProfileFields register={register} errors={errors} />
             )}
           </div>
