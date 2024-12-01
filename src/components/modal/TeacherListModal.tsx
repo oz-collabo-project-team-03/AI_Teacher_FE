@@ -78,14 +78,14 @@ const TeacherListModal = ({ closeTeacherModal }: CloseTeacherModalProps) => {
               {filteredTeachers.length > 0 ? (
                 filteredTeachers.map((teacher) => (
                   <motion.li
-                    key={teacher.id}
+                    key={teacher.teacher_id}
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.1 }}
                     onClick={() => handleTeacherSelect(teacher)}
                     className={twMerge(
                       'flex cursor-pointer justify-between px-2 py-4 hover:bg-chatListHoverColor',
-                      selectedTeacher?.id === teacher.id
+                      selectedTeacher?.teacher_id === teacher.teacher_id
                         ? 'bg-chatListHoverColor'
                         : ''
                     )}
@@ -109,7 +109,10 @@ const TeacherListModal = ({ closeTeacherModal }: CloseTeacherModalProps) => {
             disabled={!selectedTeacher}
             onClick={() => {
               if (selectedTeacher) {
-                handleSelectedTeacher(selectedTeacher.name);
+                handleSelectedTeacher(
+                  selectedTeacher.name,
+                  selectedTeacher.teacher_id
+                );
                 closeTeacherModal();
               }
             }}
