@@ -1,5 +1,4 @@
 import { AnimatePresence, motion } from 'framer-motion';
-
 import { useAllPostsInfiniteGetQuery } from '@/api/homeFeed/homeFeed.hooks';
 import TeacherListModal from '@/components/modal/TeacherListModal';
 import { useInfiniteScroll } from '@/hooks/useInfiniteScroll';
@@ -75,6 +74,7 @@ const HomeFeedPage = () => {
   return (
     <div className='h-full overflow-auto pb-[64px] pt-[72px]'>
       <MainHeader />
+
       {data.pages.map((page) =>
         page.posts.map((post) => <FeedPost key={post.post_id} posts={post} />)
       )}
@@ -94,7 +94,7 @@ const HomeFeedPage = () => {
           >
             <div className='relative w-full rounded-t-[15px] bg-white md:w-[425px] lg:w-[425px]'>
               <button
-                className='absolute right-4 top-1 text-3xl'
+                className='absolute text-3xl right-4 top-1'
                 onClick={closeCommentModal}
               >
                 &times;

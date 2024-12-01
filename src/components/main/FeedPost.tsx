@@ -9,6 +9,7 @@ type FeedPostProps = {
 
 const FeedPost = ({ posts }: FeedPostProps) => {
   const feedPostuserInfoProps = {
+    user_id: posts.user_id,
     nickname: posts.nickname,
     profile_image: posts.profile_image,
     career_aspiration: posts.career_aspiration,
