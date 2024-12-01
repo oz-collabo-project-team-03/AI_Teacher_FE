@@ -1,6 +1,10 @@
 import axios, { AxiosError, AxiosInstance, AxiosRequestConfig } from 'axios';
 import { Cookies } from 'react-cookie';
 
+type ErrorResponse = {
+  message?: string;
+};
+
 const { VITE_BASE_REQUEST_URL } = import.meta.env;
 const cookies = new Cookies();
 
@@ -63,7 +67,7 @@ export const createAxiosInterceptor = (axiosInstance: AxiosInstance) => {
   // 응답 인터셉터
   axiosInstance.interceptors.response.use(
     (response) => response,
-    async (error: AxiosError) => {
+    async (error: AxiosError<ErrorResponse>) => {
       const originalRequest = error.config as AxiosRequestConfig & {
         _retry?: boolean;
       };
@@ -84,11 +88,50 @@ export const createAxiosInterceptor = (axiosInstance: AxiosInstance) => {
           // 원래 요청 재시도
           return axiosInstance(originalRequest);
         } catch (refreshError) {
+          // 토큰 재발급 실패 시 로그인 페이지로
+          window.location.href = '/login';
           return Promise.reject(refreshError);
         }
       }
 
-      return Promise.reject(error);
+      // 에러 일괄 처리
+      const handleError = (status: number, defaultMessage: string) => {
+        const errorMessages: Record<number, string> = {
+          400: '잘못된 요청입니다.',
+          401: '인증에 실패했습니다.',
+          403: '접근 권한이 없습니다.',
+          404: '요청한 리소스를 찾을 수 없습니다.',
+          500: '서버 내부 오류가 발생했습니다.',
+        };
+
+        const message =
+          error.response?.data?.message ||
+          errorMessages[status] ||
+          defaultMessage;
+
+        // 토스트나 알림으로 에러 표시 가능
+        console.error(`${status} Error:`, message);
+
+        return Promise.reject({
+          status,
+          message,
+          originalError: error,
+        });
+      };
+      switch (error.response?.status) {
+        case 400:
+          return handleError(400, '잘못된 요청입니다.');
+        case 401:
+          return handleError(401, '인증에 실패했습니다.');
+        case 403:
+          return handleError(403, '접근 권한이 없습니다.');
+        case 404:
+          return handleError(404, '리소스를 찾을 수 없습니다.');
+        case 500:
+          return handleError(500, '서버 내부 오류');
+        default:
+          return Promise.reject(error);
+      }
     }
   );
 
