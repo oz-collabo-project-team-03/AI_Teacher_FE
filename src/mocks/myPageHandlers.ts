@@ -100,13 +100,13 @@ const ALL_MOCK_PROFILES = [...MOCK_STUDENT_PROFILE, ...MOCK_TEACHER_PROFILE];
 
 export const myPageHandlers = [
   http.get('/users/profile/me', async () => {
-    const role = 'student';
-    // const role = 'teacher';
+    // 랜덤 인덱스 생성
+    const randomIndex = Math.floor(Math.random() * ALL_MOCK_PROFILES.length);
 
-    const profile =
-      role === 'student' ? MOCK_STUDENT_PROFILE[0] : MOCK_TEACHER_PROFILE;
+    // 랜덤으로 프로필 선택
+    const profile = ALL_MOCK_PROFILES[randomIndex];
 
-    if (!role) {
+    if (!profile) {
       return HttpResponse.json<ApiResponse>(
         {
           success: false,
