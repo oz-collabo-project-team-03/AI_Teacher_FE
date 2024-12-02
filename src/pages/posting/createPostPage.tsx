@@ -1,44 +1,40 @@
 import { Controller, FormProvider, useForm } from 'react-hook-form';
 
 import Button from '../../components/common/Button';
+import { CreatePostingAPI } from '@/api/createPosting/createPostingAPI';
 import { CreatePostingRequestParams } from '@/types/createPostingType';
 import Header from '../../components/common/Header';
 import PostImageUpload from '../../components/posting/PostImageUpload';
 import PostTextEditor from '../../components/posting/PostTextEditor';
-import { useCreatePostingMutation } from '@/api/createPosting/createPosting.hooks';
+import { useNavigate } from 'react-router-dom';
 import { useToast } from '@/hooks/useToast';
 
 type FormValues = {
-  title: string;
-  content: string;
   images: File[];
+  content: string;
   is_with_teacher: boolean;
 };
 
 const CreatePostPage = () => {
   const { showToast } = useToast();
-  const postingFromMethods = useForm({
+  const navigate = useNavigate();
+  const postingFromMethods = useForm<FormValues>({
     defaultValues: {
-      title: '',
-      content: '',
       images: [],
+      content: '',
       is_with_teacher: false,
     },
     mode: 'onSubmit',
   });
 
-  //API호출
-  const { mutateAsync: createPosting } = useCreatePostingMutation({
-    onSuccess: (data) => {
-      console.log('포스팅 성공:', data);
-      showToast('포스팅이 성공적으로 작성되었습니다!');
-    },
-    onError: (error: any) => {
-      console.error('포스팅 실패:', error);
+  const handleCancel = () => {
+    navigate('/student-main'); // 원하는 경로로 이동
+  };
 
-      showToast('서버 오류가 발생했습니다. 잠시 후 다시 전송 해주세요');
-    },
-  });
+  // 이미지를 업로드 할 때, Parent 컴포넌트에서 이미지를 받아오는 함수
+  const handleImageUpload = (files: File[]) => {
+    postingFromMethods.setValue('images', files);
+  };
 
   //폼데이터 준비
   const onSubmit = async (data: FormValues) => {
@@ -46,17 +42,29 @@ const CreatePostPage = () => {
       showToast('최소 하나의 이미지를 등록해야 합니다.');
       return;
     }
+
+    if (!data.content.trim()) {
+      showToast('내용을 입력해주세요.');
+      return;
+    }
+
     const postingData: CreatePostingRequestParams = {
-      content: data.content,
-      is_with_teacher: data.is_with_teacher,
       image1: data.images[0],
       image2: data.images[1] || null,
       image3: data.images[2] || null,
+      content: data.content,
+      is_with_teacher: data.is_with_teacher,
     };
+
     try {
-      await createPosting(postingData);
+      // CreatePostingAPI를 호출하여 서버에 데이터 전송
+      const response = await CreatePostingAPI(postingData);
+      console.log('포스팅 성공:', response);
+      // showToast('포스팅이 성공적으로 작성되었습니다!');
+      navigate('/student-main');
     } catch (error) {
-      console.error('포스팅 실패', error);
+      console.error('포스팅 실패:', error);
+      showToast('서버 오류가 발생했습니다. 잠시 후 다시 전송 해주세요');
     }
   };
 
@@ -66,7 +74,7 @@ const CreatePostPage = () => {
       <FormProvider {...postingFromMethods}>
         <form onSubmit={postingFromMethods.handleSubmit(onSubmit)}>
           <section>
-            <PostImageUpload />
+            <PostImageUpload onImageUpload={handleImageUpload} />
             <PostTextEditor />
           </section>
 
@@ -92,6 +100,7 @@ const CreatePostPage = () => {
             <Button
               type='button'
               name='cancel'
+              onClick={handleCancel}
               className='w-[50%] bg-cancelButtonColor hover:bg-hobbyText'
             >
               취소
