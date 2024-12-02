@@ -12,8 +12,7 @@ export const CreatePostingAPI = async (
 
   const formData = new FormData();
 
-  if (createPostingData.image1)
-    formData.append('image1', createPostingData.image1);
+  formData.append('image1', createPostingData.image1);
   if (createPostingData.image2)
     formData.append('image2', createPostingData.image2);
   if (createPostingData.image3)

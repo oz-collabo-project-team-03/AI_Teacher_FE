@@ -1,5 +1,5 @@
 export type CreatePostingRequestParams = {
-  image1: File | null;
+  image1: File;
   image2: File | null;
   image3: File | null;
   content: string;
