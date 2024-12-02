@@ -11,7 +11,6 @@ export const CreatePostingAPI = async (
   console.log('요청 데이터:', createPostingData);
 
   const formData = new FormData();
-
   formData.append('image1', createPostingData.image1);
   if (createPostingData.image2)
     formData.append('image2', createPostingData.image2);

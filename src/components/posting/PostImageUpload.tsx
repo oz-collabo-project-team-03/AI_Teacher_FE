@@ -1,28 +1,37 @@
+import { useEffect, useState } from 'react';
+
 import deleteIcon from '../../assets/posting/deleteIcon.svg';
 import photo from '../../assets/posting/photo.svg';
 import { useFormContext } from 'react-hook-form';
-import { useState } from 'react';
 import { useToast } from '@/hooks/useToast';
 
-const PostImageUpload = () => {
+type PostImageUploadProps = {
+  onImageUpload: (files: File[]) => void;
+};
+
+const PostImageUpload = ({ onImageUpload }: PostImageUploadProps) => {
   const { setValue, getValues } = useFormContext();
-  const [images, setImages] = useState<string[]>(getValues('images') || []);
+  const [images, setImages] = useState<File[]>(getValues('images') || []);
   const { showToast } = useToast();
+
+  useEffect(() => {
+    setValue('images', images);
+  }, [images, setValue]);
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (!files) return;
 
     const fileArray = Array.from(files);
-    const newImages = fileArray.map((file) => URL.createObjectURL(file));
 
-    if (images.length + newImages.length > 3) {
+    if (images.length + fileArray.length > 3) {
       showToast('사진은 최대 3개까지 업로드 가능합니다.');
       return;
     }
-    const updatedImages = [...images, ...newImages];
+    const updatedImages = [...images, ...fileArray];
     setImages(updatedImages);
     setValue('images', updatedImages);
+    onImageUpload(fileArray);
   };
 
   const handleDeleteImage = (index: number) => {
@@ -62,7 +71,7 @@ const PostImageUpload = () => {
             className='relative flex h-[92px] w-[92px] items-center justify-center rounded-md border'
           >
             <img
-              src={image}
+              src={URL.createObjectURL(image)}
               alt='uploaded-thumbnail'
               className='h-full w-full rounded-md object-cover'
             />
