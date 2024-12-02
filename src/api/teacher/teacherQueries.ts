@@ -8,9 +8,10 @@ export const teacherQueries = createQueryKeyStore({
       queryFn: () => teacherAPI.getTeachers(),
     }),
 
-    detail: (teacherId: number) => ({
-      queryKey: ['teachers', teacherId],
-      queryFn: () => teacherAPI.getTeacherDetail(teacherId),
-    }),
+    //안쓸듯
+    // detail: (teacherId: number) => ({
+    //   queryKey: ['teachers', teacherId],
+    //   queryFn: () => teacherAPI.getTeacherDetail(teacherId),
+    // }),
   },
 });

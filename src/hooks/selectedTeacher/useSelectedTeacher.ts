@@ -17,8 +17,6 @@ export const useSelectedTeacher = () => {
       showToast(data.message);
     },
     onError: (error) => {
-      console.error('Login Error:', error); // 에러 상세 로깅
-
       // Axios 에러인 경우 더 상세한 로깅
       if (axios.isAxiosError(error)) {
         console.error('Axios Error Details:', {
@@ -35,8 +33,8 @@ export const useSelectedTeacher = () => {
     },
   });
 
-  const handleSelectedTeacher = async (teacher_name: string) => {
-    SelectedTeacherMutation({ teacher_name });
+  const handleSelectedTeacher = async (name: string, teacher_id: number) => {
+    SelectedTeacherMutation({ name, teacher_id });
   };
 
   return {

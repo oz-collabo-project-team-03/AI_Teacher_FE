@@ -1,5 +1,5 @@
 export type Teacher = {
-  id: number;
+  teacher_id: number;
   name: string;
   organization_name: string;
   organization_type: string;
@@ -7,7 +7,8 @@ export type Teacher = {
 };
 
 export type SelectedTeacherRequestParams = {
-  teacher_name: string;
+  teacher_id: number;
+  name: string;
 };
 
 export type SelectedTeacherResponseDto = {
