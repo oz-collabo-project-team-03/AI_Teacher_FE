@@ -1,0 +1,33 @@
+import {
+  CreatePostingRequestParams,
+  CreatePostingResponseDto,
+} from '../../types/createPostingType';
+
+import axiosInstance from '@/api/axiosInstance';
+
+export const CreatePostingAPI = async (
+  createPostingData: CreatePostingRequestParams
+): Promise<CreatePostingResponseDto> => {
+  console.log('요청 데이터:', createPostingData);
+
+  const formData = new FormData();
+
+  if (createPostingData.image1)
+    formData.append('image1', createPostingData.image1);
+  if (createPostingData.image2)
+    formData.append('image2', createPostingData.image2);
+  if (createPostingData.image3)
+    formData.append('image3', createPostingData.image3);
+
+  formData.append('content', createPostingData.content);
+  formData.append(
+    'is_with_teacher',
+    createPostingData.is_with_teacher.toString()
+  );
+  const response = await axiosInstance.post<CreatePostingResponseDto>(
+    '/posts/write',
+    formData
+  );
+
+  return response.data;
+};
