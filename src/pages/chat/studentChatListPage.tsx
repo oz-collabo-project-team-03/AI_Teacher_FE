@@ -7,153 +7,156 @@ import {
   TrailingActions,
   Type,
 } from 'react-swipeable-list';
-import { chatBubbleIcon, chatDeleteIcon } from '../../assets/assets';
-import { useEffect, useState } from 'react';
+import { chatBubbleIcon, chatDeleteIcon } from '@/assets/assets';
+import { useEffect, useMemo, useState } from 'react';
 
-import ChatItem from '../../components/chat/ChatItem';
-import CreateChatModal from '../../components/modal/CreateChatModal';
-import DeleteChatModal from '../../components/modal/DeleteChatModal';
-import Header from '../../components/common/Header';
+import ChatItem from '@/components/chat/ChatItem';
+import CreateChatModal from '@/components/modal/CreateChatModal';
+import DeleteChatModal from '@/components/modal/DeleteChatModal';
+import Header from '@/components/common/Header';
+import { useCreateChatRoomMutation } from '@/api/chat/createChatRoom/createChatRoom.hooks';
+import { useDeleteChatRoomMutation } from '@/api/chat/deleteChatRoom/deleteChatRoom.hooks';
+import { useGetChatListQuery } from '@/api/chat/chatList/chatList.hooks';
 import { useNavigate } from 'react-router-dom';
 
 const StudentChatListPage = () => {
-  //임시데이터(나중에)
-  const [chatList, setChatList] = useState([
-    {
-      id: '1',
-      roomName: 'Chat Room 1',
-      lastMessage: 'Hello there!',
-      lastMessageTime: '오전 9:10',
-      showHelpRequest: true,
-    },
-    {
-      id: '2',
-      roomName: 'Chat Room 2',
-      lastMessage: 'How are you?',
-      lastMessageTime: '오후 2:45',
-      showHelpRequest: false,
-    },
-  ]);
   const navigate = useNavigate();
   const [activeModal, setActiveModal] = useState<null | 'delete' | 'create'>(
     null
   );
   const [selectedChatId, setSelectedChatId] = useState<string | null>(null);
   const [deletingChatId, setDeletingChatId] = useState<string | null>(null);
-  //스와이프와 클릭 분리
   const [isSwiping, setIsSwiping] = useState(false);
   const [canClick, setCanClick] = useState(true);
 
-  useEffect(() => {
-    let isPointerMoving = false; // pointermove 상태 추적
-    let initialized = false; // 초기화 상태를 확인하는 플래그
+  const { data: chatList, refetch: refetchChatList } = useGetChatListQuery(1);
 
-    // 초기 상태 로그 출력
-    console.log(
-      'Initial State - isSwiping:',
-      isSwiping,
-      ', canClick:',
-      canClick
-    );
+  const createChatRoomMutation = useCreateChatRoomMutation({
+    onSuccess: () => {
+      refetchChatList();
+      setActiveModal(null);
+    },
+    onError: (error) => {
+      console.error('Error in onError:', error);
+      alert(`채팅방 생성 실패: ${error.message}`);
+    },
+  });
+
+  const deleteChatRoomMutation = useDeleteChatRoomMutation({
+    onSuccess: () => {
+      refetchChatList();
+      setDeletingChatId(null);
+      closeModal();
+    },
+    onError: (error) => {
+      alert(`채팅방 삭제 실패: ${error.message}`);
+    },
+  });
+
+  useEffect(() => {
+    let isPointerMoving = false;
+    let initialized = false;
+    let startX = 0;
+    let swipeDistance = 0;
+
+    const handlePointerDown = (e: PointerEvent) => {
+      startX = e.clientX;
+      swipeDistance = 0;
+    };
 
     const handlePointerMove = (e: PointerEvent) => {
-      if (!initialized) return; // 초기화되지 않았다면 이벤트 무시
-      if (!isPointerMoving && Math.abs(e.movementX) > 10) {
-        console.log('Pointer is moving. Swiping started.');
-        setIsSwiping(true);
-        setCanClick(false); // 스와이프 중 클릭 차단
-        isPointerMoving = true; // pointermove 상태 활성화
+      if (!isPointerMoving) {
+        swipeDistance = Math.abs(e.clientX - startX);
+        if (swipeDistance > 10) {
+          setIsSwiping(true);
+          setCanClick(false);
+          isPointerMoving = true;
+        }
       }
     };
 
     const handlePointerUp = () => {
-      if (!initialized) return; // 초기화되지 않았다면 이벤트 무시
+      if (!initialized) return;
       if (isPointerMoving) {
-        console.log('Pointer is up. Swiping ended.');
+        const delay = swipeDistance > 50 ? 500 : 300;
         setTimeout(() => {
-          console.log('Resetting isSwiping and canClick after timeout.');
-          setIsSwiping(false); // 스와이프 종료
-          setCanClick(true); // 클릭 가능 상태로 복구
-          isPointerMoving = false; // pointermove 상태 비활성화
-        }, 300); // 300ms 지연
+          setIsSwiping(false);
+          setCanClick(true);
+          isPointerMoving = false;
+        }, delay);
       }
     };
 
-    // 초기 상태 강제 설정
     setTimeout(() => {
-      console.log('Initializing states...');
       setIsSwiping(false);
-      setCanClick(true); // 초기 상태 강제 설정
-      initialized = true; // 초기화 완료
-    }, 100); // 100ms 딜레이
+      setCanClick(true);
+      initialized = true;
+    }, 100);
 
-    // 이벤트 리스너 등록
+    window.addEventListener('pointerdown', handlePointerDown);
     window.addEventListener('pointermove', handlePointerMove);
     window.addEventListener('pointerup', handlePointerUp);
 
     return () => {
-      // 이벤트 리스너 해제
+      window.removeEventListener('pointerdown', handlePointerDown);
       window.removeEventListener('pointermove', handlePointerMove);
       window.removeEventListener('pointerup', handlePointerUp);
     };
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []);
+
+  // 최신순 오름차순
+  const recentlyChats = useMemo(() => {
+    if (!chatList) return [];
+
+    return [...chatList].sort((a, b) => {
+      const dateA = a.recent_update
+        ? new Date(a.recent_update.replace('시', ':').replace('분', ''))
+        : null;
+      const dateB = b.recent_update
+        ? new Date(b.recent_update.replace('시', ':').replace('분', ''))
+        : null;
+
+      // Null 값 우선 처리
+      if (!dateA && !dateB) return 0;
+      if (!dateA) return 1; // dateA가 null이면 뒤로 이동
+      if (!dateB) return -1; // dateB가 null이면 앞으로 이동
+
+      // 날짜 기반 정렬 (오름차순)
+      return dateA.getTime() - dateB.getTime();
+    });
+  }, [chatList]);
 
   const handleClick = (chatId: string) => {
-    if (isSwiping || !canClick) {
-      console.log('스와이프 중이거나 클릭이 차단된 상태입니다.');
-      return;
-    }
+    if (isSwiping || !canClick) return;
     navigate(`/student/chats/${chatId}`);
   };
 
-  // 모달 열기
   const openDeleteModal = (id: string) => {
     setSelectedChatId(id);
     setActiveModal('delete');
   };
 
-  // 모달 닫기
   const closeModal = () => {
     setSelectedChatId(null);
     setActiveModal(null);
   };
 
-  // 삭제 로직
   const handleDeleteChat = () => {
     if (selectedChatId) {
-      setDeletingChatId(selectedChatId); // 삭제 중인 아이템 설정
-      setTimeout(() => {
-        setChatList((prevChats) =>
-          prevChats.filter((chat) => chat.id !== selectedChatId)
-        );
-        setDeletingChatId(null); // 삭제 완료 후 초기화
-        closeModal(); // 모달 닫기
-      }, 500); // 애니메이션 시간에 맞춰 설정
+      setDeletingChatId(selectedChatId);
+      deleteChatRoomMutation.mutate({ room_id: selectedChatId });
     }
   };
 
-  // 생성 로직
   const handleCreateChat = (roomName: string) => {
-    const newChat = {
-      id: Date.now().toString(), // 고유 ID 생성
-      // 나중에 서버보내주는 id 값 받아오는걸로 수정하기
-      roomName,
-      lastMessage: '',
-      lastMessageTime: '',
-      showHelpRequest: false,
-    };
-    setChatList((prev) => [...prev, newChat]); // 새로운 채팅방 추가
-    setActiveModal(null); // 모달 닫기
-    navigate(`/student/chats/${newChat.id}`); // 생성된 채팅방으로 이동
+    createChatRoomMutation.mutate({
+      title: roomName,
+    });
   };
 
   const trailingActions = (id: string) => (
     <TrailingActions>
-      <SwipeAction
-        onClick={() => {
-          openDeleteModal(id); // 삭제 모달 열기
-        }}
-      >
+      <SwipeAction onClick={() => openDeleteModal(id)}>
         <button className='flex h-full w-[73px] items-center bg-deleteButtonColor p-[24px] text-center text-white'>
           <img src={chatDeleteIcon} alt='Delete chat' />
         </button>
@@ -175,26 +178,26 @@ const StudentChatListPage = () => {
         }
       />
 
-      <div className='flex-grow overflow-y-auto'>
+      <div className='custom-scrollbar flex-grow overflow-y-auto'>
         <SwipeableList type={Type.IOS} fullSwipe={false}>
-          {chatList.map((chat) => (
+          {recentlyChats?.map((chat) => (
             <SwipeableListItem
-              key={chat.id}
-              trailingActions={trailingActions(chat.id)}
+              key={chat.room_id}
+              trailingActions={trailingActions(chat.room_id)}
               fullSwipe={false}
               threshold={0.5}
             >
               <div
                 className={`w-full ${
-                  deletingChatId === chat.id ? 'animate-slideOutLeft' : ''
+                  deletingChatId === chat.room_id ? 'animate-slideOutLeft' : ''
                 } transition-transform`}
               >
                 <ChatItem
-                  roomName={chat.roomName}
-                  lastMessage={chat.lastMessage}
-                  lastMessageTime={chat.lastMessageTime}
-                  showHelpRequest={chat.showHelpRequest}
-                  onClick={() => handleClick(chat.id)}
+                  roomName={chat.title}
+                  lastMessage={chat.recent_message}
+                  lastMessageTime={chat.recent_update}
+                  showHelpRequest={chat.help_checked}
+                  onClick={() => handleClick(chat.room_id)}
                 />
               </div>
             </SwipeableListItem>
@@ -202,18 +205,15 @@ const StudentChatListPage = () => {
         </SwipeableList>
       </div>
 
-      {/* 삭제 모달 */}
-      {activeModal === 'delete' && (
-        <DeleteChatModal onClose={closeModal} onDelete={handleDeleteChat} />
-      )}
-
-      {/* 추가 모달 (생성 모달 관련) */}
-
       {activeModal === 'create' && (
         <CreateChatModal
           onClose={() => setActiveModal(null)}
           onCreateChat={handleCreateChat}
         />
+      )}
+
+      {activeModal === 'delete' && (
+        <DeleteChatModal onClose={closeModal} onDelete={handleDeleteChat} />
       )}
     </div>
   );

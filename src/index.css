@@ -37,6 +37,9 @@ input[type='number']::-webkit-outer-spin-button {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+.swipeable-list {
+  @apply custom-scrollbar; /* Tailwind에서 만든 custom-scrollbar 적용 */
+}
 
 /* 댓글 스크롤 */
 .custom-scrollbar {
