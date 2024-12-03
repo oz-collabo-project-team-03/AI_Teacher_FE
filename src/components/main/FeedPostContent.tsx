@@ -1,5 +1,5 @@
-import { Link } from 'react-router-dom';
 import FeedPostButton from '../../components/main/FeedPostButton';
+import { Link } from 'react-router-dom';
 
 type FeedPostContentProps = {
   like_count: number;
@@ -26,7 +26,7 @@ const FeedPostContent = ({
   };
 
   return (
-    <ul className='h-[102px] w-full px-[12px] py-[7px] font-medium'>
+    <ul className='mb-[35px] h-[102px] w-full px-[12px] py-[7px] font-medium'>
       <FeedPostButton like_count={like_count} comment_count={comment_count} />
       {/* 협업멘트 */}
       {teacher && (
