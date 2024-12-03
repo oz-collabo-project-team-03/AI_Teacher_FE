@@ -8,13 +8,32 @@ type ChatItemProps = {
   onClick?: () => void;
 };
 
-const formatLastMessageTime = (lastMessageTime: string): string => {
-  const parsedDate = parse(lastMessageTime, 'yyyy-MM-dd HH시mm분', new Date());
+const formatLastMessageTime = (
+  lastMessageTime: string | null | undefined
+): string => {
+  if (!lastMessageTime) {
+    // null 또는 undefined일 경우 기본값 반환
+    return '시간 정보 없음';
+  }
 
-  if (isToday(parsedDate)) {
-    return format(parsedDate, 'HH시mm분');
-  } else {
-    return format(parsedDate, 'yyyy-MM-dd');
+  try {
+    // 날짜 파싱
+    const parsedDate = parse(
+      lastMessageTime,
+      'yyyy-MM-dd HH시mm분',
+      new Date()
+    );
+
+    // 오늘 날짜인지 확인
+    if (isToday(parsedDate)) {
+      return format(parsedDate, 'HH시mm분');
+    } else {
+      return format(parsedDate, 'yyyy-MM-dd');
+    }
+  } catch (error) {
+    console.error('Error parsing date:', lastMessageTime, error);
+    // 파싱 오류 시 기본값 반환
+    return '잘못된 날짜 형식';
   }
 };
 

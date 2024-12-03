@@ -109,13 +109,20 @@ const StudentChatListPage = () => {
     if (!chatList) return [];
 
     return [...chatList].sort((a, b) => {
-      const dateA = new Date(
-        a.recent_update.replace('시', ':').replace('분', '')
-      );
-      const dateB = new Date(
-        b.recent_update.replace('시', ':').replace('분', '')
-      );
-      return dateB.getTime() - dateA.getTime();
+      const dateA = a.recent_update
+        ? new Date(a.recent_update.replace('시', ':').replace('분', ''))
+        : null;
+      const dateB = b.recent_update
+        ? new Date(b.recent_update.replace('시', ':').replace('분', ''))
+        : null;
+
+      // Null 값 우선 처리
+      if (!dateA && !dateB) return 0;
+      if (!dateA) return 1; // dateA가 null이면 뒤로 이동
+      if (!dateB) return -1; // dateB가 null이면 앞으로 이동
+
+      // 날짜 기반 정렬 (오름차순)
+      return dateA.getTime() - dateB.getTime();
     });
   }, [chatList]);
 
