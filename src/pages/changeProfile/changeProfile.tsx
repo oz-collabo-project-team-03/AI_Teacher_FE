@@ -20,8 +20,7 @@ const ChangeProfile = () => {
       {!isVerified ? (
         <VerifyPassword onUserVerifyPassword={handleUserVerifyPassword} />
       ) : (
-        <EditAccount userType='student' />
-        // <EditAccount userType='teacher' />
+        <EditAccount />
       )}
     </div>
   );
