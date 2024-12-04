@@ -1,5 +1,5 @@
 import BaseNavBar from './BaseNavBar';
-import { layoutNavItem } from '@/types/layoutNav';
+import { layoutNavItem } from '@/types/layoutNavType';
 import {
   chatActiveIcon,
   homeActiveIcon,

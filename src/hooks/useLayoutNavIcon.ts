@@ -1,4 +1,4 @@
-import { layoutNavItem } from '@/types/layoutNav';
+import { layoutNavItem } from '@/types/layoutNavType';
 import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
