@@ -1,20 +1,15 @@
-import {
-  FetchCommentRequestParams,
-  FetchCommentResponseDto,
-} from './fetchCommentType';
-import { UseMutationOptions, useMutation } from '@tanstack/react-query';
+import { UseQueryOptions, useQuery } from '@tanstack/react-query';
 
-import { FetchCommentAPI } from './fetchCommentAPI';
+import { CommentListResponseDto } from './fetchCommentType';
+import { getFetchCommentAPI } from './fetchCommentAPI';
 
-export const useFetchCommentMutation = (
-  options?: UseMutationOptions<
-    FetchCommentResponseDto, // 성공 시 반환 타입
-    Error, // 에러 타입
-    { post_id: number; FetchCommentData: FetchCommentRequestParams } // 요청 데이터 타입
-  >
+export const useFetchCommentQuery = (
+  post_id: number,
+  options?: UseQueryOptions<CommentListResponseDto, Error>
 ) => {
-  return useMutation({
-    mutationFn: FetchCommentAPI,
+  return useQuery<CommentListResponseDto, Error>({
+    queryKey: ['comments', post_id],
+    queryFn: () => getFetchCommentAPI(post_id),
     ...options,
   });
 };
