@@ -104,25 +104,30 @@ const StudentChatListPage = () => {
     };
   }, []);
 
-  // 최신순 오름차순
+  // 최신순 내림차순
   const recentlyChats = useMemo(() => {
     if (!chatList) return [];
 
     return [...chatList].sort((a, b) => {
-      const dateA = a.recent_update
-        ? new Date(a.recent_update.replace('시', ':').replace('분', ''))
-        : null;
-      const dateB = b.recent_update
-        ? new Date(b.recent_update.replace('시', ':').replace('분', ''))
-        : null;
+      const parseDate = (dateStr: string | null | undefined) => {
+        if (!dateStr) return null;
 
-      // Null 값 우선 처리
+        const cleanedDateStr = dateStr
+          .replace('시', ':')
+          .replace('분', '')
+          .trim();
+        const date = new Date(cleanedDateStr);
+        return isNaN(date.getTime()) ? null : date;
+      };
+
+      const dateA = parseDate(a.recent_update);
+      const dateB = parseDate(b.recent_update);
+
       if (!dateA && !dateB) return 0;
-      if (!dateA) return 1; // dateA가 null이면 뒤로 이동
-      if (!dateB) return -1; // dateB가 null이면 앞으로 이동
+      if (!dateA) return 1;
+      if (!dateB) return -1;
 
-      // 날짜 기반 정렬 (오름차순)
-      return dateA.getTime() - dateB.getTime();
+      return dateB.getTime() - dateA.getTime();
     });
   }, [chatList]);
 

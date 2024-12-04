@@ -29,16 +29,9 @@ input[type='number']::-webkit-outer-spin-button {
   margin: 0;
 }
 
-/* 스크롤바 숨기기 */
-.scrollbar-hide::-webkit-scrollbar {
-  display: none;
-}
-.scrollbar-hide {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
+/* Swiper Tailwind에서 만든 custom-scrollbar 적용 */
 .swipeable-list {
-  @apply custom-scrollbar; /* Tailwind에서 만든 custom-scrollbar 적용 */
+  @apply custom-scrollbar;
 }
 
 /* 댓글 스크롤 */
