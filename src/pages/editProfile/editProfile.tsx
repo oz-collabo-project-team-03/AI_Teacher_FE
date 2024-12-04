@@ -114,7 +114,7 @@ const EditProfile = () => {
           </div>
 
           <Link to='/change-profile' className='mb-8 w-fit'>
-            <span className='text-sm font-medium text-primaryColor hover:text-primaryColor'>
+            <span className='text-sm font-medium text-primaryColor hover:text-primaryHoverColor'>
               회원 정보 변경
             </span>
           </Link>
