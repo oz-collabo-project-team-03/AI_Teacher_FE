@@ -54,7 +54,7 @@ const HomeFeedPage = () => {
     return <ErrorPage error={error as Error} resetError={() => refetch()} />;
   }
 
-  if (!data || !data.pages) {
+  if (!data?.pages.length) {
     return <NotfoundPage />;
   }
 
@@ -76,7 +76,7 @@ const HomeFeedPage = () => {
       <MainHeader />
 
       {data.pages.map((page) =>
-        page.posts.map((post) => <FeedPost key={post.post_id} posts={post} />)
+        page.posts?.map((post) => <FeedPost key={post.post_id} posts={post} />)
       )}
 
       <div ref={observerRef} className='h-2' />
@@ -94,7 +94,7 @@ const HomeFeedPage = () => {
           >
             <div className='relative w-full rounded-t-[15px] bg-white md:w-[425px] lg:w-[425px]'>
               <button
-                className='absolute text-3xl right-4 top-1'
+                className='absolute right-4 top-1 text-3xl'
                 onClick={closeCommentModal}
               >
                 &times;
