@@ -8,8 +8,8 @@ export const useFetchCommentQuery = (
   options?: UseQueryOptions<CommentListResponseDto, Error>
 ) => {
   return useQuery<CommentListResponseDto, Error>({
-    queryKey: ['comments', post_id], // 캐시 키로 사용될 배열, 페이지 파라미터에 따라 댓글을 구분
-    queryFn: () => getFetchCommentAPI(post_id), // 실제 API 호출 함수
+    queryKey: ['comments', post_id],
+    queryFn: () => getFetchCommentAPI(post_id),
     ...options,
   });
 };

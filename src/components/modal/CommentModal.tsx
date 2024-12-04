@@ -71,7 +71,7 @@ const CommentModal = () => {
   const MAX_HEIGHT = LINE_HEIGHT * MAX_ROWS;
   const MAX_LENGTH = 300;
 
-  //textarea 높이조절
+  //textarea 높이조절 (다른방법 찾아봐야함)
   const handleTextareaInput = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const target = e.target;
     const value = target.value.substring(0, MAX_LENGTH);

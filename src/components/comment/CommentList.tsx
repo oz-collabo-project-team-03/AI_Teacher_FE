@@ -58,7 +58,7 @@ const CommentList = ({ comments, refetchComments }: CommentProps) => {
                 </button>
                 <button
                   className='text-[12px] text-captionColor hover:text-repleText'
-                  onClick={() => handleDeleteClick(comment.comment_id)} // 삭제 클릭 시 호출
+                  onClick={() => handleDeleteClick(comment.comment_id)}
                   disabled={status === 'pending'} // 삭제 중에는 버튼 비활성화
                 >
                   삭제
