@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useLayoutNavIcon } from '@/hooks/useLayoutNavIcon';
-import { layoutNavItem } from '@/types/layoutNav';
+import { layoutNavItem } from '@/types/layoutNavType';
 
 type BaseNavBarProps = {
   items: layoutNavItem[];

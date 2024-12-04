@@ -3,42 +3,42 @@ import { http, HttpResponse } from 'msw';
 
 const teachers: Teacher[] = [
   {
-    id: 1,
+    teacher_id: 1,
     name: '이현주',
     organization_name: '메이플스토리',
     organization_type: '고등학교',
     position: '코딩 선생님',
   },
   {
-    id: 2,
+    teacher_id: 2,
     name: '변경원',
     organization_name: '로또분석',
     organization_type: '학원',
     position: '로또분석담당선생님',
   },
   {
-    id: 3,
+    teacher_id: 3,
     name: '강승진',
     organization_name: '태초마을',
     organization_type: '학원',
     position: '포켓몬트레이너',
   },
   {
-    id: 4,
+    teacher_id: 4,
     name: '노도인',
     organization_name: '노랑시티',
     organization_type: '학원',
     position: '노랑체육관 관장',
   },
   {
-    id: 5,
+    teacher_id: 5,
     name: '강승혜',
     organization_name: '상록시티',
     organization_type: '학원',
     position: '상록체육관 관장',
   },
   {
-    id: 6,
+    teacher_id: 6,
     name: '가현서',
     organization_name: '태초마을',
     organization_type: '학원',
