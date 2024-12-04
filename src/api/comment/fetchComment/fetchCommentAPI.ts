@@ -1,21 +1,12 @@
-import {
-  FetchCommentRequestParams,
-  FetchCommentResponseDto,
-} from './fetchCommentType';
+import { CommentListResponseDto } from './fetchCommentType';
+import axiosInstance from '../../axiosInstance';
 
-import axiosInstance from '@/api/axiosInstance';
-
-export const FetchCommentAPI = async ({
-  post_id,
-  FetchCommentData,
-}: {
-  post_id: number;
-  FetchCommentData: FetchCommentRequestParams;
-}): Promise<FetchCommentResponseDto> => {
-  console.log('요청 데이터:', FetchCommentData);
-  const response = await axiosInstance.post<FetchCommentResponseDto>(
-    `/comments/write/${post_id}`,
-    FetchCommentData
+export const getFetchCommentAPI = async (
+  post_id: number
+): Promise<CommentListResponseDto> => {
+  const response = await axiosInstance.get<CommentListResponseDto>(
+    `/comments/${post_id}`
   );
+
   return response.data;
 };
