@@ -14,11 +14,10 @@ const VerifyPassword = ({ onUserVerifyPassword }: VerifyPasswordProps) => {
     formState: { errors },
     handleVerifypassword,
     isPending,
-  } = useVerifyPasswordForm();
+  } = useVerifyPasswordForm(onUserVerifyPassword);
 
   const onSubmit = () => {
     handleVerifypassword();
-    onUserVerifyPassword();
   };
 
   return (

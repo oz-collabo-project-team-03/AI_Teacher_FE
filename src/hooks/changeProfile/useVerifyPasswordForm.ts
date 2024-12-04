@@ -11,7 +11,7 @@ const verifyPasswordSchema = zod.object({
   password: zod.string().min(1, { message: '비밀번호를 입력해주세요.' }),
 });
 
-export const useVerifyPasswordForm = () => {
+export const useVerifyPasswordForm = (onUserVerifyPassword: () => void) => {
   const { showToast } = useToast();
 
   const form = useForm<VerifyPasswordRequestParams>({
@@ -30,7 +30,9 @@ export const useVerifyPasswordForm = () => {
 
   const { mutate: verifyPasswordMutation, isPending } =
     useVerifyPasswordMutation({
-      onSuccess: () => {},
+      onSuccess: () => {
+        onUserVerifyPassword();
+      },
       onError: (error) => {
         if (axios.isAxiosError(error)) {
           console.error('Axios Error Details:', {
