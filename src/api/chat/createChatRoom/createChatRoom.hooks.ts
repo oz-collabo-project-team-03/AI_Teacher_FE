@@ -6,7 +6,7 @@ import { createChatRoomAPI } from './createChatRoomAPI';
 export const useCreateChatRoomMutation = (
   options?: UseMutationOptions<ChatRoomData, Error, CreateChatRoomResponse>
 ) => {
-  return useMutation({
+  return useMutation<ChatRoomData, Error, CreateChatRoomResponse>({
     mutationFn: createChatRoomAPI,
     ...options,
   });
