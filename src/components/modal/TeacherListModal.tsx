@@ -1,8 +1,9 @@
 import { teacherQueries } from '@/api/teacher/teacherQueries';
-import { useSelectedTeacher } from '@/hooks/selectedTeacher/useSelectedTeacher';
+
+import { useTeacherSelection } from '@/hooks/teacherSelection/useTeacherSelection';
 import ErrorPage from '@/pages/status/errorPage';
 import LoadingPage from '@/pages/status/loadingPage';
-import { Teacher } from '@/types/teacherType';
+import { TeacherDto } from '@/types/teacherType';
 import { useQuery } from '@tanstack/react-query';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useMemo, useState } from 'react';
@@ -15,17 +16,19 @@ type CloseTeacherModalProps = {
 };
 
 const TeacherListModal = ({ closeTeacherModal }: CloseTeacherModalProps) => {
-  const [selectedTeacher, setSelectedTeacher] = useState<Teacher | null>(null);
+  const [selectedTeacher, setSelectedTeacher] = useState<TeacherDto | null>(
+    null
+  );
   const [searchTerm, setSearchTerm] = useState('');
 
-  const { handleSelectedTeacher } = useSelectedTeacher();
+  const { selectTeacherMutation } = useTeacherSelection();
 
   //전체 선생님 조회
   const {
     data: teachers = [],
     isLoading,
     error,
-  } = useQuery(teacherQueries.teachers.all());
+  } = useQuery({ ...teacherQueries.teachers.all() });
 
   // 검색어를 기반으로 선생님 목록 필터링
   const filteredTeachers = useMemo(() => {
@@ -36,7 +39,7 @@ const TeacherListModal = ({ closeTeacherModal }: CloseTeacherModalProps) => {
     );
   }, [teachers, searchTerm]);
 
-  const handleTeacherSelect = (teacher: Teacher) => {
+  const handleTeacherSelect = (teacher: TeacherDto) => {
     setSelectedTeacher(teacher);
   };
 
@@ -109,7 +112,7 @@ const TeacherListModal = ({ closeTeacherModal }: CloseTeacherModalProps) => {
             disabled={!selectedTeacher}
             onClick={() => {
               if (selectedTeacher) {
-                handleSelectedTeacher(
+                selectTeacherMutation(
                   selectedTeacher.name,
                   selectedTeacher.teacher_id
                 );

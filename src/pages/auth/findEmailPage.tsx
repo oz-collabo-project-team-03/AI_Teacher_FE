@@ -4,10 +4,19 @@ import AuthInput from '@/components/auth/AuthInput';
 import Button from '@/components/common/Button';
 import { useFindEmail } from '@/hooks/findEmail/useFindEmail';
 import { FormProvider } from 'react-hook-form';
+import ErrorPage from '../status/errorPage';
+import LoadingPage from '../status/loadingPage';
 
 const FindEmailPage = () => {
-  const { form, step, findEmail, FIND_EMAIL_STEP, handleFindEmail } =
-    useFindEmail();
+  const {
+    form,
+    step,
+    findEmail,
+    FIND_EMAIL_STEP,
+    findEmailMutation,
+    isPending,
+    error,
+  } = useFindEmail();
 
   const navigate = useNavigate();
 
@@ -16,11 +25,14 @@ const FindEmailPage = () => {
     formState: { errors },
   } = form;
 
+  if (isPending) return <LoadingPage />;
+  if (error) return <ErrorPage />;
+
   return (
     <FormProvider {...form}>
       <form
         className='flex h-svh flex-col px-[28px] py-[30px]'
-        onSubmit={form.handleSubmit(handleFindEmail)}
+        onSubmit={form.handleSubmit(findEmailMutation)}
         autoComplete='off'
       >
         <div className='flex-grow'>
@@ -73,7 +85,7 @@ const FindEmailPage = () => {
         </div>
         <div className='mt-auto flex flex-col gap-4'>
           {step === FIND_EMAIL_STEP.INPUT_PHONE && (
-            <Button onClick={handleFindEmail}>다음</Button>
+            <Button onClick={findEmailMutation}>다음</Button>
           )}
           {step === FIND_EMAIL_STEP.DISPLAY_EMAIL && (
             <>

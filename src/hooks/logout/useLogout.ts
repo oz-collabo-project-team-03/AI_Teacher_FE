@@ -1,4 +1,4 @@
-import { useLogoutMutation } from '@/api/auth/logout/logout.hooks';
+import { usePostLogoutMutation } from '@/api/auth/logout/logout.hooks';
 import { LogoutResponseDto } from '@/api/auth/logout/logoutType';
 import { useToast } from '@/hooks/useToast';
 import { ApiErrorResponseDto } from '@/types/apiErrorType';
@@ -11,13 +11,20 @@ export const useLogout = () => {
   const { showToast } = useToast();
   const cookies = new Cookies();
 
-  const { mutate: LogoutMutation } = useLogoutMutation({
+  const {
+    mutate: logoutMutation,
+    isPending,
+    error,
+  } = usePostLogoutMutation({
     onSuccess: (data: LogoutResponseDto) => {
       showToast(data.message);
+
+      // 모든 쿠키 제거 (도메인 전체)
       const allCookies = cookies.getAll();
       Object.keys(allCookies).forEach((cookieName) =>
         cookies.remove(cookieName, { path: '/' })
       );
+
       navigate('/', { replace: true });
     },
     onError: (error) => {
@@ -39,10 +46,11 @@ export const useLogout = () => {
     },
   });
 
-  const handleLogout = () => {
+  /** 로그아웃 요청 핸들러*/
+  const handlePostLogout = () => {
     const accessToken = cookies.get('accessToken');
-    LogoutMutation(accessToken);
+    logoutMutation(accessToken);
   };
 
-  return { handleLogout };
+  return { logoutMutation: handlePostLogout, isPending, error };
 };

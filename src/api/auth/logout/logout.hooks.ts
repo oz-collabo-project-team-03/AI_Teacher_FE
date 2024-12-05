@@ -2,7 +2,7 @@ import { UseMutationOptions, useMutation } from '@tanstack/react-query';
 import { logoutAPI } from './logoutAPI';
 import { LogoutRequestParams, LogoutResponseDto } from './logoutType';
 
-export const useLogoutMutation = (
+export const usePostLogoutMutation = (
   options?: UseMutationOptions<
     LogoutResponseDto, // 성공 시 반환 타입
     Error, // 에러 타입
@@ -12,6 +12,5 @@ export const useLogoutMutation = (
   return useMutation({
     mutationFn: logoutAPI,
     ...options,
-    throwOnError: true,
   });
 };

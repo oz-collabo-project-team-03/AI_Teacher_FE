@@ -1,4 +1,4 @@
-import { useSignupMutation } from '@/api/auth/signup/signup.hooks';
+import { usePostSignupMutation } from '@/api/auth/signup/signup.hooks';
 import { useToast } from '@/hooks/useToast';
 import { signupFormSchema } from '@/schemas/signupValidationSchemas';
 import { useTermsStore } from '@/stores/useTermsStore';
@@ -21,9 +21,7 @@ export const useSignupForm = (roleParam: 'student' | 'teacher' | undefined) => {
   const navigate = useNavigate();
   const { showToast } = useToast();
 
-  const isAllTermsAccepted = useTermsStore(
-    (state) => state.stack.isAllTermsAccepted
-  );
+  const isAllTermsAccepted = useTermsStore((state) => state.stack.isAllChecked);
 
   const form = useForm({
     resolver: zodResolver(signupFormSchema),
@@ -51,7 +49,11 @@ export const useSignupForm = (roleParam: 'student' | 'teacher' | undefined) => {
     getValues,
   } = form;
 
-  const { mutate: SignupMutation } = useSignupMutation({
+  const {
+    mutate: signupMutation,
+    isPending,
+    error,
+  } = usePostSignupMutation({
     onSuccess: (data) => {
       console.log('회원가입 완료', data);
       navigate('/signup-complete', { replace: true });
@@ -135,7 +137,7 @@ export const useSignupForm = (roleParam: 'student' | 'teacher' | undefined) => {
         }
       }
 
-      SignupMutation(signupData);
+      signupMutation(signupData);
     }
   };
 
@@ -143,6 +145,8 @@ export const useSignupForm = (roleParam: 'student' | 'teacher' | undefined) => {
     form,
     step,
     selectedGrade,
+    isPending,
+    error,
     setSelectedGrade,
     handleSignup,
     register,

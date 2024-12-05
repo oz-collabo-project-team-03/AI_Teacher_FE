@@ -3,22 +3,33 @@ import Button from '@/components/common/Button';
 import { useResetPassword } from '@/hooks/resetPassword/useResetPassword';
 import { FormProvider } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
+import ErrorPage from '../status/errorPage';
+import LoadingPage from '../status/loadingPage';
 
 const ResetPasswordPage = () => {
   const navigate = useNavigate();
-  const { form, step, tempEmail, handleResetPassword, RESET_PASSWORD_STEP } =
-    useResetPassword();
+  const {
+    form,
+    step,
+    tempEmail,
+    isPending,
+    error,
+    resetPasswordMutation,
+    RESET_PASSWORD_STEP,
+  } = useResetPassword();
 
   const {
     register,
     formState: { errors },
   } = form;
 
+  if (isPending) return <LoadingPage />;
+  if (error) return <ErrorPage />;
   return (
     <FormProvider {...form}>
       <form
         className='flex h-svh flex-col px-[28px] py-[30px]'
-        onSubmit={form.handleSubmit(handleResetPassword)}
+        onSubmit={form.handleSubmit(resetPasswordMutation)}
         autoComplete='off'
       >
         <div className='flex-grow'>
@@ -75,7 +86,7 @@ const ResetPasswordPage = () => {
         </div>
         <div className='mt-auto flex flex-col gap-4'>
           {step === RESET_PASSWORD_STEP.INPUT_EMAIL && (
-            <Button onClick={handleResetPassword}>다음</Button>
+            <Button onClick={resetPasswordMutation}>다음</Button>
           )}
           {step === RESET_PASSWORD_STEP.DISPLAY_TEMP_PASSWORD && (
             <>

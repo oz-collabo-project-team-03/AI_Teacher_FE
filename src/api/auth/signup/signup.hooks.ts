@@ -3,7 +3,7 @@ import { UseMutationOptions, useMutation } from '@tanstack/react-query';
 import { SignupRequestParams, SignupResponseDto } from '@/types/signupType';
 import { signupAPI } from './signupAPI';
 
-export const useSignupMutation = (
+export const usePostSignupMutation = (
   options?: UseMutationOptions<
     SignupResponseDto, // 성공 시 반환 타입
     Error, // 에러 타입
@@ -13,6 +13,5 @@ export const useSignupMutation = (
   return useMutation({
     mutationFn: signupAPI,
     ...options,
-    throwOnError: true,
   });
 };

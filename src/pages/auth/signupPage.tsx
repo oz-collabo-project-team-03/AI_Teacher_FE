@@ -6,7 +6,6 @@ import { useSignupForm } from '@/hooks/signup/useSignupForm';
 import { useEffect } from 'react';
 import { FormProvider } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
-import Landing from '../landing/landing';
 
 const STEP = {
   ACCOUNT_INFO: 1,
@@ -32,8 +31,8 @@ const SignupPage = () => {
   const {
     showVerificationInput,
     formatTime,
-    handleSendCode,
-    handleVerificationCode,
+    emailCodeMutation,
+    emailVerificationMutation,
   } = useEmailVerification(form.getValues);
 
   // 역할 파라미터 검증 (학생/선생님)
@@ -45,7 +44,7 @@ const SignupPage = () => {
 
   if (!roleParam) {
     // 파라미터가 없을 때의 처리
-    return <Landing />;
+    navigate('/');
   }
 
   return (
@@ -87,7 +86,7 @@ const SignupPage = () => {
                   <Button
                     type='button'
                     className='w-36 text-sm'
-                    onClick={handleSendCode}
+                    onClick={emailCodeMutation}
                   >
                     인증번호 발송
                   </Button>
@@ -113,7 +112,7 @@ const SignupPage = () => {
                   <Button
                     type='button'
                     className='w-36 text-sm'
-                    onClick={handleVerificationCode}
+                    onClick={emailVerificationMutation}
                   >
                     확인
                   </Button>

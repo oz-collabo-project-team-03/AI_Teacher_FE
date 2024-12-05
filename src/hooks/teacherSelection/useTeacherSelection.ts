@@ -1,6 +1,6 @@
-import { useSelectedTeacherMutation } from '@/api/teacher/teacher.hooks';
+import { usePostSelectedTeacherMutation } from '@/api/teacher/teacher.hooks';
 import { ApiErrorResponseDto } from '@/types/apiErrorType';
-import { SelectedTeacherResponseDto } from '@/types/teacherType';
+import { GetSelectedTeacherResponse } from '@/types/teacherType';
 import axios from 'axios';
 import { z as zod } from 'zod';
 import { useToast } from '../useToast';
@@ -9,11 +9,15 @@ export const teacherNameSchema = zod.object({
   teacher_name: zod.string().min(1, { message: '이름을 입력해주세요' }),
 });
 
-export const useSelectedTeacher = () => {
+export const useTeacherSelection = () => {
   const { showToast } = useToast();
 
-  const { mutate: SelectedTeacherMutation } = useSelectedTeacherMutation({
-    onSuccess: (data: SelectedTeacherResponseDto) => {
+  const {
+    mutate: selectTeacherMutation,
+    isPending,
+    error,
+  } = usePostSelectedTeacherMutation({
+    onSuccess: (data: GetSelectedTeacherResponse) => {
       showToast(data.message);
     },
     onError: (error) => {
@@ -34,10 +38,12 @@ export const useSelectedTeacher = () => {
   });
 
   const handleSelectedTeacher = async (name: string, teacher_id: number) => {
-    SelectedTeacherMutation({ name, teacher_id });
+    selectTeacherMutation({ name, teacher_id });
   };
 
   return {
-    handleSelectedTeacher,
+    selectTeacherMutation: handleSelectedTeacher,
+    isPending,
+    error,
   };
 };
