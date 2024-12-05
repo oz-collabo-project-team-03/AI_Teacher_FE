@@ -16,20 +16,22 @@ const FeedPostUserInfo = ({
   interest,
 }: FeedPostUserInfoProps) => {
   return (
-    <header className='flex h-[54px] w-full items-center px-[7px] py-[8px]'>
+    <header className='flex h-[54px] items-center gap-2 px-[9px] py-[8px]'>
       <Link to={`/my-page/${user_id}`}>
         <img
           src={profile_image}
           alt='studentProfileImage'
-          className='mr-[9px] h-[40px] w-[40px] rounded-full'
+          className='h-[40px] w-[40px] rounded-full'
         />
       </Link>
-      <div className='flex flex-col gap-1'>
-        <p className='text-[20px] font-medium leading-none'>{nickname}</p>
-        <p className='text-[12px] font-medium leading-none text-hobbyText'>
+      <ul className='flex h-full flex-col justify-between'>
+        <li className='text-[20px] font-medium leading-none text-textMainColor'>
+          {nickname}
+        </li>
+        <li className='text-[14px] font-medium leading-none text-hobbyText'>
           {career_aspiration}, {interest}
-        </p>
-      </div>
+        </li>
+      </ul>
     </header>
   );
 };
