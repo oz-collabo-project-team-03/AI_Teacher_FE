@@ -15,6 +15,5 @@ export const useEditProfileMutation = (
   return useMutation({
     mutationFn: getEditProfileAPI,
     ...options,
-    throwOnError: true,
   });
 };

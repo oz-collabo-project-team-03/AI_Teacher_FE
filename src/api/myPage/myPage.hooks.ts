@@ -16,6 +16,5 @@ export const useProfileGetQuery = (
     },
     enabled: userId === undefined || Boolean(userId),
     ...options,
-    throwOnError: true,
   });
 };

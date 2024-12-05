@@ -32,6 +32,5 @@ export const useDetailPostsInfiniteGetQuery = (
     },
     initialPageParam: 1,
     ...options,
-    throwOnError: true,
   });
 };

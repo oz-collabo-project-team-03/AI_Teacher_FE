@@ -15,6 +15,5 @@ export const useEditAccountMutation = (
   return useMutation({
     mutationFn: editAccountAPI,
     ...options,
-    throwOnError: true,
   });
 };
