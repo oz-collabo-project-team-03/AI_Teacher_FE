@@ -15,7 +15,7 @@ const Button = (props: ButtonProps) => {
 
   const variantStyles = {
     active: 'bg-primaryColor text-white hover:bg-primaryHoverColor',
-    cancel: 'bg-cancelButtonColor text-white',
+    cancel: 'bg-cancelButtonColor text-white hover:bg-cancelButtonHoverColor',
   };
 
   return (

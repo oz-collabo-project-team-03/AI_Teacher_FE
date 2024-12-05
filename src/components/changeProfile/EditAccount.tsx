@@ -1,11 +1,14 @@
+import { useState } from 'react';
 import { FormProvider } from 'react-hook-form';
 import Button from '../common/Button';
 import AuthInput from '../auth/AuthInput';
 import { GradeSelector } from '../auth/GradeButton';
 import { useEditAccountForm } from '@/hooks/changeProfile/useEditAccountForm';
 import { useProfileStore } from '@/stores/editProfile/useProfileStore';
+import CancelMemberModal from '@/components/modal/CancelMemberModal';
 
 const EditAccount = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const { userInfo } = useProfileStore();
 
   const {
@@ -18,8 +21,16 @@ const EditAccount = () => {
     formState: { errors },
   } = useEditAccountForm(userInfo?.role);
 
+  const handleOpenModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
   return (
-    <div className='flex h-full flex-col gap-1 px-4 pb-[30px] pt-[38px]'>
+    <div className='relative flex h-full flex-col gap-1 px-4 pb-[30px] pt-[38px]'>
       <FormProvider {...form}>
         <form onSubmit={handleSubmit(onSubmit)} className='h-full'>
           <div className='flex h-full flex-col justify-between'>
@@ -104,9 +115,16 @@ const EditAccount = () => {
       <button
         type='button'
         className='self-end text-sm font-medium text-captionColor hover:text-textMainColor/70'
+        onClick={handleOpenModal}
       >
         탈퇴하기
       </button>
+
+      {isModalOpen && (
+        <div className='fixed inset-0 z-50'>
+          <CancelMemberModal onClose={handleCloseModal} />
+        </div>
+      )}
     </div>
   );
 };
