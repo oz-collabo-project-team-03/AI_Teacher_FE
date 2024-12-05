@@ -11,18 +11,43 @@ type FeedPostSliderProps = {
 };
 
 const FeedPostSlider = ({ image1, image2, image3 }: FeedPostSliderProps) => {
-  const settings = {
-    dots: true, //하단 페이지네이션 점 표시
-    infinite: false, // 무한반복 여부
-    speed: 500, //전환속도
-    arrows: false,
-    slidesToShow: 1, //화면에 보여줄 슬라이드 수
-    slidesToScroll: 1, //한번에 넘길 슬라드 수
-  };
+  const images = [image1, image2, image3].filter((image) => image !== null);
 
-  const images = [image1, image2, image3].filter(
-    (image): image is string => image !== null
-  );
+  // 모든 이미지가 null인 경우
+  if (images.length === 0) {
+    return (
+      <section className='h-[250px] w-full'>
+        <div className='flex h-[230px] w-full items-center justify-center border bg-gray-50'>
+          <p className='text-captionColor'>이미지 오류</p>
+        </div>
+      </section>
+    );
+  }
+
+  // 이미지가 하나만 있는 경우
+  if (images.length === 1) {
+    return (
+      <section className='h-[250px] w-full'>
+        <div className='h-[230px] w-full overflow-hidden'>
+          <img
+            src={images[0]}
+            alt='daily사진 1'
+            className='h-full w-full object-cover'
+          />
+        </div>
+      </section>
+    );
+  }
+
+  // 이미지가 여러 개인 경우 슬라이더 사용
+  const settings = {
+    dots: true,
+    infinite: false,
+    speed: 500,
+    arrows: false,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+  };
 
   return (
     <section className='h-[250px] w-full'>

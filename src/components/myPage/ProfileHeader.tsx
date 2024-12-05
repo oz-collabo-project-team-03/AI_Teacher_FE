@@ -1,4 +1,5 @@
 import ToggleButton from './ToggleButton';
+import studentDefaultIcon from '@/assets/editProfile/student/studentDefaultIcon.png';
 
 type ProfileHeaderProps = {
   profileImage: string;
@@ -17,7 +18,11 @@ const ProfileHeader = ({
 }: ProfileHeaderProps) => (
   <ul className='flex flex-col items-center gap-2'>
     <li className='relative h-[92px] w-[92px] rounded-full'>
-      <img src={profileImage} alt='프로필 이미지' className='w-full h-full' />
+      <img
+        src={profileImage || studentDefaultIcon}
+        alt='프로필 이미지'
+        className='h-full w-full'
+      />
       {isOwnProfile && <ToggleButton />}
     </li>
     <li className='flex flex-col items-center'>

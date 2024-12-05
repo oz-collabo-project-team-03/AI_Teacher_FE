@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import studentDefaultIcon from '@/assets/editProfile/student/studentDefaultIcon.png';
 
 type FeedPostUserInfoProps = {
   user_id: string;
@@ -19,7 +20,7 @@ const FeedPostUserInfo = ({
     <header className='flex h-[54px] items-center gap-2 px-[9px] py-[8px]'>
       <Link to={`/my-page/${user_id}`}>
         <img
-          src={profile_image}
+          src={profile_image || studentDefaultIcon}
           alt='studentProfileImage'
           className='h-[40px] w-[40px] rounded-full'
         />
