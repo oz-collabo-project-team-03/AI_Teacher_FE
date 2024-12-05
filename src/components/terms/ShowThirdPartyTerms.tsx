@@ -1,17 +1,17 @@
+import { useTermsStore } from '@/stores/useTermsStore';
 import { useState } from 'react';
 import { twMerge } from 'tailwind-merge';
 import CheckBox from '../common/CheckBox';
 
-type ShowThirdPartyTermsProps = {
-  handleThirdPartyCheck: (checked: boolean) => void;
-  isThirdPartyChecked: boolean;
-};
-
-const ShowThirdPartyTerms = ({
-  handleThirdPartyCheck,
-  isThirdPartyChecked,
-}: ShowThirdPartyTermsProps) => {
+const ShowThirdPartyTerms = () => {
   const [showThirdPartyTerms, setShowThirdPartyTerms] = useState(false);
+
+  const isThirdPartyChecked = useTermsStore(
+    (state) => state.stack.isThirdPartyChecked
+  );
+  const setThirdPartyChecked = useTermsStore(
+    (state) => state.actions.setThirdPartyChecked
+  );
 
   const toggleThirdPartyTerms = () => {
     setShowThirdPartyTerms((prev) => !prev);
@@ -21,7 +21,7 @@ const ShowThirdPartyTerms = ({
       <div className='flex'>
         <CheckBox
           checked={isThirdPartyChecked}
-          onChange={(e) => handleThirdPartyCheck(e.target.checked)}
+          onChange={(e) => setThirdPartyChecked(e.target.checked)}
         >
           [필수] 개인정보 제3자 제공에 동의
         </CheckBox>

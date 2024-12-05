@@ -1,17 +1,17 @@
+import { useTermsStore } from '@/stores/useTermsStore';
 import { useState } from 'react';
 import { twMerge } from 'tailwind-merge';
 import CheckBox from '../common/CheckBox';
 
-type ShowPrivacyTermsProps = {
-  handlePrivacyCheck: (checked: boolean) => void;
-  isPrivacyChecked: boolean;
-};
-
-const ShowPrivacyTerms = ({
-  handlePrivacyCheck,
-  isPrivacyChecked,
-}: ShowPrivacyTermsProps) => {
+const ShowPrivacyTerms = () => {
   const [showPrivacyTerms, setShowPrivacyTerms] = useState(false);
+
+  const isPrivacyChecked = useTermsStore(
+    (state) => state.stack.isPrivacyChecked
+  );
+  const setPrivacyChecked = useTermsStore(
+    (state) => state.actions.setPrivacyChecked
+  );
 
   const togglePrivacyTerms = () => {
     setShowPrivacyTerms((prev) => !prev);
@@ -22,7 +22,7 @@ const ShowPrivacyTerms = ({
       <div className='flex'>
         <CheckBox
           checked={isPrivacyChecked}
-          onChange={(e) => handlePrivacyCheck(e.target.checked)}
+          onChange={(e) => setPrivacyChecked(e.target.checked)}
         >
           [필수] 개인정보 수집 및 이용동의
         </CheckBox>

@@ -17,9 +17,7 @@ const RoleSelectPage = () => {
   const [isTeacherHovered, setIsTeacherHovered] = useState(false);
   const [selectedRole, setSelectedRole] = useState<TRole>(null);
 
-  const isAllTermsAccepted = useTermsStore(
-    (state) => state.stack.isAllTermsAccepted
-  );
+  const isAllTermsAccepted = useTermsStore((state) => state.stack.isAllChecked);
   const { showToast } = useToast();
   const navigate = useNavigate();
 
@@ -40,20 +38,6 @@ const RoleSelectPage = () => {
   // 역할이 활성화되었는지 확인하는 함수 (선택 또는 호버)
   const isRoleActive = (role: 'student' | 'teacher'): boolean => {
     return isRoleSelected(role) || isRoleHovered(role);
-  };
-
-  const handleProceed = () => {
-    if (!isAllTermsAccepted) {
-      showToast('이용약관 동의 후 진행해주세요');
-      navigate('/member-agree');
-      return;
-    }
-
-    if (!selectedRole) {
-      showToast('역할을 선택해주세요');
-    } else {
-      navigate(`/signup/${selectedRole}`);
-    }
   };
 
   return (
@@ -133,7 +117,23 @@ const RoleSelectPage = () => {
           </div>
         </div>
       </div>
-      <Button variant='active' className='mt-auto' onClick={handleProceed}>
+      <Button
+        variant='active'
+        className='mt-auto'
+        onClick={() => {
+          if (!isAllTermsAccepted) {
+            showToast('이용약관 동의 후 진행해주세요');
+            navigate('/member-agree');
+            return;
+          }
+
+          if (!selectedRole) {
+            showToast('역할을 선택해주세요');
+          } else {
+            navigate(`/signup/${selectedRole}`);
+          }
+        }}
+      >
         다음
       </Button>
     </div>

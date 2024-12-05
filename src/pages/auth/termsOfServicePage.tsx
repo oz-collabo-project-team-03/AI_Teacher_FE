@@ -4,52 +4,25 @@ import ShowPrivacyTerms from '@/components/terms/ShowPrivacyTerms';
 import ShowThirdPartyTerms from '@/components/terms/ShowThirdPartyTerms';
 import { useToast } from '@/hooks/useToast';
 import { useTermsStore } from '@/stores/useTermsStore';
-import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 // 이용약관 페이지라는 뜻
 const TermsOfServicePage = () => {
-  //동의 상태
-  const [isAllChecked, setIsAllChecked] = useState(false);
-  const [isPrivacyChecked, setIsPrivacyChecked] = useState(false);
-  const [isThirdPartyChecked, setIsThirdPartyChecked] = useState(false);
+  const isAllChecked = useTermsStore((state) => state.stack.isAllChecked);
+  const isPrivacyChecked = useTermsStore(
+    (state) => state.stack.isPrivacyChecked
+  );
+  const isThirdPartyChecked = useTermsStore(
+    (state) => state.stack.isAllChecked
+  );
+  const setAllChecked = useTermsStore((state) => state.actions.setAllChecked);
 
   const { showToast } = useToast();
-
-  const setAllTermsAccepted = useTermsStore(
-    (state) => state.setAllTermsAccepted
-  );
-
   const navigate = useNavigate();
 
+  /** 전체 동의 체크박스 핸들러 */
   const handleAllCheck = () => {
-    const newChecked = !isAllChecked;
-    setIsAllChecked(newChecked);
-    setIsPrivacyChecked(newChecked);
-    setIsThirdPartyChecked(newChecked);
+    setAllChecked(!isAllChecked);
   };
-
-  const handlePrivacyCheck = (checked: boolean) => {
-    setIsPrivacyChecked(checked);
-    setIsAllChecked(checked && isThirdPartyChecked);
-  };
-
-  const handleThirdPartyCheck = (checked: boolean) => {
-    setIsThirdPartyChecked(checked);
-    setIsAllChecked(isPrivacyChecked && checked);
-  };
-
-  const handleProceed = () => {
-    if (!isAllChecked) {
-      showToast('필수 이용약관에 동의해주세요');
-    } else {
-      navigate(`/role-selection`);
-    }
-  };
-
-  // 상태 변경 감지용 useEffect
-  useEffect(() => {
-    setAllTermsAccepted(isPrivacyChecked && isThirdPartyChecked);
-  }, [isPrivacyChecked, isThirdPartyChecked, setAllTermsAccepted]);
 
   return (
     <div className='flex h-lvh w-full flex-col items-center px-[28px] pb-[30px] text-textMainColor'>
@@ -72,19 +45,22 @@ const TermsOfServicePage = () => {
           </div>
 
           <div className='mb-[38px] flex flex-col gap-[30px] border-t border-captionColor pt-[30px]'>
-            <ShowPrivacyTerms
-              handlePrivacyCheck={handlePrivacyCheck}
-              isPrivacyChecked={isPrivacyChecked}
-            />
+            <ShowPrivacyTerms />
 
-            <ShowThirdPartyTerms
-              handleThirdPartyCheck={handleThirdPartyCheck}
-              isThirdPartyChecked={isThirdPartyChecked}
-            />
+            <ShowThirdPartyTerms />
           </div>
         </div>
       </div>
-      <Button variant='active' onClick={handleProceed}>
+      <Button
+        variant='active'
+        onClick={() => {
+          if (isPrivacyChecked && isThirdPartyChecked) {
+            navigate('/role-selection');
+          } else {
+            showToast('필수 이용약관에 동의해주세요');
+          }
+        }}
+      >
         다음
       </Button>
     </div>
