@@ -20,6 +20,7 @@ export default {
         chatText: "#646464",
         hobbyText: "#8E8B8B",
         cancelButtonColor: "#C6C6C6",
+        cancelButtonHoverColor: "#B0B0B0",
         captionColor: "#A8A8A8",
         unFocusColor: "#D9D9D9",
         btNavFocusColor: "#121212",
