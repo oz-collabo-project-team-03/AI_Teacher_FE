@@ -1,54 +1,49 @@
-import { ChatAiBubble, ChatMyBubble, ChatTeacherBubble } from './bubbles';
+import { ChatMyBubble, ChatOtherBubble, ChatSystemBubble } from './bubbles';
 
-import { ChatMessageProps } from '../../types/index';
-import React from 'react';
+import { ChatMessageProps } from '@/types/chat';
+import { useMemo } from 'react';
 
 const ChatMessage = ({
   message,
   nickname,
   userType,
-  isLast,
-}: ChatMessageProps) => {
-  if (userType === 'system') {
+  profileImage,
+  myUserType,
+  message_type,
+}: ChatMessageProps & { myUserType: string }) => {
+  // 내가 보낸 메시지인지 판별
+  const isMyMessage = useMemo(
+    () => userType === myUserType,
+    [userType, myUserType]
+  );
+
+  // 시스템 메시지일 경우
+  if (userType === 'System') {
     return (
-      <div
-        className={`py-[20px] text-center text-[12px] text-captionColor ${
-          isLast ? 'border-t border-commuInputColor' : ''
-        }`}
-      >
-        {message}
+      <div className='text-center text-[12px] text-captionColor'>
+        <ChatSystemBubble message={message} message_type={message_type} />
       </div>
     );
   }
 
-  // 기존 채팅 말풍선 렌더링
-  const bubbleComponents: Record<
-    string,
-    (props: { message: string }) => React.ReactNode
-  > = {
-    user: ChatMyBubble,
-    ai: ChatAiBubble,
-    teacher: ChatTeacherBubble,
-  };
-
-  const BubbleComponent = bubbleComponents[userType];
-
   return (
-    <div
-      className={`m-[13px] flex ${userType === 'user' ? 'mr-[0px] justify-end' : ''}`}
-    >
-      {userType !== 'user' && (
-        <div className='h-[50px] w-[50px] rounded-full bg-primaryColor'></div>
+    <div className={`m-[13px] flex ${isMyMessage ? 'justify-end' : ''}`}>
+      {!isMyMessage && (
+        <img
+          className='h-[50px] w-[50px] overflow-hidden rounded-full border border-captionColor object-cover'
+          src={profileImage}
+          alt={`${nickname} profile`}
+        />
       )}
-      <div
-        className={`ml-[14px] ${
-          userType === 'user' ? 'text-right' : 'text-left'
-        }`}
-      >
-        {userType !== 'user' && (
+      <div className={`ml-[14px] ${isMyMessage ? 'text-right' : 'text-left'}`}>
+        {!isMyMessage && (
           <div className='text-[14px] text-captionColor'>{nickname}</div>
         )}
-        {BubbleComponent ? <BubbleComponent message={message} /> : null}
+        {isMyMessage ? (
+          <ChatMyBubble message={message} message_type={message_type} />
+        ) : (
+          <ChatOtherBubble message={message} message_type={message_type} />
+        )}
       </div>
     </div>
   );
