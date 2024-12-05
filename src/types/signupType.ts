@@ -59,6 +59,6 @@ export type StudentResponseDto = BaseUserResponseDto & {
 };
 
 // 통합 응답 타입 (선생님 또는 학생)
-export type SignupResponseDto = TeacherResponseDto | StudentResponseDto;
+export type GetSignupResponse = TeacherResponseDto | StudentResponseDto;
 
 export type Role = 'student' | 'teacher';
