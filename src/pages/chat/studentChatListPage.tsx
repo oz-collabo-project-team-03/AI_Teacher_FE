@@ -29,11 +29,20 @@ const StudentChatListPage = () => {
   const [isSwiping, setIsSwiping] = useState(false);
   const [canClick, setCanClick] = useState(true);
 
+  // 페이지네이션를 다룰때 useInfiniteQuery 쓰기 (캡쳐사진있음)
+  // refetch vs invalidate cache 차이 숙제 > refetch잘안씀 이유가 뭐지
   const { data: chatList, refetch: refetchChatList } = useGetChatListQuery(1);
 
   const createChatRoomMutation = useCreateChatRoomMutation({
-    onSuccess: () => {
-      refetchChatList();
+    onSuccess: (newChatRoom) => {
+      if (!newChatRoom.room_id) {
+        console.error('room_id가 없습니다:', newChatRoom);
+        alert('채팅방 생성에 실패했습니다.');
+        return;
+      }
+
+      // 채팅방 페이지로 이동
+      navigate(`/student/chats/${newChatRoom.room_id}`);
       setActiveModal(null);
     },
     onError: (error) => {
@@ -53,6 +62,7 @@ const StudentChatListPage = () => {
     },
   });
 
+  //프레이머 모션 스와이퍼 에있음 찾아보기
   useEffect(() => {
     let isPointerMoving = false;
     let initialized = false;
@@ -192,6 +202,7 @@ const StudentChatListPage = () => {
               fullSwipe={false}
               threshold={0.5}
             >
+              {/* 하나 더 div 로 감싸서 해보기 */}
               <div
                 className={`w-full ${
                   deletingChatId === chat.room_id ? 'animate-slideOutLeft' : ''
