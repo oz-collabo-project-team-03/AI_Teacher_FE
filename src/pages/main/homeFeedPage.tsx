@@ -72,7 +72,7 @@ const HomeFeedPage = () => {
   };
 
   return (
-    <div className='h-full overflow-auto pt-[72px]'>
+    <div className='custom-scrollbar h-full overflow-auto pt-[72px]'>
       <MainHeader />
 
       {data.pages.map((page) =>
