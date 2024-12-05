@@ -15,7 +15,7 @@ const socialLogin = [
 ];
 
 const LoginPage = () => {
-  const { form, handleLogin } = useLogin();
+  const { form, loginMutation } = useLogin();
 
   const {
     register,
@@ -36,7 +36,7 @@ const LoginPage = () => {
           </div>
           <form
             className='mb-[38px] flex flex-col gap-y-[14px]'
-            onSubmit={form.handleSubmit(handleLogin)}
+            onSubmit={form.handleSubmit(loginMutation)}
             autoComplete='off'
           >
             <div>
