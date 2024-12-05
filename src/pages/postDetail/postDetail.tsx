@@ -59,7 +59,7 @@ const PostDetail = () => {
       : '내 게시글';
 
   return (
-    <div className='scrollbar-hide flex w-full flex-col overflow-auto pb-[64px] pt-[72px]'>
+    <div className='scrollbar-hide flex h-full flex-col overflow-auto pt-[72px]'>
       <Header title={headerTitle} />
       {data.pages.map((page) =>
         page.posts.map((post) => <FeedPost key={post.post_id} posts={post} />)
@@ -71,7 +71,7 @@ const PostDetail = () => {
         <div className='fixed bottom-0 left-0 right-0 z-50 flex items-center justify-center'>
           <div className='relative w-full rounded-t-[15px] bg-white md:w-[425px] lg:w-[425px]'>
             <button
-              className='absolute text-xl right-2 top-2'
+              className='absolute right-2 top-2 text-xl'
               onClick={closeCommentModal}
             >
               &times;
