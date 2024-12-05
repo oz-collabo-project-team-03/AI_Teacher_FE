@@ -1,6 +1,7 @@
 import FeedPostButton from '@/components/main/FeedPostButton';
 import teacherDefaultIcon from '@/assets/editProfile/teacher/teacherDefaultIcon.png';
 import { Link } from 'react-router-dom';
+import { useState } from 'react';
 
 type FeedPostContentProps = {
   like_count: number;
@@ -26,6 +27,10 @@ const FeedPostContent = ({
     return `${date.getFullYear().toString().slice(2)}년 ${(date.getMonth() + 1).toString().padStart(2, '0')}월 ${date.getDate().toString().padStart(2, '0')}일`;
   };
 
+  const [imageUrl, setImageUrl] = useState(
+    teacher?.profile_image || teacherDefaultIcon
+  );
+
   return (
     <ul className='flex flex-col gap-2 px-[12px] font-medium'>
       <FeedPostButton like_count={like_count} comment_count={comment_count} />
@@ -34,7 +39,8 @@ const FeedPostContent = ({
         <li className='flex w-full items-center gap-1 text-[15px]'>
           <Link to={`/teacher/my-page/${teacher.user_id}`}>
             <img
-              src={teacher.profile_image || teacherDefaultIcon}
+              src={imageUrl}
+              onError={() => setImageUrl(teacherDefaultIcon)}
               alt='teacherProfileImage'
               className='h-[20px] w-[20px]'
             />
