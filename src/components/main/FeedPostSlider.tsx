@@ -1,6 +1,6 @@
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import '../../styles/sliderSlick.css';
+import '@/styles/sliderSlick.css';
 
 import Slider from 'react-slick';
 
@@ -25,17 +25,17 @@ const FeedPostSlider = ({ image1, image2, image3 }: FeedPostSliderProps) => {
   );
 
   return (
-    <section className='h-[233px] w-full'>
-      <Slider {...settings} className='w-full'>
+    <section className='h-[250px] w-full'>
+      <Slider {...settings} className='h-full w-full'>
         {images.map((image, index) => (
           <div
             key={`slide-${index}`}
-            className='h-[210px] w-full overflow-hidden'
+            className='h-[230px] w-full overflow-hidden'
           >
             <img
               src={image}
               alt={`daily사진 ${index + 1}`}
-              className='object-cover w-full h-full'
+              className='h-full w-full object-cover'
             />
           </div>
         ))}
