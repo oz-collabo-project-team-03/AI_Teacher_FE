@@ -18,7 +18,10 @@ const CreateChatModal = ({
   const [roomName, setRoomName] = useState('');
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setRoomName(e.target.value);
+    const input = e.target.value;
+    if (input.length <= 25) {
+      setRoomName(input);
+    }
   };
 
   const handleCreateChat = () => {
