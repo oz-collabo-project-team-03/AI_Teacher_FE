@@ -3,7 +3,7 @@ export type LoginRequestParams = {
   password: string;
 };
 
-export type LoginResponseDto = {
+export type GetLoginResponse = {
   access_token: string;
   refresh_token: string;
   token_type: string;

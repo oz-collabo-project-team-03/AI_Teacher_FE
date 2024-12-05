@@ -1,9 +1,14 @@
-export type Teacher = {
+const POSITIONS = {
+  STUDENT: 'student',
+  TEACHER: 'teacher',
+} as const;
+
+export type TeacherDto = {
   teacher_id: number;
   name: string;
   organization_name: string;
   organization_type: string;
-  position: string;
+  position: keyof typeof POSITIONS;
 };
 
 export type SelectedTeacherRequestParams = {
@@ -11,6 +16,6 @@ export type SelectedTeacherRequestParams = {
   name: string;
 };
 
-export type SelectedTeacherResponseDto = {
+export type GetSelectedTeacherResponse = {
   message: string;
 };

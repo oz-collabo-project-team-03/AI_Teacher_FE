@@ -1,5 +1,5 @@
-import { useLoginMutation } from '@/api/auth/login/login.hooks';
-import { LoginResponseDto } from '@/api/auth/login/loginType';
+import { usePostLoginMutation } from '@/api/auth/login/login.hooks';
+import { GetLoginResponse } from '@/api/auth/login/loginType';
 import { ApiErrorResponseDto } from '@/types/apiErrorType';
 import { zodResolver } from '@hookform/resolvers/zod';
 import axios from 'axios';
@@ -32,8 +32,12 @@ export const useLogin = () => {
   });
 
   /**로그인 함수 */
-  const { mutate: LoginMutation } = useLoginMutation({
-    onSuccess: (data: LoginResponseDto) => {
+  const {
+    mutate: loginMutation,
+    isPending,
+    error,
+  } = usePostLoginMutation({
+    onSuccess: (data: GetLoginResponse) => {
       if (data.first_login) {
         if (data.role === 'student') {
           navigate('/student-main', {
@@ -71,14 +75,16 @@ export const useLogin = () => {
     },
   });
 
-  const handleLogin = async () => {
+  const handlePostLogin = async () => {
     const formData = form.getValues();
     console.log('Login Attempt:', form.getValues());
-    LoginMutation(formData);
+    loginMutation(formData);
   };
 
   return {
     form,
-    handleLogin,
+    isPending,
+    error,
+    loginMutation: handlePostLogin,
   };
 };

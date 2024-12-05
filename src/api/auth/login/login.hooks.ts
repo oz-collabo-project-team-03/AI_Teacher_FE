@@ -1,10 +1,10 @@
 import { UseMutationOptions, useMutation } from '@tanstack/react-query';
 import { loginAPI } from './loginAPI';
-import { LoginRequestParams, LoginResponseDto } from './loginType';
+import { GetLoginResponse, LoginRequestParams } from './loginType';
 
-export const useLoginMutation = (
+export const usePostLoginMutation = (
   options?: UseMutationOptions<
-    LoginResponseDto, // 성공 시 반환 타입
+    GetLoginResponse, // 성공 시 반환 타입
     Error, // 에러 타입
     LoginRequestParams // 요청 데이터 타입
   >
@@ -12,6 +12,5 @@ export const useLoginMutation = (
   return useMutation({
     mutationFn: loginAPI,
     ...options,
-    throwOnError: true,
   });
 };

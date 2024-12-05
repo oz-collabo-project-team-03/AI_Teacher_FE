@@ -1,12 +1,15 @@
 import {
-  useEmailVerificationCodeMutation,
-  useEmailVerificationMutation,
+  usePostEmailVerificationCodeMutation,
+  usePostEmailVerificationMutation,
 } from '@/api/auth/sendEmail/sendEmail.hooks';
 import useCountdown from '@/hooks/signup/useCountDown';
 import { useToast } from '@/hooks/useToast';
+import { signupFormSchema } from '@/schemas/signupValidationSchemas';
 import { ApiErrorResponseDto } from '@/types/apiErrorType';
+import { zodResolver } from '@hookform/resolvers/zod';
 import axios from 'axios';
 import { useState } from 'react';
+import { useForm } from 'react-hook-form';
 
 type FormValues = {
   email: string;
@@ -18,17 +21,42 @@ export const useEmailVerification = (getValues: () => FormValues) => {
   const { showToast } = useToast();
   const { start, formatTime, reset } = useCountdown(180);
 
-  const { mutate: EmailCodeMutation } = useEmailVerificationMutation({
+  const {
+    mutate: emailCodeMutation,
+    isPending,
+    error,
+  } = usePostEmailVerificationMutation({
     onSuccess: (data) => {
       console.log('Email verification sent successfully:', data);
     },
     onError: (error) => {
-      console.error('Error sending email verification:', error);
+      // Axios 에러인 경우 더 상세한 로깅
+      if (axios.isAxiosError(error)) {
+        console.error('Axios Error Details:', {
+          response: error.response?.data,
+          status: error.response?.status,
+          headers: error.response?.headers,
+        });
+      }
+
+      const apiError = error as ApiErrorResponseDto;
+      const errorMessage =
+        apiError?.response?.data?.message ||
+        '인증코드 전송에 실패했습니다. 다시 시도해주세요.';
+      showToast(errorMessage);
     },
   });
+  const form = useForm({
+    resolver: zodResolver(signupFormSchema),
+    defaultValues: {
+      email: '',
+      code: '',
+    },
+    mode: 'onSubmit',
+  });
 
-  const { mutate: EmailVerificationMutation } =
-    useEmailVerificationCodeMutation({
+  const { mutate: emailVerificationMutation } =
+    usePostEmailVerificationCodeMutation({
       onSuccess: () => {
         showToast('이메일 인증이 완료되었습니다.');
         reset();
@@ -51,31 +79,34 @@ export const useEmailVerification = (getValues: () => FormValues) => {
       },
     });
 
-  const handleSendCode = () => {
+  const handlePostSendCode = () => {
     const emailData = getValues().email;
     if (!emailData) {
       showToast('이메일을 입력해주세요');
       return;
     }
-    EmailCodeMutation({ email: emailData });
+    emailCodeMutation({ email: emailData });
     setShowVerificationInput(true);
     start();
   };
 
-  const handleVerificationCode = () => {
+  const handlePostVerificationCode = () => {
     const emailData = getValues().email;
     const code = getValues().code;
     if (!code) {
       showToast('인증번호를 입력해주세요');
       return;
     }
-    EmailVerificationMutation({ email: emailData, code: code });
+    emailVerificationMutation({ email: emailData, code: code });
   };
 
   return {
     showVerificationInput,
     formatTime,
-    handleSendCode,
-    handleVerificationCode,
+    isPending,
+    error,
+    form,
+    emailCodeMutation: handlePostSendCode,
+    emailVerificationMutation: handlePostVerificationCode,
   };
 };

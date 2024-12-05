@@ -1,5 +1,5 @@
-import { useFindEmailMutation } from '@/api/auth/findEmail/findEmail.hooks';
-import { FindEmailResponseDto } from '@/api/auth/findEmail/findEmailType';
+import { usePostFindEmailMutation } from '@/api/auth/findEmail/findEmail.hooks';
+import { GetFindEmailResponse } from '@/api/auth/findEmail/findEmailType';
 import { ApiErrorResponseDto } from '@/types/apiErrorType';
 import { zodResolver } from '@hookform/resolvers/zod';
 import axios from 'axios';
@@ -33,8 +33,12 @@ export const useFindEmail = () => {
     mode: 'onChange',
   });
 
-  const { mutate: FindEmailMutation } = useFindEmailMutation({
-    onSuccess: (data: FindEmailResponseDto) => {
+  const {
+    mutate: findEmailMutation,
+    isPending,
+    error,
+  } = usePostFindEmailMutation({
+    onSuccess: (data: GetFindEmailResponse) => {
       setFindEmail(data.email);
       setStep(FIND_EMAIL_STEP.DISPLAY_EMAIL);
     },
@@ -55,9 +59,9 @@ export const useFindEmail = () => {
     },
   });
 
-  const handleFindEmail = async () => {
+  const handlePostFindEmail = async () => {
     const { phone } = form.getValues();
-    FindEmailMutation({ phone });
+    findEmailMutation({ phone });
   };
 
   return {
@@ -65,6 +69,8 @@ export const useFindEmail = () => {
     step,
     findEmail,
     FIND_EMAIL_STEP,
-    handleFindEmail,
+    findEmailMutation: handlePostFindEmail,
+    isPending,
+    error,
   };
 };

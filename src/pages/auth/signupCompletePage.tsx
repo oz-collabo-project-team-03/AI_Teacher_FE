@@ -2,8 +2,10 @@ import thumbsUPIcon from '@/assets/auth/thumbs_up.svg';
 import Celebration from '@/components/ConfettiCelebration';
 import Button from '@/components/common/Button';
 import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 
 const SignupCompletePage = () => {
+  const navigate = useNavigate();
   // 애니메이션을 위한 초기 상태 및 변형 설정
   const imageVariants = {
     hidden: { opacity: 0, rotate: 0, x: -50 },
@@ -44,7 +46,14 @@ const SignupCompletePage = () => {
         </p>
       </motion.div>
 
-      <Button variant='active'>수행평가 보러가기</Button>
+      <Button
+        variant='active'
+        onClick={() => {
+          navigate('/');
+        }}
+      >
+        수행평가 보러가기
+      </Button>
     </div>
   );
 };

@@ -1,10 +1,10 @@
 import axiosInstance from '@/api/axiosInstance';
-import { LoginRequestParams, LoginResponseDto } from './loginType';
+import { GetLoginResponse, LoginRequestParams } from './loginType';
 
 export const loginAPI = async (
   userData: LoginRequestParams
-): Promise<LoginResponseDto> => {
-  const response = await axiosInstance.post<LoginResponseDto>(
+): Promise<GetLoginResponse> => {
+  const response = await axiosInstance.post<GetLoginResponse>(
     '/auth/login',
     userData
   );
