@@ -16,6 +16,13 @@ const ChatInput = ({ onSendMessage }: ChatInputProps) => {
       }
     }
   };
+  //글자수 제한
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const input = e.target.value;
+    if (input.length <= 500) {
+      setInputValue(input);
+    }
+  };
 
   return (
     <input
@@ -23,7 +30,7 @@ const ChatInput = ({ onSendMessage }: ChatInputProps) => {
       className='w-full rounded-[10px] border-0 bg-commuInputColor py-[18px] pl-[54px] pr-5 outline-none ring-0 ring-inset ring-inputBorderColor placeholder:text-inputBorderColor focus:ring-2 focus:ring-inset focus:ring-inputFocusColor'
       placeholder='메시지를 입력하세요'
       value={inputValue}
-      onChange={(e) => setInputValue(e.target.value)}
+      onChange={handleInputChange}
       onKeyDown={handleSendOnEnter}
     />
   );
