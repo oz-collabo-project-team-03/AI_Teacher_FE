@@ -69,43 +69,44 @@ const CreatePostPage = () => {
   };
 
   return (
-    <main className='space-y-3 pt-[72px]'>
+    <main className='pt-[72px]'>
       <Header title='포스팅하기' />
       <FormProvider {...postingFromMethods}>
-        <form onSubmit={postingFromMethods.handleSubmit(onSubmit)}>
-          <section>
+        <form
+          onSubmit={postingFromMethods.handleSubmit(onSubmit)}
+          className='flex flex-col gap-5 px-4 py-4'
+        >
+          <section className='flex flex-col gap-4'>
             <PostImageUpload onImageUpload={handleImageUpload} />
             <PostTextEditor />
           </section>
 
-          <section className='ml-[12px] mt-[10px] flex h-[35px] items-center'>
-            <Controller
-              name='is_with_teacher'
-              control={postingFromMethods.control}
-              render={({ field }) => (
-                <label className='flex min-w-0 flex-1 cursor-pointer items-center text-black'>
-                  <input
-                    type='checkBox'
-                    {...field}
-                    checked={field.value}
-                    value={field.value.toString()}
-                    className='mr-[10px] size-4 cursor-pointer rounded border-[#DEDEDE] text-primaryHoverColor focus:ring-transparent'
-                  />
-                  선생님 협업 여부
-                </label>
-              )}
-            />
-          </section>
-          <footer className='mt-[40px] flex h-[62px] items-center justify-center gap-2.5 p-[12px] pb-[130px] text-[18px]'>
-            <Button
+          <Controller
+            name='is_with_teacher'
+            control={postingFromMethods.control}
+            render={({ field }) => (
+              <label className='flex cursor-pointer items-center gap-2 text-textMainColor'>
+                <input
+                  type='checkBox'
+                  {...field}
+                  checked={field.value}
+                  value={field.value.toString()}
+                  className='size-5 cursor-pointer rounded border-[#DEDEDE] text-primaryHoverColor focus:ring-transparent'
+                />
+                선생님 협업 여부
+              </label>
+            )}
+          />
+          <footer className='flex items-center justify-between'>
+            <button
               type='button'
               name='cancel'
               onClick={handleCancel}
-              className='w-[50%] bg-cancelButtonColor hover:bg-hobbyText'
+              className='flex w-[49%] cursor-pointer items-center justify-center rounded-lg bg-cancelButtonColor py-3.5 text-white'
             >
               취소
-            </Button>
-            <Button type='submit' name='post' className='w-[50%]'>
+            </button>
+            <Button type='submit' name='post' className='w-[49%]'>
               포스팅
             </Button>
           </footer>
