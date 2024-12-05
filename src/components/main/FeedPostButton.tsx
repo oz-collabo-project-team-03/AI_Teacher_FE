@@ -31,20 +31,24 @@ const FeedPostButton = ({ like_count, comment_count }: FeedPostButtonProps) => {
 
   return (
     <>
-      <li className='flex h-[20px] w-full items-center'>
-        <button onClick={toggleHeart} className='h-[20px] w-[20px]'>
-          {!isLiked ? (
-            <img src={Heart} alt='HeartIcon' />
-          ) : (
-            <img src={fullHeart} alt='fullHeartIcon' />
-          )}
-        </button>
-        <span className='ml-[3px] mr-[25px]'>{likeCount}</span>
+      <li className='flex items-center gap-6'>
+        <div className='flex gap-1'>
+          <button onClick={toggleHeart} className=''>
+            {!isLiked ? (
+              <img src={Heart} alt='HeartIcon' />
+            ) : (
+              <img src={fullHeart} alt='fullHeartIcon' />
+            )}
+          </button>
+          <span className='text-textMainColor'>{likeCount}</span>
+        </div>
 
-        <button className='h-[17px] w-[17px]' onClick={openCommentModal}>
-          <img src={chat} alt='fullHeartIcon' />
-        </button>
-        <p className='ml-[3px]'>{comment_count}</p>
+        <div className='flex gap-1'>
+          <button onClick={openCommentModal}>
+            <img src={chat} alt='fullHeartIcon' />
+          </button>
+          <p className='text-textMainColor'>{comment_count}</p>
+        </div>
 
         {/* <span className='ml-[3px]'>{commentCount}</span> */}
       </li>

@@ -26,31 +26,32 @@ const FeedPostContent = ({
   };
 
   return (
-    <ul className='mb-[35px] h-[102px] w-full px-[12px] py-[7px] font-medium'>
+    <ul className='flex flex-col gap-2 px-[12px] font-medium'>
       <FeedPostButton like_count={like_count} comment_count={comment_count} />
       {/* 협업멘트 */}
       {teacher && (
-        <li className='mt-[6px] flex h-[20px] w-full items-center text-[14px]'>
+        <li className='flex w-full items-center gap-1 text-[15px]'>
           <Link to={`/teacher/my-page/${teacher.user_id}`}>
             <img
               src={teacher.profile_image}
               alt='teacherProfileImage'
-              className='mr-[5px] h-[20px] w-[20px]'
+              className='h-[20px] w-[20px]'
             />
           </Link>
-          <span>{teacher.nickname} 선생님과 협업하였습니다.</span>
+          <span className='text-textMainColor'>
+            {teacher.nickname} 선생님과 협업하였습니다.
+          </span>
         </li>
       )}
 
       {/* 댓글축약 */}
-      <li className='my-[7px] flex h-[14px] w-full'>
-        <p className='mr-[6px] text-[14px]'>{content}</p>
-        {/* <button className='text-[14px] text-captionColor'>더보기</button> */}
+      <li className='flex w-full items-center'>
+        <p className='mr-3 text-textMainColor'>{content}</p>
+        {/* <button className='self-end text-[14px] text-captionColor'>
+          더보기
+        </button> */}
       </li>
-      <time
-        dateTime='2024-10-15'
-        className='block w-full text-[14px] text-captionColor'
-      >
+      <time dateTime='2024-10-15' className='text-[14px] text-captionColor'>
         {formatDate(created_at)}
       </time>
     </ul>

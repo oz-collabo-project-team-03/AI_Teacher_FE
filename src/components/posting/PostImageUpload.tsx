@@ -41,7 +41,7 @@ const PostImageUpload = ({ onImageUpload }: PostImageUploadProps) => {
   };
 
   return (
-    <div className='my-[12px] flex h-[151px] w-full flex-col gap-2 px-[16px] py-[19px]'>
+    <div className='flex w-full flex-col gap-2'>
       <p className='text-[14px] text-captionColor'>
         사진 파일만 선택해 주세요. (지원 형식: JPG, JPEG, PNG)
       </p>

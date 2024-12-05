@@ -31,7 +31,7 @@ const FeedPost = ({ posts }: FeedPostProps) => {
   };
 
   return (
-    <article className='min-h-[368px] w-full' id={posts.post_id}>
+    <article id={posts.post_id} className='pb-3'>
       <FeedPostUserInfo {...feedPostuserInfoProps} />
 
       <FeedPostSlider {...feedPostsliderProps} />

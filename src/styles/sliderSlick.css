@@ -1,70 +1,55 @@
 /* 슬라이더 도트 커스텀 */
+.slick-dots {
+  bottom: 0px;
+  position: absolute;
+}
+
+.slick-dots li {
+  width: 11px;
+  height: 11px;
+}
+
+.slick-dots li button {
+  width: 11px;
+  height: 11px;
+}
+
 .slick-dots li button:before {
-  content: ''; /* 기본 동그라미 대신 다른 모양을 사용하려면 content를 설정 */
-  width: 12px;
-  height: 12px;
+  content: '';
+  width: 11px;
+  height: 11px;
   border-radius: 50%;
   background-color: #d9d9d9;
-  border: 2px solid white;
-  position: relative;
-  z-index: 999 !important;
+  opacity: 1;
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 
 .slick-dots li.slick-active button:before {
   background-color: #a6a4e9;
+  opacity: 1;
 }
 
-.slick-dots li {
-  margin-right: -10px;
+/* 슬라이더 기본 스타일 수정 */
+.slick-slider,
+.slick-list,
+.slick-track {
+  height: 100%;
 }
 
-.slick-dots {
-  bottom: -12px;
-  height: 12px;
-  position: absolute;
-  text-align: center;
-  z-index: 999;
+.slick-slide > div {
+  height: 100%;
 }
 
-/* 슬라이더 */
+/* 이미지 관련 스타일 */
 .slick-slide img {
-  pointer-events: none !important;
-  width: 100%; /* 슬라이드 크기에 맞게 너비를 100%로 설정 */
-  height: 100%; /* 슬라이드 크기에 맞게 높이를 100%로 설정 */
-  object-fit: cover; /* 이미지 비율을 유지하며 슬라이드 영역을 채움 */
-}
-
-.slick-slider {
   width: 100%;
-  overflow: hidden;
-  position: relative;
-  overflow: visible;
-  z-index: 1;
-}
-
-.slick-slide {
-  display: flex;
-  justify-content: center;
-  position: relative;
-  z-index: 0;
+  height: 100%;
+  object-fit: cover;
 }
 
 .slick-track {
   display: flex;
-  z-index: 1;
-  height: auto;
-  max-height: 230px;
-}
-
-.slider-container {
-  position: relative;
-  height: 233px; /* 슬라이더의 높이를 고정 */
-  overflow: hidden;
-  z-index: 1; /* 슬라이더가 다른 요소 위에 표시되지 않도록 설정 */
-}
-
-.slider img {
-  width: 100%; /* 슬라이드 너비에 맞게 이미지 크기 설정 */
-  height: 100%; /* 슬라이드 높이에 맞게 이미지 크기 설정 */
-  object-fit: cover; /* 이미지 비율을 유지하며 슬라이드 영역을 채움 */
+  height: 100%;
 }
