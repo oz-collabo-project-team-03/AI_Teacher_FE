@@ -38,13 +38,15 @@ const FeedPostContent = ({
               className='h-[20px] w-[20px]'
             />
           </Link>
-          <span>{teacher.nickname} 선생님과 협업하였습니다.</span>
+          <span className='text-textMainColor'>
+            {teacher.nickname} 선생님과 협업하였습니다.
+          </span>
         </li>
       )}
 
       {/* 댓글축약 */}
       <li className='flex w-full items-center'>
-        <p className='mr-3'>{content}</p>
+        <p className='mr-3 text-textMainColor'>{content}</p>
         {/* <button className='self-end text-[14px] text-captionColor'>
           더보기
         </button> */}
