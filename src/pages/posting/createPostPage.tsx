@@ -98,15 +98,21 @@ const CreatePostPage = () => {
             )}
           />
           <footer className='flex items-center justify-between'>
-            <button
+            <Button
+              variant='cancel'
               type='button'
               name='cancel'
               onClick={handleCancel}
-              className='flex w-[49%] cursor-pointer items-center justify-center rounded-lg bg-cancelButtonColor py-3.5 text-white'
+              className='w-[49%]'
             >
               취소
-            </button>
-            <Button type='submit' name='post' className='w-[49%]'>
+            </Button>
+            <Button
+              variant='active'
+              type='submit'
+              name='post'
+              className='w-[49%]'
+            >
               포스팅
             </Button>
           </footer>
