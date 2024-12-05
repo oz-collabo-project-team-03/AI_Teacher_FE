@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form';
 import { z as zod } from 'zod';
 
 import { usePostResetPasswordMutation } from '@/api/auth/resetPassword/resetPassword.hooks';
-import { ResetPasswordResponseDto } from '@/api/auth/resetPassword/resetPasswordType';
+import { GetResetPasswordResponse } from '@/api/auth/resetPassword/resetPasswordType';
 import { useToast } from '@/hooks/useToast';
 import { ApiErrorResponseDto } from '@/types/apiErrorType';
 
@@ -37,7 +37,7 @@ export const useResetPassword = () => {
     isPending,
     error,
   } = usePostResetPasswordMutation({
-    onSuccess: (data: ResetPasswordResponseDto) => {
+    onSuccess: (data: GetResetPasswordResponse) => {
       setStep(RESET_PASSWORD_STEP.DISPLAY_TEMP_PASSWORD);
       setTempEmail(data.temp_password);
       showToast(data.message);
