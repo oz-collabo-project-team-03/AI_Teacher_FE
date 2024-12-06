@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 type PostGridProps = {
   title: string;
   posts: Post[];
-  userId?: string;
+  userId?: number;
   post_count: number;
   isOwnProfile: boolean;
 };

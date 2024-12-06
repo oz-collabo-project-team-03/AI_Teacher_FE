@@ -1,5 +1,3 @@
-import { useEffect } from 'react';
-import { useProfileStore } from '@/stores/editProfile/useProfileStore';
 import { useParams } from 'react-router-dom';
 import ProfileHeader from '@/components/myPage/ProfileHeader';
 import CommunityInfo from '@/components/myPage/CommunityInfo';
@@ -11,20 +9,13 @@ import NotfoundPage from '../status/notfoundPage';
 
 const MyPage = () => {
   const { userId } = useParams();
-  const { setUserInfo } = useProfileStore();
+  const numberTypeUserId = Number(userId);
 
   const isOwnProfile = !userId;
 
   // userId가 있으면 해당 유저의 프로필을, 없으면 내 프로필을 조회
   const { data, isLoading, isError, error, refetch } =
-    useProfileGetQuery(userId);
-
-  //* 현재는 임시로 스토어 사용
-  useEffect(() => {
-    if (data) {
-      setUserInfo(data);
-    }
-  }, [data]);
+    useProfileGetQuery(numberTypeUserId);
 
   if (isLoading) return <LoadingPage />;
 
@@ -52,13 +43,13 @@ const MyPage = () => {
   const postGridProps = {
     posts: data.posts,
     title: data.role === 'student' ? '게시글' : '협업 게시글',
-    userId,
+    userId: numberTypeUserId,
     post_count: data.post_count,
     isOwnProfile,
   };
 
   return (
-    <div className='custom-scrollbar h-full overflow-auto'>
+    <div className='h-full overflow-auto [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden'>
       <div className='flex w-full flex-col items-center gap-9 px-4 py-12'>
         <ProfileHeader {...profileHeaderProps} />
 

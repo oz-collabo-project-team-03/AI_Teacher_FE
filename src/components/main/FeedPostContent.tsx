@@ -7,7 +7,7 @@ type FeedPostContentProps = {
   comment_count: number;
   content: string;
   teacher?: {
-    user_id: string;
+    user_id: number;
     nickname: string;
     profile_image: string;
   };

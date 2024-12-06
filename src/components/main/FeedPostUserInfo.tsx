@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import studentIcon1 from '@/assets/editProfile/student/studentIcon1.png';
 
 type FeedPostUserInfoProps = {
-  user_id: string;
+  user_id: number;
   nickname: string;
   profile_image: string;
   career_aspiration: string;
