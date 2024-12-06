@@ -5,10 +5,12 @@ import { ApiErrorResponseDto } from '@/types/apiErrorType';
 import axios from 'axios';
 import { Cookies } from 'react-cookie';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../useAuth';
 
 export const useLogout = () => {
   const navigate = useNavigate();
   const { showToast } = useToast();
+  const { logout } = useAuth();
   const cookies = new Cookies();
 
   const {
@@ -18,7 +20,7 @@ export const useLogout = () => {
   } = usePostLogoutMutation({
     onSuccess: (data: LogoutResponseDto) => {
       showToast(data.message);
-
+      logout();
       // 모든 쿠키 제거 (도메인 전체)
       const allCookies = cookies.getAll();
       Object.keys(allCookies).forEach((cookieName) =>
@@ -43,6 +45,7 @@ export const useLogout = () => {
         apiError?.response?.data?.message ||
         '로그아웃에 실패하였습니다. 다시 시도해주세요.';
       showToast(errorMessage);
+      logout();
     },
   });
 
