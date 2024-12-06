@@ -1,11 +1,13 @@
 import { editIcon, logoutIcon, toggleIcon } from '@/assets/assets';
 import { useLogout } from '@/hooks/logout/useLogout';
 import { AnimatePresence, motion } from 'framer-motion';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 const ToggleButton = () => {
   const [isOpen, setIsOpen] = useState(false);
+
+  const containerRef = useRef<HTMLDivElement>(null);
 
   const { logoutMutation } = useLogout();
 
@@ -54,14 +56,30 @@ const ToggleButton = () => {
     },
   };
 
+  // 외부 클릭 감지를 위한 useEffect
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        containerRef.current &&
+        !containerRef.current.contains(event.target as Node)
+      ) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
   return (
     <div className='absolute bottom-0 right-0 flex items-center'>
-      <div
-        className='relative'
-        onMouseEnter={() => setIsOpen(true)}
-        onMouseLeave={() => setIsOpen(false)}
-      >
-        <div className='relative z-20 h-[25px] w-[25px] rounded-full shadow-ToggleButtonShadow'>
+      <div className='relative' ref={containerRef}>
+        <div
+          className='relative z-20 h-[25px] w-[25px] rounded-full shadow-ToggleButtonShadow'
+          onClick={() => setIsOpen(!isOpen)}
+        >
           <img
             src={toggleIcon}
             alt='설정 아이콘'
