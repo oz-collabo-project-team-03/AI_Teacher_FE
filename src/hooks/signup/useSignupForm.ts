@@ -1,8 +1,14 @@
 import { usePostSignupMutation } from '@/api/auth/signup/signup.hooks';
+import { usePatchSocialStudentInfoMutation } from '@/api/auth/socialLogin/social.hooks';
+import {
+  GetSocialLoginUserInfoResponse,
+  SocialLoginUserInfoRequestParams,
+} from '@/api/auth/socialLogin/socialType';
 import { useToast } from '@/hooks/useToast';
 import { signupFormSchema } from '@/schemas/signupValidationSchemas';
 import { useTermsStore } from '@/stores/useTermsStore';
-import { SignupRequestParams } from '@/types/signupType';
+import { ApiErrorResponseDto } from '@/types/apiErrorType';
+import { Role, SignupRequestParams } from '@/types/signupType';
 import { zodResolver } from '@hookform/resolvers/zod';
 import axios from 'axios';
 import { useState } from 'react';
@@ -51,8 +57,8 @@ export const useSignupForm = (roleParam: 'student' | 'teacher' | undefined) => {
 
   const {
     mutate: signupMutation,
-    isPending,
-    error,
+    isPending: signupIsPending,
+    error: signupIsError,
   } = usePostSignupMutation({
     onSuccess: (data) => {
       console.log('회원가입 완료', data);
@@ -68,6 +74,32 @@ export const useSignupForm = (roleParam: 'student' | 'teacher' | undefined) => {
         });
       }
       console.error('회원가입 실패', error.message);
+    },
+  });
+
+  const {
+    mutate: updateSocialInfoMutation,
+    isPending: updateSocialInfoIsPending,
+    error: updateSocialInfoIsError,
+  } = usePatchSocialStudentInfoMutation({
+    onSuccess: (data: GetSocialLoginUserInfoResponse) => {
+      showToast(data.message);
+      navigate('/signup-complete', { replace: true });
+    },
+    onError: (error) => {
+      // Axios 에러인 경우 더 상세한 로깅
+      if (axios.isAxiosError(error)) {
+        console.error('Axios Error Details:', {
+          response: error.response?.data,
+          status: error.response?.status,
+          headers: error.response?.headers,
+        });
+      }
+      const apiError = error as ApiErrorResponseDto;
+      const errorMessage =
+          apiError?.response?.data?.message ||
+          '회원정보 저장에 실패했습니다. 다시 시도해주세요.';
+      showToast(errorMessage);
     },
   });
 
@@ -99,9 +131,9 @@ export const useSignupForm = (roleParam: 'student' | 'teacher' | undefined) => {
 
     if (step === STEP.ACCOUNT_INFO) {
       if (
-        form.formState.errors.email ||
-        form.formState.errors.password ||
-        form.formState.errors.confirmPassword
+          form.formState.errors.email ||
+          form.formState.errors.password ||
+          form.formState.errors.confirmPassword
       ) {
         return;
       }
@@ -115,22 +147,22 @@ export const useSignupForm = (roleParam: 'student' | 'teacher' | undefined) => {
     } else if (step === STEP.PERSONAL_INFO) {
       if (roleParam === 'student') {
         if (
-          !formData.nickname ||
-          !formData.phone ||
-          !formData.school ||
-          !formData.careeraspiration ||
-          !formData.interestrade
+            !formData.nickname ||
+            !formData.phone ||
+            !formData.school ||
+            !formData.careeraspiration ||
+            !formData.interestrade
         ) {
           showToast('모든 필드를 입력해주세요.');
           return;
         }
       } else if (roleParam === 'teacher') {
         if (
-          !formData.nickname ||
-          !formData.phone ||
-          !formData.organization_type ||
-          !formData.organization_name ||
-          !formData.position
+            !formData.nickname ||
+            !formData.phone ||
+            !formData.organization_type ||
+            !formData.organization_name ||
+            !formData.position
         ) {
           showToast('모든 필드를 입력해주세요.');
           return;
@@ -141,16 +173,32 @@ export const useSignupForm = (roleParam: 'student' | 'teacher' | undefined) => {
     }
   };
 
+  const handleUpdateSocialInfo = async () => {
+    const formData = form.getValues();
+    const socialInfoData: SocialLoginUserInfoRequestParams = {
+      nickname: formData.nickname,
+      school: formData.school,
+      grade: formData.grade,
+      career_aspiration: formData.careeraspiration,
+      interests: formData.interestrade,
+      is_privacy_accepted: isAllTermsAccepted,
+      role: roleParam as Role,
+    };
+    updateSocialInfoMutation(socialInfoData);
+  };
+
   return {
     form,
     step,
+    setStep,
     selectedGrade,
-    isPending,
-    error,
+    updateSocialInfoIsPending,
+    updateSocialInfoIsError,
     setSelectedGrade,
     handleSignup,
     register,
     formState: { errors },
     getValues,
+    updateSocialInfoMutation: handleUpdateSocialInfo,
   };
 };

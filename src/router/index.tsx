@@ -47,6 +47,9 @@ const TeacherChatRoomPage = lazy(
 
 const CreatePostPage = lazy(() => import('../pages/posting/createPostPage'));
 
+const SocialLoginHandlerPage = lazy(
+    () => import('../pages/auth/loginHandlerPage')
+);
 const Router = () => {
   return (
     <>
@@ -55,6 +58,30 @@ const Router = () => {
           <Route path='*' element={<NotfoundPage />} />
           <Route path='/' element={<Landing />} />
           <Route path='/error' element={<ErrorPage />} />
+            <Route
+                path='/auth/login/callback/kakao'
+                element={
+                    <Suspense fallback={<LoadingPage />}>
+                        <SocialLoginHandlerPage />
+                    </Suspense>
+                }
+            />
+            <Route
+                path='/auth/login/callback/google'
+                element={
+                    <Suspense fallback={<LoadingPage />}>
+                        <SocialLoginHandlerPage />
+                    </Suspense>
+                }
+            />
+            <Route
+                path='/auth/login/callback/naver'
+                element={
+                    <Suspense fallback={<LoadingPage />}>
+                        <SocialLoginHandlerPage />
+                    </Suspense>
+                }
+            />
           <Route
             path='/login'
             element={

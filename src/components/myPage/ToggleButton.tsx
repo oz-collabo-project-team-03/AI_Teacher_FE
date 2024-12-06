@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 const ToggleButton = () => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const { handleLogout } = useLogout();
+  const { logoutMutation } = useLogout();
 
   const containerVariants = {
     // 초기 상태: 컨테이너가 완전히 투명한 상태
@@ -92,7 +92,7 @@ const ToggleButton = () => {
               </motion.div>
               <motion.div
                 variants={itemVariants}
-                onClick={handleLogout}
+                onClick={logoutMutation}
                 className='h-[25px] w-[25px] rounded-full shadow-ToggleButtonShadow'
               >
                 <img
