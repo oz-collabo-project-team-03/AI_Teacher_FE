@@ -43,13 +43,3 @@ export const UserInfoProvider = ({
     </UserInfoContext.Provider>
   );
 };
-
-export const useProfile = () => {
-  const context = useContext(UserInfoContext);
-
-  if (context === undefined) {
-    throw new Error('useProfile must be used within a ProfileProvider');
-  }
-
-  return context;
-};
