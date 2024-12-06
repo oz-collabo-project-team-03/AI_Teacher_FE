@@ -1,12 +1,11 @@
 export type FetchCommentRequestParams = {
   content: string;
-  tags: string[];
   parent_comment_id?: number;
 };
 
 export type FetchCommentResponseDto = {
   comment_id: number;
-  post_id: number;
+  post_id: string;
   author_id: number;
   author_nickname: string;
   content: string;
