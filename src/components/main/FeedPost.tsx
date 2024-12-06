@@ -1,7 +1,7 @@
-import { PostDetail } from '@/types/postType';
 import FeedPostContent from './FeedPostContent';
 import FeedPostSlider from './FeedPostSlider';
 import FeedPostUserInfo from './FeedPostUserInfo';
+import { PostDetail } from '@/types/postType';
 
 type FeedPostProps = {
   posts: PostDetail;
@@ -28,10 +28,11 @@ const FeedPost = ({ posts }: FeedPostProps) => {
     content: posts.content,
     teacher: posts.teacher,
     created_at: posts.created_at,
+    post_id: posts.post_id,
   };
 
   return (
-    <article id={posts.post_id} className='pb-3'>
+    <article id={posts.post_id} className='pb-5'>
       <FeedPostUserInfo {...feedPostuserInfoProps} />
 
       <FeedPostSlider {...feedPostsliderProps} />
