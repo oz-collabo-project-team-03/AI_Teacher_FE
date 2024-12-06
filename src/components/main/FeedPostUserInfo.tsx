@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import studentDefaultIcon from '@/assets/editProfile/student/studentDefaultIcon.png';
+import studentIcon1 from '@/assets/editProfile/student/studentIcon1.png';
 
 type FeedPostUserInfoProps = {
   user_id: string;
@@ -20,9 +20,9 @@ const FeedPostUserInfo = ({
     <header className='flex h-[54px] items-center gap-2 px-[9px] py-[8px]'>
       <Link to={`/my-page/${user_id}`}>
         <img
-          src={profile_image || studentDefaultIcon}
+          src={profile_image || studentIcon1}
           onError={(e) => {
-            e.currentTarget.src = studentDefaultIcon;
+            e.currentTarget.src = studentIcon1;
           }}
           alt='studentProfileImage'
           className='h-[40px] w-[40px] rounded-full'

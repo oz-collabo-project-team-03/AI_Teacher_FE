@@ -58,12 +58,14 @@ const MyPage = () => {
   };
 
   return (
-    <div className='m-auto flex w-full flex-col items-center gap-9 px-4 pb-20 pt-12'>
-      <ProfileHeader {...profileHeaderProps} />
+    <div className='custom-scrollbar h-full overflow-auto'>
+      <div className='flex w-full flex-col items-center gap-9 px-4 py-12'>
+        <ProfileHeader {...profileHeaderProps} />
 
-      {isOwnProfile && <CommunityInfo userInfo={data} />}
+        {isOwnProfile && <CommunityInfo userInfo={data} />}
 
-      <PostGrid {...postGridProps} />
+        <PostGrid {...postGridProps} />
+      </div>
     </div>
   );
 };

@@ -8,7 +8,7 @@ import {
   homeOutlineIcon,
   userOutlineIcon,
 } from '@/assets/assets';
-import teacherDefaultIcon from '@/assets/editProfile/teacher/teacherDefaultIcon.png';
+import teacherIcon1 from '@/assets/editProfile/teacher/teacherIcon1.png';
 
 // 네비게이션 설정
 const TEACHER_NAV_ITEMS: layoutNavItem[] = [
@@ -43,7 +43,7 @@ const TeacherNavBar = () => {
     <BaseNavBar
       items={TEACHER_NAV_ITEMS}
       profilePath='/teacher/my-page'
-      profileImg={teacherDefaultIcon}
+      profileImg={teacherIcon1}
     />
   );
 };

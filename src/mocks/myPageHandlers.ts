@@ -5,8 +5,8 @@ import {
 } from '@/types/myPageType';
 import postTestImg from '@/assets/editProfile/postTestImg.png';
 import img1 from '@/assets/slider/daily1.webp';
-import studentDefaultIcon from '@/assets/editProfile/student/studentDefaultIcon.png';
-import teacherDefaultIcon from '@/assets/editProfile/teacher/teacherDefaultIcon.png';
+import studentIcon1 from '@/assets/editProfile/student/studentIcon1.png';
+import teacherIcon1 from '@/assets/editProfile/teacher/teacherIcon1.png';
 
 type ApiResponse = {
   success: boolean;
@@ -19,7 +19,7 @@ const MOCK_STUDENT_PROFILE: StudentMyPageResponse[] = [
     role: 'student',
     id: 'guswnvld',
     nickname: '현주핑',
-    profile_image: studentDefaultIcon,
+    profile_image: studentIcon1,
     school: '학교',
     grade: '학년',
     career_aspiration: '프로게이머',
@@ -39,7 +39,7 @@ const MOCK_STUDENT_PROFILE: StudentMyPageResponse[] = [
     role: 'student',
     id: 'ruddnjsvld',
     nickname: '경원핑',
-    profile_image: studentDefaultIcon,
+    profile_image: studentIcon1,
     school: '학교',
     grade: '학년',
     career_aspiration: '로또 당첨',
@@ -62,7 +62,7 @@ const MOCK_TEACHER_PROFILE: TeacherMyPageResponse[] = [
     role: 'teacher',
     id: 'rlaqhfk',
     nickname: '김보라',
-    profile_image: teacherDefaultIcon,
+    profile_image: teacherIcon1,
     organization_name: 'B 학원',
     organization_type: '사립',
     organization_position: '원장',
@@ -80,7 +80,7 @@ const MOCK_TEACHER_PROFILE: TeacherMyPageResponse[] = [
     role: 'teacher',
     id: 'dltlgur',
     nickname: '이시혁',
-    profile_image: teacherDefaultIcon,
+    profile_image: teacherIcon1,
     organization_name: 'B 학원',
     organization_type: '사립',
     organization_position: '강사',

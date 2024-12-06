@@ -1,5 +1,5 @@
 import FeedPostButton from '@/components/main/FeedPostButton';
-import teacherDefaultIcon from '@/assets/editProfile/teacher/teacherDefaultIcon.png';
+import teacherIcon1 from '@/assets/editProfile/teacher/teacherIcon1.png';
 import { Link } from 'react-router-dom';
 
 type FeedPostContentProps = {
@@ -34,9 +34,9 @@ const FeedPostContent = ({
         <li className='flex w-full items-center gap-1 text-[15px]'>
           <Link to={`/teacher/my-page/${teacher.user_id}`}>
             <img
-              src={teacher.profile_image || teacherDefaultIcon}
+              src={teacher.profile_image || teacherIcon1}
               onError={(e) => {
-                e.currentTarget.src = teacherDefaultIcon;
+                e.currentTarget.src = teacherIcon1;
               }}
               alt='teacherProfileImage'
               className='h-[20px] w-[20px]'

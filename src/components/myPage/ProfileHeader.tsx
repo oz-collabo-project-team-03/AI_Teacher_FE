@@ -1,6 +1,6 @@
 import ToggleButton from './ToggleButton';
-import studentDefaultIcon from '@/assets/editProfile/student/studentDefaultIcon.png';
-import teacherDefaultIcon from '@/assets/editProfile/teacher/teacherDefaultIcon.png';
+import studentIcon1 from '@/assets/editProfile/student/studentIcon1.png';
+import teacherIcon1 from '@/assets/editProfile/teacher/teacherIcon1.png';
 
 type ProfileHeaderProps = {
   role: 'student' | 'teacher';
@@ -19,8 +19,7 @@ const ProfileHeader = ({
   subDescription,
   isOwnProfile,
 }: ProfileHeaderProps) => {
-  const defaultImage =
-    role === 'student' ? studentDefaultIcon : teacherDefaultIcon;
+  const defaultImage = role === 'student' ? studentIcon1 : teacherIcon1;
 
   return (
     <ul className='flex flex-col items-center gap-2'>

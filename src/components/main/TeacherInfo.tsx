@@ -1,4 +1,4 @@
-import teacherDefaultIcon from '../../assets/editProfile/teacher/teacherDefaultIcon.png';
+import teacherIcon1 from '../../assets/editProfile/teacher/teacherIcon1.png';
 
 type TeacherInfoProps = {
   name: string;
@@ -10,9 +10,9 @@ const TeacherInfo = ({ name, profileImage }: TeacherInfoProps) => {
     <div className='mt-[72px] h-[112px] gap-4 border-b border-inputBorderColor'>
       <div className='m-[16px] flex items-center gap-4'>
         <img
-          src={profileImage || teacherDefaultIcon}
+          src={profileImage || teacherIcon1}
           onError={(e) => {
-            e.currentTarget.src = teacherDefaultIcon;
+            e.currentTarget.src = teacherIcon1;
           }}
           alt='teacher Default Icon'
           className='h-[60px] w-[60px]'

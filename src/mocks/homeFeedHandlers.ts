@@ -1,6 +1,6 @@
 import { http, HttpResponse } from 'msw';
 import { PostListResponseDto } from '@/types/postType';
-import teacherDefaultIcon from '@/assets/editProfile/teacher/teacherDefaultIcon.png';
+import teacherIcon1 from '@/assets/editProfile/teacher/teacherIcon1.png';
 import student10 from '@/assets/editProfile/student/studentIcon10.png';
 import img1 from '@/assets/slider/daily1.webp';
 import img2 from '@/assets/slider/daily2.webp';
@@ -41,7 +41,7 @@ const MOCK_POSTS_1: PostListResponseDto = {
       teacher: {
         user_id: 'rlaqhfk',
         nickname: '김보라',
-        profile_image: teacherDefaultIcon,
+        profile_image: teacherIcon1,
       },
       created_at: '2024-03-19T12:30:45.000Z',
     },
@@ -61,7 +61,7 @@ const MOCK_POSTS_1: PostListResponseDto = {
       teacher: {
         user_id: 'dltlgur',
         nickname: '이시혁',
-        profile_image: teacherDefaultIcon,
+        profile_image: teacherIcon1,
       },
       created_at: '2024-03-19T12:30:45.000Z',
     },
