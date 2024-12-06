@@ -130,7 +130,7 @@ const RoleSelectPage = () => {
           if (!selectedRole) {
             showToast('역할을 선택해주세요');
           } else {
-            navigate(`/signup/${selectedRole}`);
+            navigate(`/signup/${selectedRole}?social=true`);
           }
         }}
       >

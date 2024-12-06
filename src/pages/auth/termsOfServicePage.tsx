@@ -55,7 +55,7 @@ const TermsOfServicePage = () => {
         variant='active'
         onClick={() => {
           if (isPrivacyChecked && isThirdPartyChecked) {
-            navigate('/role-selection');
+            navigate('/role-selection?social=true');
           } else {
             showToast('필수 이용약관에 동의해주세요');
           }
