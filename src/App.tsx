@@ -1,5 +1,5 @@
 import { ErrorBoundary } from 'react-error-boundary';
-import { BrowserRouter } from 'react-router-dom';
+
 import { ToastProvider } from './context/ToastContextProvider';
 import ErrorPage from './pages/status/errorPage';
 import Router from './router';
@@ -15,9 +15,7 @@ function App() {
       }}
     >
       <ToastProvider>
-        <BrowserRouter>
-          <Router />
-        </BrowserRouter>
+        <Router />
       </ToastProvider>
     </ErrorBoundary>
   );

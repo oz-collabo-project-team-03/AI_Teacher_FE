@@ -1,10 +1,12 @@
 import thumbsUPIcon from '@/assets/auth/thumbs_up.svg';
 import Celebration from '@/components/ConfettiCelebration';
 import Button from '@/components/common/Button';
+import { useProfile } from '@/hooks/useProfile';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 
 const SignupCompletePage = () => {
+  const { profileData } = useProfile();
   const navigate = useNavigate();
   // 애니메이션을 위한 초기 상태 및 변형 설정
   const imageVariants = {
@@ -49,7 +51,11 @@ const SignupCompletePage = () => {
       <Button
         variant='active'
         onClick={() => {
-          navigate('/');
+          if (profileData?.role === 'student') {
+            navigate('/student-main');
+          } else {
+            navigate('/teacher-main');
+          }
         }}
       >
         수행평가 보러가기

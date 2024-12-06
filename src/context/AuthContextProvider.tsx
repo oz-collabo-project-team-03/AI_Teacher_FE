@@ -1,0 +1,78 @@
+import { createContext, useState, ReactNode, useEffect } from 'react';
+import { Cookies } from 'react-cookie';
+import { useProfileGetQuery } from '@/api/myPage/myPage.hooks';
+
+// 인증 컨텍스트 타입 정의
+type AuthContextType = {
+  userId: number | null;
+  isLoggedIn: boolean;
+  isInitialized: boolean;
+  login: (userId: number) => void;
+  logout: () => void;
+};
+
+// 컨텍스트 생성
+export const AuthContext = createContext<AuthContextType | undefined>(
+  undefined
+);
+
+// 인증 프로바이더 컴포넌트
+export const AuthProvider = ({ children }: { children: ReactNode }) => {
+  const [userId, setUserId] = useState<number | null>(null);
+  const [isInitialized, setIsInitialized] = useState(false); // 초기화 상태 추적
+
+  const cookies = new Cookies();
+
+  // 사용자 정보 쿼리
+  const { data: userInfo, isError, isLoading } = useProfileGetQuery();
+
+  const accessToken = cookies.get('accessToken');
+  // 초기 로그인 상태 체크 (토큰 존재 여부)
+  useEffect(() => {
+    const checkTokenValidity = async () => {
+      if (accessToken) {
+        try {
+          if (isLoading) return;
+
+          if (userInfo) {
+            setUserId(userInfo.id);
+            setIsInitialized(true);
+          } else if (isError) {
+            logout();
+            setIsInitialized(true);
+          }
+        } catch (error) {
+          // 토큰 검증 실패 시
+          logout();
+          setIsInitialized(true);
+        }
+      } else {
+        setUserId(null);
+        setIsInitialized(true);
+      }
+    };
+
+    checkTokenValidity();
+  }, [userInfo, isError, isLoading, accessToken]);
+
+  const login = (newUserId: number) => {
+    setUserId(newUserId);
+    localStorage.setItem('userId', newUserId.toString());
+  };
+
+  const logout = () => {
+    setUserId(null);
+    // 로그아웃 시 localStorage에서 제거
+    localStorage.removeItem('userId');
+  };
+
+  const value = {
+    userId,
+    isLoggedIn: !!userId,
+    isInitialized,
+    login,
+    logout,
+  };
+
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+};

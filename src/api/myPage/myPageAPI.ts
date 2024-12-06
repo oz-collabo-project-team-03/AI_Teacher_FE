@@ -8,7 +8,7 @@ export const getMyProfileAPI = async () => {
   return response.data;
 };
 
-export const getUserProfileAPI = async (userId: string) => {
+export const getUserProfileAPI = async (userId: number) => {
   const response = await axiosInstance.get<MyPageResponseDto>(
     `/users/profile/${userId}`
   );

@@ -1,9 +1,10 @@
 import { usePostSignupMutation } from '@/api/auth/signup/signup.hooks';
-import { usePatchSocialStudentInfoMutation } from '@/api/auth/socialLogin/social.hooks';
+import { usePatchSocialStudentInfoMutation } from '@/api/social/social.hooks';
 import {
   GetSocialLoginUserInfoResponse,
   SocialLoginUserInfoRequestParams,
-} from '@/api/auth/socialLogin/socialType';
+} from '@/api/social/socialType';
+
 import { useToast } from '@/hooks/useToast';
 import { signupFormSchema } from '@/schemas/signupValidationSchemas';
 import { useTermsStore } from '@/stores/useTermsStore';
@@ -97,8 +98,8 @@ export const useSignupForm = (roleParam: 'student' | 'teacher' | undefined) => {
       }
       const apiError = error as ApiErrorResponseDto;
       const errorMessage =
-          apiError?.response?.data?.message ||
-          '회원정보 저장에 실패했습니다. 다시 시도해주세요.';
+        apiError?.response?.data?.message ||
+        '회원정보 저장에 실패했습니다. 다시 시도해주세요.';
       showToast(errorMessage);
     },
   });
@@ -131,9 +132,9 @@ export const useSignupForm = (roleParam: 'student' | 'teacher' | undefined) => {
 
     if (step === STEP.ACCOUNT_INFO) {
       if (
-          form.formState.errors.email ||
-          form.formState.errors.password ||
-          form.formState.errors.confirmPassword
+        form.formState.errors.email ||
+        form.formState.errors.password ||
+        form.formState.errors.confirmPassword
       ) {
         return;
       }
@@ -147,22 +148,22 @@ export const useSignupForm = (roleParam: 'student' | 'teacher' | undefined) => {
     } else if (step === STEP.PERSONAL_INFO) {
       if (roleParam === 'student') {
         if (
-            !formData.nickname ||
-            !formData.phone ||
-            !formData.school ||
-            !formData.careeraspiration ||
-            !formData.interestrade
+          !formData.nickname ||
+          !formData.phone ||
+          !formData.school ||
+          !formData.careeraspiration ||
+          !formData.interestrade
         ) {
           showToast('모든 필드를 입력해주세요.');
           return;
         }
       } else if (roleParam === 'teacher') {
         if (
-            !formData.nickname ||
-            !formData.phone ||
-            !formData.organization_type ||
-            !formData.organization_name ||
-            !formData.position
+          !formData.nickname ||
+          !formData.phone ||
+          !formData.organization_type ||
+          !formData.organization_name ||
+          !formData.position
         ) {
           showToast('모든 필드를 입력해주세요.');
           return;
