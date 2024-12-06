@@ -10,22 +10,26 @@ import useCommentModalStore from '@/stores/useCommentModalStore';
 type FeedPostButtonProps = {
   like_count: number;
   comment_count: number;
+  post_id: string;
 };
 
-const FeedPostButton = ({ like_count, comment_count }: FeedPostButtonProps) => {
-  const [isLiked, setIsLiked] = useState(false);
-  const [likeCount, setLikeCount] = useState(like_count);
-  const { setIsModalOpen } = useCommentModalStore();
+const FeedPostButton = ({
+  like_count,
+  comment_count,
+  post_id,
+}: FeedPostButtonProps) => {
+  const { setIsModalOpen, setPostId } = useCommentModalStore();
 
-  const toggleHeart = useCallback(() => {
-    setIsLiked((prev) => {
-      const updatedLikeCount = prev ? likeCount - 1 : likeCount + 1;
-      setLikeCount(Math.max(updatedLikeCount, 0));
-      return !prev;
-    });
-  }, [likeCount]);
+  // const toggleHeart = useCallback(() => {
+  //   setIsLiked((prev) => {
+  //     const updatedLikeCount = prev ? likeCount - 1 : likeCount + 1;
+  //     setLikeCount(Math.max(updatedLikeCount, 0));
+  //     return !prev;
+  //   });
+  // }, [likeCount]);
 
   const openCommentModal = () => {
+    setPostId(post_id);
     setIsModalOpen(true);
   };
 
@@ -33,14 +37,14 @@ const FeedPostButton = ({ like_count, comment_count }: FeedPostButtonProps) => {
     <>
       <li className='flex items-center gap-6'>
         <div className='flex gap-1'>
-          <button onClick={toggleHeart} className=''>
-            {!isLiked ? (
+          <button className=''>
+            {/* {!isLiked ? (
               <img src={Heart} alt='HeartIcon' />
             ) : (
               <img src={fullHeart} alt='fullHeartIcon' />
-            )}
+            )} */}
           </button>
-          <span className='text-textMainColor'>{likeCount}</span>
+          <span className='text-textMainColor'>{like_count}</span>
         </div>
 
         <div className='flex gap-1'>
