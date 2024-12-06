@@ -1,6 +1,6 @@
 import FeedPostButton from '@/components/main/FeedPostButton';
-import teacherIcon1 from '@/assets/editProfile/teacher/teacherIcon1.png';
 import { Link } from 'react-router-dom';
+import teacherIcon1 from '@/assets/editProfile/teacher/teacherIcon1.png';
 
 type FeedPostContentProps = {
   like_count: number;
@@ -12,6 +12,7 @@ type FeedPostContentProps = {
     profile_image: string;
   };
   created_at: string;
+  post_id: string;
 };
 
 const FeedPostContent = ({
@@ -20,6 +21,7 @@ const FeedPostContent = ({
   content,
   teacher,
   created_at,
+  post_id,
 }: FeedPostContentProps) => {
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -27,8 +29,12 @@ const FeedPostContent = ({
   };
 
   return (
-    <ul className='flex flex-col gap-2 px-[12px] font-medium'>
-      <FeedPostButton like_count={like_count} comment_count={comment_count} />
+    <ul className='flex flex-col px-[12px] font-medium'>
+      <FeedPostButton
+        like_count={like_count}
+        comment_count={comment_count}
+        post_id={post_id}
+      />
       {/* 협업멘트 */}
       {teacher && (
         <li className='flex w-full items-center gap-1 text-[15px]'>
