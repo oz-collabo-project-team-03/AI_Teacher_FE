@@ -4,6 +4,7 @@ export type LoginRequestParams = {
 };
 
 export type GetLoginResponse = {
+  id: number;
   access_token: string;
   refresh_token: string;
   token_type: string;
