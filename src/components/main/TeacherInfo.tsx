@@ -11,11 +11,11 @@ const TeacherInfo = ({ name, profileImage }: TeacherInfoProps) => {
       <div className='m-[16px] flex items-center gap-4'>
         <img
           src={profileImage || teacherIcon1}
-          onError={(e) => {
-            e.currentTarget.src = teacherIcon1;
-          }}
           alt='teacher Default Icon'
-          className='h-[60px] w-[60px]'
+          className='around-full h-[60px] w-[60px]'
+          onError={(e) => {
+            (e.target as HTMLImageElement).src = teacherIcon1;
+          }}
         />
         <p className='text-[18px] font-semibold text-mainLogoTextColor'>
           {name || '수행쌤 닉네임'}
