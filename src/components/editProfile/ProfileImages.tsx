@@ -1,6 +1,6 @@
 import { twMerge } from 'tailwind-merge';
 import { useEffect } from 'react';
-import { useProfileImages } from '@/hooks/useProfileImages';
+import { getProfileImages } from '@/hooks/getProfileImages';
 
 type ProfileImagesProps = {
   selectedIndex: number;
@@ -15,13 +15,21 @@ const ProfileImages = ({
   userType,
   currentImageUrl,
 }: ProfileImagesProps) => {
-  const { images } = useProfileImages(userType, currentImageUrl, onImageSelect);
+  const { images } = getProfileImages(userType, currentImageUrl, onImageSelect);
 
   useEffect(() => {
     if (currentImageUrl) {
-      const currentIndex = images.findIndex((img) => img === currentImageUrl);
+      // URL에서 파일명 추출 (예: studentIcon3.jpeg -> studentIcon3)
+      const currentFileName = currentImageUrl.split('/').pop()?.split('.')[0];
+
+      // 파일명으로 매칭되는 이미지의 인덱스 찾기
+      const currentIndex = images.findIndex((img) => {
+        const importedFileName = img.split('/').pop()?.split('.')[0];
+        return importedFileName === currentFileName;
+      });
+
       if (currentIndex !== -1) {
-        onImageSelect(currentIndex, currentImageUrl);
+        onImageSelect(currentIndex, images[currentIndex]);
       }
     }
   }, [currentImageUrl]);
