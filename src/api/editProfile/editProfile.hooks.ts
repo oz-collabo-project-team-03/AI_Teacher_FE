@@ -1,5 +1,5 @@
 import { UseMutationOptions, useMutation } from '@tanstack/react-query';
-import { getEditProfileAPI } from './editProfileAPI';
+import { patchEditProfileAPI } from './editProfileAPI';
 import {
   EditProfileRequestParams,
   EditProfileResponseDto,
@@ -13,7 +13,7 @@ export const useEditProfileMutation = (
   >
 ) => {
   return useMutation({
-    mutationFn: getEditProfileAPI,
+    mutationFn: patchEditProfileAPI,
     ...options,
   });
 };

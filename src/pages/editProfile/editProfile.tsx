@@ -1,5 +1,4 @@
 import { FormProvider, useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
 import { Link, useNavigate } from 'react-router-dom';
 import Button from '@/components/common/Button';
 import Header from '@/components/common/Header';
@@ -12,7 +11,6 @@ import { useEffect, useState } from 'react';
 import { useEditProfileMutation } from '@/api/editProfile/editProfile.hooks';
 import { EditProfileRequestParams } from '@/types/editProfileType';
 import { useProfileStore } from '@/stores/editProfile/useProfileStore';
-import { profileFormSchema } from '@/schemas/editProfileSchemas';
 
 const EditProfile = () => {
   const { userInfo, updateProfile } = useProfileStore();
@@ -29,17 +27,8 @@ const EditProfile = () => {
   }, [userInfo]);
 
   const form = useForm<EditProfileRequestParams>({
-    resolver: zodResolver(profileFormSchema),
     defaultValues: {
       role: userInfo?.role,
-      nickname: '',
-      profile_image: '',
-      description: '',
-      career_aspiration: '',
-      interest: '',
-      organization_name: '',
-      organization_type: '',
-      organization_position: '',
     },
     mode: 'onChange',
   });
@@ -72,10 +61,6 @@ const EditProfile = () => {
     setSelectedImageUrl(imageUrl);
   };
 
-  const handleInvalid = () => {
-    showToast('모든 필드를 채워주세요.');
-  };
-
   const handleEditProfile = () => {
     const profileData = {
       ...form.getValues(),
@@ -91,7 +76,7 @@ const EditProfile = () => {
   return (
     <FormProvider {...form}>
       <form
-        onSubmit={form.handleSubmit(handleEditProfile, handleInvalid)}
+        onSubmit={form.handleSubmit(handleEditProfile)}
         className='flex h-full flex-col pt-[72px]'
         autoComplete='off'
       >
