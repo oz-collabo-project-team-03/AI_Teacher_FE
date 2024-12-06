@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom';
 import studentDefaultIcon from '@/assets/editProfile/student/studentDefaultIcon.png';
-import { useState } from 'react';
 
 type FeedPostUserInfoProps = {
   user_id: string;
@@ -17,14 +16,14 @@ const FeedPostUserInfo = ({
   career_aspiration,
   interest,
 }: FeedPostUserInfoProps) => {
-  const [imageUrl, setImageUrl] = useState(profile_image || studentDefaultIcon);
-
   return (
     <header className='flex h-[54px] items-center gap-2 px-[9px] py-[8px]'>
       <Link to={`/my-page/${user_id}`}>
         <img
-          src={imageUrl}
-          onError={() => setImageUrl(studentDefaultIcon)}
+          src={profile_image || studentDefaultIcon}
+          onError={(e) => {
+            e.currentTarget.src = studentDefaultIcon;
+          }}
           alt='studentProfileImage'
           className='h-[40px] w-[40px] rounded-full'
         />

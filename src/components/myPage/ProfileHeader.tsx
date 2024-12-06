@@ -1,7 +1,6 @@
 import ToggleButton from './ToggleButton';
 import studentDefaultIcon from '@/assets/editProfile/student/studentDefaultIcon.png';
 import teacherDefaultIcon from '@/assets/editProfile/teacher/teacherDefaultIcon.png';
-import { useState } from 'react';
 
 type ProfileHeaderProps = {
   role: 'student' | 'teacher';
@@ -23,14 +22,14 @@ const ProfileHeader = ({
   const defaultImage =
     role === 'student' ? studentDefaultIcon : teacherDefaultIcon;
 
-  const [imageUrl, setImageUrl] = useState(profileImage || defaultImage);
-
   return (
     <ul className='flex flex-col items-center gap-2'>
       <li className='relative h-[92px] w-[92px] rounded-full'>
         <img
-          src={imageUrl}
-          onError={() => setImageUrl(defaultImage)}
+          src={profileImage || defaultImage}
+          onError={(e) => {
+            e.currentTarget.src = defaultImage;
+          }}
           alt='프로필 이미지'
           className='h-full w-full'
         />

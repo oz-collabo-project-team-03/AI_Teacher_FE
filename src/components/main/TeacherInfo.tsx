@@ -11,6 +11,9 @@ const TeacherInfo = ({ name, profileImage }: TeacherInfoProps) => {
       <div className='m-[16px] flex items-center gap-4'>
         <img
           src={profileImage || teacherDefaultIcon}
+          onError={(e) => {
+            e.currentTarget.src = teacherDefaultIcon;
+          }}
           alt='teacher Default Icon'
           className='h-[60px] w-[60px]'
         />
