@@ -4,7 +4,7 @@ import ShowPrivacyTerms from '@/components/terms/ShowPrivacyTerms';
 import ShowThirdPartyTerms from '@/components/terms/ShowThirdPartyTerms';
 import { useToast } from '@/hooks/useToast';
 import { useTermsStore } from '@/stores/useTermsStore';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 // 이용약관 페이지라는 뜻
 const TermsOfServicePage = () => {
   const isAllChecked = useTermsStore((state) => state.stack.isAllChecked);
@@ -18,6 +18,9 @@ const TermsOfServicePage = () => {
 
   const { showToast } = useToast();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const isSocialLogin = location.state?.isSocialLogin;
 
   /** 전체 동의 체크박스 핸들러 */
   const handleAllCheck = () => {
@@ -55,7 +58,10 @@ const TermsOfServicePage = () => {
         variant='active'
         onClick={() => {
           if (isPrivacyChecked && isThirdPartyChecked) {
-            navigate('/role-selection?social=true');
+            const navigationPath = isSocialLogin
+              ? '/role-selection?social=true'
+              : '/role-selection';
+            navigate(navigationPath);
           } else {
             showToast('필수 이용약관에 동의해주세요');
           }

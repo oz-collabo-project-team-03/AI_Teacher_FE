@@ -11,6 +11,7 @@ export const useLogout = () => {
   const navigate = useNavigate();
   const { showToast } = useToast();
   const { logout } = useAuth();
+
   const cookies = new Cookies();
 
   const {

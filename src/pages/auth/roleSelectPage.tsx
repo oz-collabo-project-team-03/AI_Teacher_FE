@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { twMerge } from 'tailwind-merge';
 
 import roleStudentActive from '@/assets/roleSelect/role_student_active.svg';
@@ -20,6 +20,10 @@ const RoleSelectPage = () => {
   const isAllTermsAccepted = useTermsStore((state) => state.stack.isAllChecked);
   const { showToast } = useToast();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const isSocialLogin =
+    location.state?.isSocialLogin || location.search.includes('social=true');
 
   const handleRoleClick = (role: TRole) => {
     setSelectedRole(role);
@@ -130,7 +134,10 @@ const RoleSelectPage = () => {
           if (!selectedRole) {
             showToast('역할을 선택해주세요');
           } else {
-            navigate(`/signup/${selectedRole}?social=true`);
+            const navigationPath = isSocialLogin
+              ? `/signup/${selectedRole}?social=true`
+              : `/signup/${selectedRole}`;
+            navigate(navigationPath);
           }
         }}
       >
