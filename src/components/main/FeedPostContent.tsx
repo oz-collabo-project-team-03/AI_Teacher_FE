@@ -35,6 +35,9 @@ const FeedPostContent = ({
           <Link to={`/teacher/my-page/${teacher.user_id}`}>
             <img
               src={teacher.profile_image || teacherDefaultIcon}
+              onError={(e) => {
+                e.currentTarget.src = teacherDefaultIcon;
+              }}
               alt='teacherProfileImage'
               className='h-[20px] w-[20px]'
             />

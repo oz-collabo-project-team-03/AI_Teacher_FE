@@ -15,6 +15,5 @@ export const useVerifyPasswordMutation = (
   return useMutation({
     mutationFn: verifyPasswordAPI,
     ...options,
-    throwOnError: true,
   });
 };

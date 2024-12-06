@@ -17,7 +17,7 @@ const FeedPostSlider = ({ image1, image2, image3 }: FeedPostSliderProps) => {
   if (images.length === 0) {
     return (
       <section className='h-[250px] w-full'>
-        <div className='flex h-[230px] w-full items-center justify-center border bg-gray-50'>
+        <div className='flex h-[230px] w-full items-center justify-center border-y bg-gray-50/50'>
           <p className='text-captionColor'>이미지 오류</p>
         </div>
       </section>
@@ -28,11 +28,11 @@ const FeedPostSlider = ({ image1, image2, image3 }: FeedPostSliderProps) => {
   if (images.length === 1) {
     return (
       <section className='h-[250px] w-full'>
-        <div className='h-[230px] w-full overflow-hidden'>
+        <div className='h-[230px] w-full overflow-hidden border-y bg-gray-50/50'>
           <img
             src={images[0]}
             alt='daily사진 1'
-            className='h-full w-full object-cover'
+            className='h-full w-full object-contain'
           />
         </div>
       </section>
@@ -55,12 +55,12 @@ const FeedPostSlider = ({ image1, image2, image3 }: FeedPostSliderProps) => {
         {images.map((image, index) => (
           <div
             key={`slide-${index}`}
-            className='h-[230px] w-full overflow-hidden'
+            className='h-[230px] w-full overflow-hidden border-y bg-gray-50/50'
           >
             <img
               src={image}
               alt={`daily사진 ${index + 1}`}
-              className='h-full w-full object-cover'
+              className='h-full w-full object-contain'
             />
           </div>
         ))}

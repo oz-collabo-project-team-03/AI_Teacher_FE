@@ -29,6 +29,5 @@ export const useAllPostsInfiniteGetQuery = (
     },
     initialPageParam: 1,
     ...options,
-    throwOnError: true,
   });
 };

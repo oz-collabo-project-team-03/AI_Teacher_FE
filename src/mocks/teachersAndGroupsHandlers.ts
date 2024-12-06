@@ -1,7 +1,8 @@
-import { Teacher } from '@/types/teacherType';
+// import { Teacher } from '@/types/teacherType';
 import { http, HttpResponse } from 'msw';
 
-const teachers: Teacher[] = [
+// const teachers: Teacher[] = [
+const teachers = [
   {
     teacher_id: 1,
     name: '이현주',

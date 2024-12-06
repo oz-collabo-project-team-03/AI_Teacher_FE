@@ -39,6 +39,7 @@ export const useEditAccountForm = (role: 'student' | 'teacher' | undefined) => {
     onSuccess: (data) => {
       console.log('회원 정보 변경 완료', data);
       navigate('/my-page'), { replace: true };
+      showToast('회원 정보 변경 완료');
     },
     onError: (error) => {
       if (axios.isAxiosError(error)) {

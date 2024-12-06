@@ -53,6 +53,7 @@ const EditProfile = () => {
     onSuccess: () => {
       updateProfile(form.getValues(), selectedImageUrl);
       navigate('/my-page', { replace: true });
+      showToast('회원 정보 변경 완료');
     },
     onError: (error) => {
       if (error instanceof AxiosError) {

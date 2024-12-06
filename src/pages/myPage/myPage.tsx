@@ -11,21 +11,20 @@ import NotfoundPage from '../status/notfoundPage';
 
 const MyPage = () => {
   const { userId } = useParams();
-  const { userInfo, setUserInfo } = useProfileStore();
+  const { setUserInfo } = useProfileStore();
+
   const isOwnProfile = !userId;
 
   // userId가 있으면 해당 유저의 프로필을, 없으면 내 프로필을 조회
   const { data, isLoading, isError, error, refetch } =
     useProfileGetQuery(userId);
 
-  // 스토어의 데이터를 우선적으로 사용
-  const profileData = isOwnProfile ? userInfo || data : data;
-
+  //* 현재는 임시로 스토어 사용
   useEffect(() => {
-    if (isOwnProfile && data && !userInfo) {
+    if (data) {
       setUserInfo(data);
     }
-  }, [data, isOwnProfile]);
+  }, [data]);
 
   if (isLoading) return <LoadingPage />;
 
@@ -33,37 +32,36 @@ const MyPage = () => {
     return <ErrorPage error={error as Error} resetError={() => refetch()} />;
   }
 
-  if (!profileData) {
+  if (!data) {
     return <NotfoundPage />;
   }
 
   const profileHeaderProps = {
-    profileImage: profileData.profile_image,
-    nickname: profileData.nickname,
+    role: data.role,
+    profileImage: data.profile_image,
+    nickname: data.nickname,
     description:
-      profileData.role === 'student'
-        ? `${profileData.career_aspiration}, ${profileData.interest}`
-        : `${profileData.organization_type}, ${profileData.organization_name}`,
+      data.role === 'student'
+        ? `${data.career_aspiration}, ${data.interest}`
+        : `${data.organization_type}, ${data.organization_name}`,
     subDescription:
-      profileData.role === 'student'
-        ? profileData.description
-        : profileData.organization_position,
+      data.role === 'student' ? data.description : data.organization_position,
     isOwnProfile,
   };
 
   const postGridProps = {
-    posts: profileData.posts,
-    title: profileData.role === 'student' ? '게시글' : '협업 게시글',
+    posts: data.posts,
+    title: data.role === 'student' ? '게시글' : '협업 게시글',
     userId,
-    post_count: profileData.post_count,
+    post_count: data.post_count,
     isOwnProfile,
   };
 
   return (
-    <div className='flex flex-col items-center w-full px-4 pt-12 pb-20 m-auto gap-9'>
+    <div className='m-auto flex w-full flex-col items-center gap-9 px-4 pb-20 pt-12'>
       <ProfileHeader {...profileHeaderProps} />
 
-      {isOwnProfile && <CommunityInfo userInfo={profileData} />}
+      {isOwnProfile && <CommunityInfo userInfo={data} />}
 
       <PostGrid {...postGridProps} />
     </div>

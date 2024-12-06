@@ -21,6 +21,9 @@ const FeedPostUserInfo = ({
       <Link to={`/my-page/${user_id}`}>
         <img
           src={profile_image || studentDefaultIcon}
+          onError={(e) => {
+            e.currentTarget.src = studentDefaultIcon;
+          }}
           alt='studentProfileImage'
           className='h-[40px] w-[40px] rounded-full'
         />
