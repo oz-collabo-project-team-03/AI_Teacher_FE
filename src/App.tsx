@@ -3,6 +3,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { ToastProvider } from './context/ToastContextProvider';
 import ErrorPage from './pages/status/errorPage';
 import Router from './router';
+import { AuthProvider } from './context/AuthContextProvider';
 
 function App() {
   return (
@@ -16,7 +17,9 @@ function App() {
     >
       <ToastProvider>
         <BrowserRouter>
-          <Router />
+          <AuthProvider>
+            <Router />
+          </AuthProvider>
         </BrowserRouter>
       </ToastProvider>
     </ErrorBoundary>

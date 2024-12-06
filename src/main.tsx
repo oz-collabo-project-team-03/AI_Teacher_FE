@@ -6,24 +6,24 @@ import './index.css';
 
 const queryClient = new QueryClient();
 
-async function enableMocking() {
-  if (!import.meta.env.DEV) {
-    return;
-  }
+// async function enableMocking() {
+//   if (!import.meta.env.DEV) {
+//     return;
+//   }
 
-  const { worker } = await import('./mocks/browser');
+//   const { worker } = await import('./mocks/browser');
 
-  // `worker.start()` returns a Promise that resolves
-  // once the Service Worker is up and ready to intercept requests.
-  return worker.start();
-}
+//   // `worker.start()` returns a Promise that resolves
+//   // once the Service Worker is up and ready to intercept requests.
+//   return worker.start();
+// }
 
-enableMocking().then(() => {
-  createRoot(document.getElementById('root')!).render(
-    <QueryClientProvider client={queryClient}>
-      <StrictMode>
-        <App />
-      </StrictMode>
-    </QueryClientProvider>
-  );
-});
+// enableMocking().then(() => {
+createRoot(document.getElementById('root')!).render(
+  <QueryClientProvider client={queryClient}>
+    {/* <StrictMode> */}
+    <App />
+    {/* </StrictMode> */}
+  </QueryClientProvider>
+);
+// });

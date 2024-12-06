@@ -8,6 +8,7 @@ import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { z as zod } from 'zod';
 import { useToast } from '../useToast';
+import { useAuth } from '../useAuth';
 
 // 로그인 폼 스키마 정의
 export const loginFormSchema = zod.object({
@@ -19,6 +20,7 @@ export const loginFormSchema = zod.object({
 export const useLogin = () => {
   const navigate = useNavigate();
   const { showToast } = useToast();
+  const { login } = useAuth();
 
   const cookies = new Cookies();
 
@@ -38,6 +40,9 @@ export const useLogin = () => {
     error,
   } = usePostLoginMutation({
     onSuccess: (data: GetLoginResponse) => {
+      // 로그인 성공 시 userId 설정
+      login(data.id);
+
       if (data.first_login) {
         if (data.role === 'student') {
           navigate('/student-main', {
