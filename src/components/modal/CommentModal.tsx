@@ -5,19 +5,24 @@ import { Comment } from '@/api/comment/fetchComment/fetchCommentType';
 import CommentHeader from '../comment/CommentHeader';
 import CommentList from '../comment/CommentList';
 import sendIcon from '../../assets/comment/send.svg';
-import student1 from '../../assets/editProfile/student/studentIcon2.png';
+import studentDefaultIcon from '@assets/editProfile/student/studentIcon1.png';
 import { useFetchCommentMutation } from '@/api/comment/writeComment/writeComment.hooks';
 import { useFetchCommentQuery } from '@/api/comment/fetchComment/fetchComment.hooks';
 import { useToast } from '@/hooks/useToast';
+
+type CommentModalProps = {
+  post_id: string;
+};
 
 type commentFormData = {
   comment: string;
 };
 
-const CommentModal = () => {
+const CommentModal = ({ post_id }: CommentModalProps) => {
   const [isInputEmpty, setIsInputEmpty] = useState(true);
   const [commentValue, setCommentValue] = useState('');
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
+  const [targetCommentId, setTargetCommentId] = useState<number | null>(null);
   const { showToast } = useToast();
 
   const {
@@ -27,39 +32,47 @@ const CommentModal = () => {
     setValue,
   } = useForm<commentFormData>();
 
-  const post_id = 1; //임시 아이디
-
+  //댓글 데이터
   const {
     data: commentData,
-    isLoading,
     isError,
     refetch,
+    isLoading,
   } = useFetchCommentQuery(post_id);
-
   const comments: Comment[] = commentData ? commentData.comments : [];
 
+  // 댓글 데이터 콘솔로 확인
+  useEffect(() => {
+    console.log('댓글 데이터:', comments);
+  }, [comments]);
+
+  //댓글 작성 post요청
   const { mutate: postComment } = useFetchCommentMutation({
     onSuccess: () => {
-      showToast('댓글등록성공');
       refetch();
       setCommentValue('');
-      setIsInputEmpty(true);
+      setTargetCommentId(null);
     },
     onError: () => {
-      showToast('댓글 등록 중 오류 발생');
+      showToast('로그인이 필요한 서비스입니다. 로그인 후 다시 시도해주세요.');
     },
   });
 
+  //사용자 댓글 폼 제출 처리
   const commentOnSubmit: SubmitHandler<commentFormData> = (data) => {
     const newComment = data.comment?.trim();
     if (newComment) {
       postComment({
-        post_id,
+        post_id: post_id,
         FetchCommentData: {
           content: newComment,
-          tags: [],
+          parent_comment_id: targetCommentId ?? undefined, //댓글_대댓글 구분
         },
       });
+
+      if (textareaRef.current) {
+        textareaRef.current.style.height = '30px'; // 기본 높이로 리셋
+      }
     } else {
       showToast('댓글을 입력해주세요.');
     }
@@ -84,6 +97,16 @@ const CommentModal = () => {
     setIsInputEmpty(value.trim() === '');
   };
 
+  // 대댓글 대상 설정
+  const handleReplyClick = (commentId: number) => {
+    setTargetCommentId(commentId);
+  };
+
+  // 대댓글 대상 취소
+  const handleCancelReply = () => {
+    setTargetCommentId(null);
+  };
+
   //get요청 에러처리
   useEffect(() => {
     if (isError) showToast('댓글을 불러오는 데 실패했습니다.');
@@ -98,21 +121,46 @@ const CommentModal = () => {
         ) : isError ? (
           <p>댓글을 불러오는 데 실패했습니다.</p>
         ) : (
-          <CommentList comments={comments} refetchComments={refetch} />
+          <CommentList
+            comments={comments}
+            onReplyClick={handleReplyClick}
+            refetchComments={refetch}
+          />
         )}
       </section>
       <form
         onSubmit={handleSubmit(commentOnSubmit)}
-        className='bottom-0 flex items-center gap-3 border-t border-chatListHoverColor px-[17px] py-[16px]'
+        className={`bottom-0 flex items-center gap-3 border-t border-chatListHoverColor px-[17px] py-[16px] transition-all duration-300 ${
+          targetCommentId ? 'pt-8' : ''
+        }`}
       >
-        <img src={student1} alt='comment user' className='h-[35px]' />
+        <img src={studentDefaultIcon} alt='comment user' className='h-[35px]' />
         <div className='!important relative flex w-full items-center rounded-[15px] bg-commuInputColor p-[14px] placeholder:text-center'>
+          {targetCommentId && (
+            <div className='absolute left-0 top-[-24px] text-sm text-gray-500'>
+              {comments.find(
+                (comment) => comment.comment_id === targetCommentId
+              )?.author_nickname || '알 수 없음'}
+              님에게 대댓글 작성중{' '}
+              <button
+                type='button'
+                onClick={handleCancelReply}
+                className='text-blue-500'
+              >
+                취소
+              </button>
+            </div>
+          )}
           <textarea
             value={commentValue}
             {...register('comment', { required: '댓글을 입력해주세요.' })}
             onChange={handleTextareaInput}
             className='scrollbar-hide mt-[7px] h-[30px] w-[90%] resize-none border-none bg-transparent p-0 text-[14px] focus:ring-0'
-            placeholder='댓글을 입력해주세요'
+            placeholder={
+              targetCommentId
+                ? '대댓글을 입력하세요...'
+                : '댓글을 입력하세요...'
+            }
             aria-label='댓글 입력'
             maxLength={MAX_LENGTH}
             ref={textareaRef}

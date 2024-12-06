@@ -1,15 +1,23 @@
 import { Comment } from '@/api/comment/fetchComment/fetchCommentType';
-import student1 from '../../assets/editProfile/student/studentIcon2.png';
+import ProfileImage from './CommentProfileImage';
+import ReComment from './ReComment';
 import { useDeleteCommentMutation } from '@/api/comment/deleteComment/deleteComment.hooks';
+import { useState } from 'react';
 
 type CommentProps = {
   comments: Comment[];
   refetchComments: () => void;
+  onReplyClick: (commentId: number) => void; // 추가
 };
 
-const CommentList = ({ comments, refetchComments }: CommentProps) => {
-  console.log('댓글리스트 확인', comments);
-
+const CommentList = ({
+  comments,
+  refetchComments,
+  onReplyClick,
+}: CommentProps) => {
+  const [expandedCommentIds, setExpandedCommentIds] = useState<Set<number>>(
+    new Set()
+  );
   const { mutate: deleteComment, status } = useDeleteCommentMutation({
     onSuccess: (data) => {
       console.log(data.message);
@@ -20,11 +28,24 @@ const CommentList = ({ comments, refetchComments }: CommentProps) => {
     },
   });
 
+  //댓글 삭제
   const handleDeleteClick = (comment_id: number) => {
     const confirmation = window.confirm('정말로 이 댓글을 삭제하시겠습니까?');
     if (confirmation) {
       deleteComment({ comment_id }); // 삭제 요청
     }
+  };
+
+  const handleShowMore = (commentId: number) => {
+    setExpandedCommentIds((prev) => {
+      const newExpandedCommentIds = new Set(prev);
+      if (newExpandedCommentIds.has(commentId)) {
+        newExpandedCommentIds.delete(commentId);
+      } else {
+        newExpandedCommentIds.add(commentId);
+      }
+      return newExpandedCommentIds;
+    });
   };
 
   return (
@@ -35,25 +56,21 @@ const CommentList = ({ comments, refetchComments }: CommentProps) => {
           <p className=''>댓글을 남겨주세요.</p>
         </div>
       ) : (
-        comments.map((comment, index) => (
+        comments.map((comment) => (
           <article key={comment.comment_id} className='mb-[20px]'>
             <div className='flex gap-2'>
-              <img
-                src={comment.profile_image || student1}
-                alt='comment user'
-                className='h-[30px] w-[30px] rounded-full'
-              />
+              <ProfileImage src={comment.profile_image} />
               <div className='w-full'>
                 <p className='text-[16px] font-semibold'>
                   {comment.author_nickname}
                 </p>
-                <div
-                  key={index}
-                  className='whitespace-normal break-words text-[14px]'
-                >
+                <div className='whitespace-normal break-words text-[14px]'>
                   {comment.content}
                 </div>
-                <button className='mr-[5px] text-[12px] text-captionColor hover:text-repleText'>
+                <button
+                  className='mr-[5px] text-[12px] text-captionColor hover:text-repleText'
+                  onClick={() => onReplyClick(comment.comment_id)}
+                >
                   답글
                 </button>
                 <button
@@ -63,6 +80,32 @@ const CommentList = ({ comments, refetchComments }: CommentProps) => {
                 >
                   삭제
                 </button>
+                {comment.recomment_count > 0 && (
+                  <div className='my-2 flex items-center gap-1 text-[12px] text-black/35'>
+                    <div className='mr-2 h-px w-8 bg-black/35'></div>
+                    <div>댓글 {comment.recomment_count}개 </div>
+                    <button
+                      onClick={() => handleShowMore(comment.comment_id)}
+                      className='hover:text-repleText'
+                    >
+                      {expandedCommentIds.has(comment.comment_id)
+                        ? '접기'
+                        : '더보기'}
+                    </button>
+                  </div>
+                )}
+                {/* 대댓글 펼침 */}
+                {expandedCommentIds.has(comment.comment_id) && (
+                  <div className='ml-6'>
+                    {comment.children.map((recomment) => (
+                      <ReComment
+                        key={recomment.comment_id}
+                        comment={recomment}
+                        handleDeleteClick={handleDeleteClick}
+                      />
+                    ))}
+                  </div>
+                )}
               </div>
             </div>
           </article>

@@ -1,8 +1,9 @@
-import { AuthProvider } from '@/context/AuthContextProvider';
 import { RouterProvider, Routes } from 'react-router';
-import { loggedRoutes } from './loggedRoutes';
-import { createBrowserRouter } from 'react-router-dom';
+
+import { AuthProvider } from '@/context/AuthContextProvider';
 import { commonRoutes } from './commonRoutes';
+import { createBrowserRouter } from 'react-router-dom';
+import { loggedRoutes } from './loggedRoutes';
 
 const Router = () => {
   const router = createBrowserRouter([

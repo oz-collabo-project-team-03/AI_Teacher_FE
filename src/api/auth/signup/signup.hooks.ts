@@ -1,6 +1,6 @@
+import { GetSignupResponse, SignupRequestParams } from '@/types/signupType';
 import { UseMutationOptions, useMutation } from '@tanstack/react-query';
 
-import { SignupRequestParams, GetSignupResponse } from '@/types/signupType';
 import { signupAPI } from './signupAPI';
 
 export const usePostSignupMutation = (

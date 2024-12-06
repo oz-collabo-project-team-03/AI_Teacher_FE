@@ -9,7 +9,7 @@ export const FetchCommentAPI = async ({
   post_id,
   FetchCommentData,
 }: {
-  post_id: number;
+  post_id: string;
   FetchCommentData: FetchCommentRequestParams;
 }): Promise<FetchCommentResponseDto> => {
   console.log('요청 데이터:', FetchCommentData);

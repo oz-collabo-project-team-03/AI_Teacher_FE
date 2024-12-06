@@ -1,5 +1,6 @@
+import { GetSignupResponse, SignupRequestParams } from '@/types/signupType';
+
 import axiosInstance from '@/api/axiosInstance';
-import { SignupRequestParams, GetSignupResponse } from '@/types/signupType';
 
 export const signupAPI = async (
   userData: SignupRequestParams
