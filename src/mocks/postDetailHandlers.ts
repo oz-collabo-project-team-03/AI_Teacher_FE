@@ -1,7 +1,7 @@
 import { http, HttpResponse } from 'msw';
 import { PostListResponseDto } from '@/types/postType';
-import teacherDefaultIcon from '@/assets/editProfile/teacher/teacherDefaultIcon.png';
-import studentDefaultIcon from '@/assets/editProfile/student/studentDefaultIcon.png';
+import teacherIcon1 from '@/assets/editProfile/teacher/teacherIcon1.png';
+import studentIcon1 from '@/assets/editProfile/student/studentIcon1.png';
 import img1 from '@/assets/slider/daily1.webp';
 import img2 from '@/assets/slider/daily2.webp';
 import img3 from '@/assets/slider/daily3.webp';
@@ -20,7 +20,7 @@ const MOCK_POSTS_1: PostListResponseDto = {
       post_id: 'POST1',
       user_id: 'guswnvld',
       nickname: '현주핑',
-      profile_image: studentDefaultIcon,
+      profile_image: studentIcon1,
       career_aspiration: '프로게이머',
       interest: '게임',
       like_count: 12,
@@ -35,7 +35,7 @@ const MOCK_POSTS_1: PostListResponseDto = {
       post_id: 'POST2',
       user_id: 'guswnvld',
       nickname: '현주핑',
-      profile_image: studentDefaultIcon,
+      profile_image: studentIcon1,
       career_aspiration: '프로게이머',
       interest: '게임',
       like_count: 18,
@@ -47,7 +47,7 @@ const MOCK_POSTS_1: PostListResponseDto = {
       teacher: {
         user_id: 'tlaguswns',
         nickname: '김현준',
-        profile_image: teacherDefaultIcon,
+        profile_image: teacherIcon1,
       },
       created_at: '2024-03-20T12:30:45.000Z',
     },
@@ -55,7 +55,7 @@ const MOCK_POSTS_1: PostListResponseDto = {
       post_id: 'POST3',
       user_id: 'guswnvld',
       nickname: '현주핑',
-      profile_image: studentDefaultIcon,
+      profile_image: studentIcon1,
       career_aspiration: '프로게이머',
       interest: '게임',
       like_count: 1,
@@ -67,7 +67,7 @@ const MOCK_POSTS_1: PostListResponseDto = {
       teacher: {
         user_id: 'rkddkssk',
         nickname: '강안나',
-        profile_image: teacherDefaultIcon,
+        profile_image: teacherIcon1,
       },
       created_at: '2024-03-21T12:30:45.000Z',
     },
@@ -82,7 +82,7 @@ const MOCK_POSTS_2: PostListResponseDto = {
       post_id: 'POST1',
       user_id: 'ruddnjsvld',
       nickname: '경원핑',
-      profile_image: studentDefaultIcon,
+      profile_image: studentIcon1,
       career_aspiration: '로또 당첨',
       interest: '알바',
       like_count: 12,
@@ -97,7 +97,7 @@ const MOCK_POSTS_2: PostListResponseDto = {
       post_id: 'POST2',
       user_id: 'ruddnjsvld',
       nickname: '경원핑',
-      profile_image: studentDefaultIcon,
+      profile_image: studentIcon1,
       career_aspiration: '로또 당첨',
       interest: '알바',
       like_count: 18,
@@ -109,7 +109,7 @@ const MOCK_POSTS_2: PostListResponseDto = {
       teacher: {
         user_id: 'tlaguswns',
         nickname: '김현준',
-        profile_image: teacherDefaultIcon,
+        profile_image: teacherIcon1,
       },
       created_at: '2024-03-20T12:30:45.000Z',
     },
@@ -117,7 +117,7 @@ const MOCK_POSTS_2: PostListResponseDto = {
       post_id: 'POST3',
       user_id: 'ruddnjsvld',
       nickname: '경원핑',
-      profile_image: studentDefaultIcon,
+      profile_image: studentIcon1,
       career_aspiration: '로또 당첨',
       interest: '알바',
       like_count: 1,
@@ -129,7 +129,7 @@ const MOCK_POSTS_2: PostListResponseDto = {
       teacher: {
         user_id: 'rkddkssk',
         nickname: '강안나',
-        profile_image: teacherDefaultIcon,
+        profile_image: teacherIcon1,
       },
       created_at: '2024-03-21T12:30:45.000Z',
     },
