@@ -38,7 +38,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             setUserId(userInfo.id);
             setIsInitialized(true);
           } else if (isError) {
-            logout();
+            // logout();
             setIsInitialized(true);
           }
         } catch (error) {

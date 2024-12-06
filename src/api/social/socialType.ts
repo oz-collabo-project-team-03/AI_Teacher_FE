@@ -17,16 +17,32 @@ export type GetSocialLoginResponse = {
   message: string;
 };
 
-export type SocialLoginUserInfoRequestParams = {
+type BaseSocialInfoRequestParams = {
   role: Role;
   nickname: string;
   is_privacy_accepted: boolean;
+};
+
+//학생 전용 필드
+export type SocialStudentInfoRequestParams = BaseSocialInfoRequestParams & {
   school: string;
   grade: number;
   career_aspiration: string;
   interests: string;
 };
 
-export type GetSocialLoginUserInfoResponse = {
-  message: string;
+// 선생님 전용필드
+export type SocialTeacherInfoRequestParams = BaseSocialInfoRequestParams & {
+  organization_name: string;
+  organization_type: string;
+  position: string;
 };
+
+// 소셜로그인 가입 요청타입 (선생님 또는 학생)
+export type SocialUserInfoRequestParams =
+  | SocialStudentInfoRequestParams
+  | SocialTeacherInfoRequestParams;
+
+// export type GetSocialLoginUserInfoResponse = {
+//   message: string;
+// };

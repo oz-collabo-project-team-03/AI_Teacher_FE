@@ -32,14 +32,12 @@ const LoginHandlerPage = () => {
       cookies.set('accessToken', data.access_token);
       cookies.set('refreshToken', data.refresh_token);
 
-      // 소셜 로그인 후 라우팅 로직
-      if (!data.social) {
-        // 프로필 완성된 경우
-        navigate(data?.role === 'student' ? '/student-main' : '/teacher-main');
-      } else {
+      if (data.first_login) {
         navigate('/member-agree?social=true', {
-          state: { isSocialLogin: data.social },
+          state: { isFirstLogin: data.first_login },
         });
+      } else {
+        navigate(data?.role === 'student' ? '/student-main' : '/teacher-main');
       }
     },
     onError: (error) => {
