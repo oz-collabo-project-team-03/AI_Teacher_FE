@@ -4,7 +4,7 @@ import { CommentListResponseDto } from './fetchCommentType';
 import { getFetchCommentAPI } from './fetchCommentAPI';
 
 export const useFetchCommentQuery = (
-  post_id: number,
+  post_id: string,
   options?: UseQueryOptions<CommentListResponseDto, Error>
 ) => {
   return useQuery<CommentListResponseDto, Error>({
