@@ -1,14 +1,14 @@
-import { usePostLoginMutation } from '@/api/auth/login/login.hooks';
-import { GetLoginResponse } from '@/api/auth/login/loginType';
 import { ApiErrorResponseDto } from '@/types/apiErrorType';
-import { zodResolver } from '@hookform/resolvers/zod';
-import axios from 'axios';
 import { Cookies } from 'react-cookie';
+import { GetLoginResponse } from '@/api/auth/login/loginType';
+import axios from 'axios';
+import { useAuth } from '../useAuth';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-import { z as zod } from 'zod';
+import { usePostLoginMutation } from '@/api/auth/login/login.hooks';
 import { useToast } from '../useToast';
-import { useAuth } from '../useAuth';
+import { z as zod } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
 
 // 로그인 폼 스키마 정의
 export const loginFormSchema = zod.object({
@@ -50,13 +50,13 @@ export const useLogin = () => {
             state: { isFirstLogin: true },
           });
         } else if (data.role === 'teacher') {
-          navigate('/teacher-main', { replace: true });
+          navigate('/teacher/managedList', { replace: true });
         }
       } else {
         if (data.role === 'student') {
           navigate('/student-main', { replace: true });
         } else if (data.role === 'teacher') {
-          navigate('/teacher-main', { replace: true });
+          navigate('/teacher/managedList', { replace: true });
         }
       }
       cookies.set('accessToken', data.access_token);
