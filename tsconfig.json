@@ -27,6 +27,7 @@
       "@api/*": ["src/api/*"]
     }
   },
-  "include": ["src"]
+  "include": ["src"],
+  "exclude": ["src/mocks/**/*"]
   // "references": [{ "path": "./tsconfig.node.json" }]
 }
