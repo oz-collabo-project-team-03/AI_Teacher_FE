@@ -1,4 +1,3 @@
-import axios from 'axios';
 import {
   GetSelectedTeacherResponse,
   SelectedTeacherRequestParams,
@@ -12,15 +11,15 @@ export const teacherAPI = {
     return response.data;
   },
 
-  getTeacherDetail: async (teacherId: number) => {
-    const response = await axios.get<TeacherDto>(`/api/teachers/${teacherId}`);
-    return response.data;
-  },
+  // getTeacherDetail: async (teacherId: number) => {
+  //   const response = await axios.get<TeacherDto>(`/api/teachers/${teacherId}`);
+  //   return response.data;
+  // },
   postSelectedTeacher: async (
     selectTeacherData: SelectedTeacherRequestParams
   ): Promise<GetSelectedTeacherResponse> => {
     const response = await axiosInstance.post<GetSelectedTeacherResponse>(
-      '/auth/study/groups',
+      '/auth/groups/study',
       selectTeacherData
     );
     return response.data;

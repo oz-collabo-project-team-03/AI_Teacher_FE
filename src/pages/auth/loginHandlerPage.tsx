@@ -29,17 +29,22 @@ const LoginHandlerPage = () => {
       login(data.id);
       console.log(data, '소셜로그인 확인');
       console.log(data.social, '소셜로그인 확인');
+
       cookies.set('accessToken', data.access_token);
       cookies.set('refreshToken', data.refresh_token);
 
-      // 소셜 로그인 후 라우팅 로직
-      if (!data.social) {
-        // 프로필 완성된 경우
-        navigate(data?.role === 'student' ? '/student-main' : '/teacher-main');
-      } else {
+      const userId = data.id;
+      console.log('After Social Login:', {
+        accessToken: !!cookies.get('accessToken'),
+        userId,
+      });
+
+      if (data.first_login) {
         navigate('/member-agree?social=true', {
-          state: { isSocialLogin: data.social },
+          state: { isFirstLogin: data.first_login },
         });
+      } else {
+        navigate(data?.role === 'student' ? '/student-main' : '/teacher-main');
       }
     },
     onError: (error) => {

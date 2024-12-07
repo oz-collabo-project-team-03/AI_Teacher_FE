@@ -1,15 +1,9 @@
 import axiosInstance from '@/api/axiosInstance';
-import axios from 'axios';
 import {
-  GetSocialLoginUserInfoResponse,
-  SocialLoginUserInfoRequestParams,
+  GetSocialLoginResponse,
+  SocialStudentInfoRequestParams,
+  SocialTeacherInfoRequestParams,
 } from './socialType';
-const { VITE_BASE_REQUEST_URL } = import.meta.env;
-
-const instance = axios.create({
-  baseURL: VITE_BASE_REQUEST_URL,
-  withCredentials: true,
-});
 
 export const socialLoginAPI = {
   getRedirectToSocialLogin: async (provider: string) => {
@@ -32,8 +26,8 @@ export const socialLoginAPI = {
   },
   // 소셜로그인 학생 추가정보입력
   patchSocialStudentInfo: async (
-    socialStudentInfoData: SocialLoginUserInfoRequestParams
-  ): Promise<GetSocialLoginUserInfoResponse> => {
+    socialStudentInfoData: SocialStudentInfoRequestParams
+  ): Promise<GetSocialLoginResponse> => {
     const response = await axiosInstance.patch(
       '/auth/social/info/student',
       socialStudentInfoData
@@ -42,8 +36,8 @@ export const socialLoginAPI = {
   },
   // 소셜로그인 선생님 추가정보입력
   patchSocialTeacherInfo: async (
-    socialTeacherInfoData: SocialLoginUserInfoRequestParams
-  ): Promise<GetSocialLoginUserInfoResponse> => {
+    socialTeacherInfoData: SocialTeacherInfoRequestParams
+  ): Promise<GetSocialLoginResponse> => {
     const response = await axiosInstance.patch(
       '/auth/social/info/teacher',
       socialTeacherInfoData

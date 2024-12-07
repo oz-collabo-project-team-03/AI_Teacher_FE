@@ -1,15 +1,19 @@
 import { usePostSignupMutation } from '@/api/auth/signup/signup.hooks';
-import { usePatchSocialStudentInfoMutation } from '@/api/social/social.hooks';
 import {
+  usePatchSocialStudentInfoMutation,
+  usePatchSocialTeacherInfoMutation,
+} from '@/api/social/social.hooks';
+import {
+  SocialStudentInfoRequestParams,
+  SocialTeacherInfoRequestParams,
   GetSocialLoginUserInfoResponse,
-  SocialLoginUserInfoRequestParams,
 } from '@/api/social/socialType';
 
 import { useToast } from '@/hooks/useToast';
 import { signupFormSchema } from '@/schemas/signupValidationSchemas';
 import { useTermsStore } from '@/stores/useTermsStore';
 import { ApiErrorResponseDto } from '@/types/apiErrorType';
-import { Role, SignupRequestParams } from '@/types/signupType';
+import { SignupRequestParams } from '@/types/signupType';
 import { zodResolver } from '@hookform/resolvers/zod';
 import axios from 'axios';
 import { useState } from 'react';
@@ -63,7 +67,7 @@ export const useSignupForm = (roleParam: 'student' | 'teacher' | undefined) => {
   } = usePostSignupMutation({
     onSuccess: (data) => {
       console.log('회원가입 완료', data);
-      navigate('/signup-complete', { replace: true });
+      navigate(`/signup-complete?role=${roleParam}`, { replace: true });
     },
     onError(error) {
       // Axios 에러인 경우 더 상세한 로깅
@@ -78,14 +82,53 @@ export const useSignupForm = (roleParam: 'student' | 'teacher' | undefined) => {
     },
   });
 
+  /** 학생 정보입력 */
   const {
-    mutate: updateSocialInfoMutation,
+    mutate: updateSocialStudentInfoMutation,
     isPending: updateSocialInfoIsPending,
     error: updateSocialInfoIsError,
   } = usePatchSocialStudentInfoMutation({
     onSuccess: (data: GetSocialLoginUserInfoResponse) => {
       showToast(data.message);
-      navigate('/signup-complete', { replace: true });
+      console.log('학생소셜로그인입력했어요!!!', data);
+      // 네비게이션 시 state 로깅 추가
+      console.log('추가정보 제출:', {
+        isFirstLogin: data.first_login,
+      });
+      navigate('/signup-complete?role=student', {
+        replace: true,
+        state: { study_group: data.study_group },
+      });
+    },
+    onError: (error) => {
+      // Axios 에러인 경우 더 상세한 로깅
+      if (axios.isAxiosError(error)) {
+        console.error('Axios Error Details:', {
+          response: error.response?.data,
+          status: error.response?.status,
+          headers: error.response?.headers,
+        });
+      }
+      const apiError = error as ApiErrorResponseDto;
+      const errorMessage =
+        apiError?.response?.data?.message ||
+        '회원정보 저장에 실패했습니다. 다시 시도해주세요.';
+      showToast(errorMessage);
+    },
+  });
+
+  /** 선생님 정보입력 */
+  const {
+    mutate: updateSocialTeacherInfoMutation,
+    isPending: updateSocialTeacherIsPending,
+    error: updateSocialTeacherIsError,
+  } = usePatchSocialTeacherInfoMutation({
+    onSuccess: (data: GetSocialLoginUserInfoResponse) => {
+      showToast(data.message);
+      navigate('/signup-complete?role=teacher', {
+        replace: true,
+        state: { isFirstLogin: data.first_login },
+      });
     },
     onError: (error) => {
       // Axios 에러인 경우 더 상세한 로깅
@@ -176,16 +219,38 @@ export const useSignupForm = (roleParam: 'student' | 'teacher' | undefined) => {
 
   const handleUpdateSocialInfo = async () => {
     const formData = form.getValues();
-    const socialInfoData: SocialLoginUserInfoRequestParams = {
-      nickname: formData.nickname,
-      school: formData.school,
-      grade: formData.grade,
-      career_aspiration: formData.careeraspiration,
-      interests: formData.interestrade,
-      is_privacy_accepted: isAllTermsAccepted,
-      role: roleParam as Role,
-    };
-    updateSocialInfoMutation(socialInfoData);
+
+    const socialInfoData =
+      roleParam === 'student'
+        ? ({
+            role: roleParam,
+            is_privacy_accepted: isAllTermsAccepted,
+            nickname: formData.nickname,
+            school: formData.school,
+            grade: formData.grade,
+            career_aspiration: formData.careeraspiration,
+            interests: formData.interestrade,
+          } as SocialStudentInfoRequestParams)
+        : ({
+            role: roleParam,
+            is_privacy_accepted: isAllTermsAccepted,
+            nickname: formData.nickname,
+            organization_name: formData.organization_name,
+            organization_type: formData.organization_type,
+            position: formData.position,
+          } as SocialTeacherInfoRequestParams);
+
+    if (roleParam === 'student') {
+      // 학생 뮤테이션에는 학생 타입만 전달
+      updateSocialStudentInfoMutation(
+        socialInfoData as SocialStudentInfoRequestParams
+      );
+    } else {
+      // 선생님 뮤테이션에는 선생님 타입만 전달
+      updateSocialTeacherInfoMutation(
+        socialInfoData as SocialTeacherInfoRequestParams
+      );
+    }
   };
 
   return {
@@ -195,11 +260,15 @@ export const useSignupForm = (roleParam: 'student' | 'teacher' | undefined) => {
     selectedGrade,
     updateSocialInfoIsPending,
     updateSocialInfoIsError,
+    updateSocialTeacherIsPending,
+    updateSocialTeacherIsError,
+    signupIsPending,
+    signupIsError,
     setSelectedGrade,
     handleSignup,
     register,
     formState: { errors },
     getValues,
-    updateSocialInfoMutation: handleUpdateSocialInfo,
+    updateSocialStudentInfoMutation: handleUpdateSocialInfo,
   };
 };

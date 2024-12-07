@@ -29,38 +29,51 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const accessToken = cookies.get('accessToken');
   // 초기 로그인 상태 체크 (토큰 존재 여부)
   useEffect(() => {
-    const checkTokenValidity = async () => {
-      if (accessToken) {
-        try {
-          if (isLoading) return;
+    console.log('Auth Provider Effect:', {
+      accessToken: !!cookies.get('accessToken'),
+      userInfo,
+      isLoading,
+      isError,
+    });
 
-          if (userInfo) {
-            setUserId(userInfo.id);
-            setIsInitialized(true);
-          } else if (isError) {
-            logout();
+    const initializeAuth = async () => {
+      try {
+        if (accessToken) {
+          if (!isLoading) {
+            if (userInfo) {
+              console.log('Setting userId from userInfo:', userInfo.id);
+              setUserId(userInfo.id);
+            } else if (isError) {
+              console.warn('Error in fetching user profile');
+              // 토큰 검증 실패 시 명시적 로그아웃
+              logout();
+            }
+
+            // 이 부분에서 항상 초기화되도록 수정
             setIsInitialized(true);
           }
-        } catch (error) {
-          // 토큰 검증 실패 시
-          logout();
+        } else {
+          console.log('No access token, setting userId to null');
+          setUserId(null);
           setIsInitialized(true);
         }
-      } else {
-        setUserId(null);
+      } catch (err) {
+        console.error('Error in initializeAuth:', err);
         setIsInitialized(true);
       }
     };
 
-    checkTokenValidity();
-  }, [userInfo, isError, isLoading, accessToken]);
+    initializeAuth();
+  }, [accessToken, userInfo, isError, isLoading]);
 
   const login = (newUserId: number) => {
+    console.log('Login called with userId:', newUserId);
     setUserId(newUserId);
     localStorage.setItem('userId', newUserId.toString());
   };
 
   const logout = () => {
+    console.log('Logout called');
     setUserId(null);
     // 로그아웃 시 localStorage에서 제거
     localStorage.removeItem('userId');

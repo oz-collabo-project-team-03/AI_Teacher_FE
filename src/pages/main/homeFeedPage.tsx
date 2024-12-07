@@ -16,7 +16,10 @@ import { useScrollPosition } from '@/hooks/useScrollPosition';
 const HomeFeedPage = () => {
   const location = useLocation();
   const [isFirstLogin, setIsFirstLogin] = useState(
-    location.state?.isFirstLogin || false
+    location.state?.isFirstLogin ?? true // 명시적으로 true로 설정
+  );
+  const [studyGroup, setStudyGroup] = useState(
+    location.state?.study_group ?? false // 명시적으로 false로 설정
   );
 
   const { isModalOpen, setIsModalOpen, postId } = useCommentModalStore();
@@ -45,8 +48,18 @@ const HomeFeedPage = () => {
   useScrollPosition(scrollContainerRef, isDataLoaded);
 
   // 선생님 모달 닫는 함수
-  const closeTeacherModal = () => {
-    setIsFirstLogin(false); // 모달을 닫으면 최초 로그인 상태 해제
+  // const closeTeacherModal = () => {
+  //   setIsFirstLogin(false); // 모달을 닫으면 최초 로그인 상태 해제
+  // TODO 리스폰스값에 스터디그룹이랑 최초로그인 값에 따라서 모달 띄워주는 작업 추가로 해야합니다 지금은 오류로 잘안됨. 무한으로 뜹니다 ^_^....
+  // *선생님 모달 닫는 함수
+  // 일반 로그인 첫 로그인 모달 닫기
+  const closeNormalLoginModal = () => {
+    setIsFirstLogin(false);
+  };
+
+  // 소셜 로그인 스터디 그룹 모달 닫기
+  const closeSocialLoginModal = () => {
+    setStudyGroup(true);
   };
 
   useEffect(() => {
@@ -116,8 +129,14 @@ const HomeFeedPage = () => {
           </motion.div>
         )}
       </AnimatePresence>
+      {/* 일반 로그인 첫 로그인 모달 */}
       {isFirstLogin && (
-        <TeacherListModal closeTeacherModal={closeTeacherModal} />
+        <TeacherListModal closeTeacherModal={closeNormalLoginModal} />
+      )}
+
+      {/* 소셜 로그인 스터디 그룹 모달 */}
+      {!studyGroup && (
+        <TeacherListModal closeTeacherModal={closeSocialLoginModal} />
       )}
     </div>
   );

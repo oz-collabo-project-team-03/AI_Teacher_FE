@@ -22,9 +22,10 @@ const RoleSelectPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const isSocialLogin =
-    location.state?.isSocialLogin || location.search.includes('social=true');
+  const isFirstLogin =
+    location.state?.isFirstLogin || location.search.includes('social=true');
 
+  console.log(location.state);
   const handleRoleClick = (role: TRole) => {
     setSelectedRole(role);
   };
@@ -134,7 +135,7 @@ const RoleSelectPage = () => {
           if (!selectedRole) {
             showToast('역할을 선택해주세요');
           } else {
-            const navigationPath = isSocialLogin
+            const navigationPath = isFirstLogin
               ? `/signup/${selectedRole}?social=true`
               : `/signup/${selectedRole}`;
             navigate(navigationPath);

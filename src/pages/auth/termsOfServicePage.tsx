@@ -20,8 +20,9 @@ const TermsOfServicePage = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const isSocialLogin = location.state?.isSocialLogin;
-
+  const isFirstLogin = location.state?.isFirstLogin;
+  console.log('약관동의 location 전체:', location);
+  console.log('약관동의 location.state의 타입:', typeof location.state);
   /** 전체 동의 체크박스 핸들러 */
   const handleAllCheck = () => {
     setAllChecked(!isAllChecked);
@@ -58,7 +59,7 @@ const TermsOfServicePage = () => {
         variant='active'
         onClick={() => {
           if (isPrivacyChecked && isThirdPartyChecked) {
-            const navigationPath = isSocialLogin
+            const navigationPath = isFirstLogin
               ? '/role-selection?social=true'
               : '/role-selection';
             navigate(navigationPath);

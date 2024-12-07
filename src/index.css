@@ -7,17 +7,13 @@
   font-weight: 45 920;
   font-style: normal;
   font-display: swap;
-  src:
-    local(''),
-    url('./fonts/PretendardVariable.woff2') format('woff2-variations');
+  src: url('./fonts/PretendardVariable.woff2') format('woff2-variations');
 }
 
 @font-face {
   font-family: 'GmarketSans';
-  src:
-    local(''),
-    url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansBold.woff')
-      format('woff');
+  src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansBold.woff')
+    format('woff');
   font-display: swap;
   font-weight: normal;
   font-style: normal;
