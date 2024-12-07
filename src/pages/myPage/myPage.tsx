@@ -6,6 +6,7 @@ import { useProfileGetQuery } from '@/api/myPage/myPage.hooks';
 import LoadingPage from '../status/loadingPage';
 import ErrorPage from '../status/errorPage';
 import NotfoundPage from '../status/notfoundPage';
+import { useProfile } from '@/hooks/useProfile';
 
 const MyPage = () => {
   const { userId } = useParams();
@@ -17,13 +18,15 @@ const MyPage = () => {
   const { data, isLoading, isError, error, refetch } =
     useProfileGetQuery(numberTypeUserId);
 
+  const { profileData } = useProfile();
+
   if (isLoading) return <LoadingPage />;
 
   if (isError) {
     return <ErrorPage error={error as Error} resetError={() => refetch()} />;
   }
 
-  if (!data) {
+  if (!data || !profileData) {
     return <NotfoundPage />;
   }
 
@@ -40,20 +43,28 @@ const MyPage = () => {
     isOwnProfile,
   };
 
+  const communityInfoProps = {
+    role: data.role,
+    post_count: data.post_count,
+    like_count: data.like_count,
+    comment_count: data.comment_count,
+  };
+
   const postGridProps = {
+    myRole: profileData?.role,
+    userRole: data.role,
     posts: data.posts,
-    title: data.role === 'student' ? '게시글' : '협업 게시글',
     userId: numberTypeUserId,
     post_count: data.post_count,
     isOwnProfile,
   };
 
   return (
-    <div className='h-full overflow-auto [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden'>
+    <div className='custom-scrollbar h-full [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden'>
       <div className='flex w-full flex-col items-center gap-9 px-4 py-12'>
         <ProfileHeader {...profileHeaderProps} />
 
-        {isOwnProfile && <CommunityInfo userInfo={data} />}
+        {isOwnProfile && <CommunityInfo {...communityInfoProps} />}
 
         <PostGrid {...postGridProps} />
       </div>
