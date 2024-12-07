@@ -31,7 +31,7 @@ export type TeacherMyPageResponse = BaseMyPageResponse & {
   role: 'teacher';
   organization_name: string;
   organization_type: string;
-  organization_position: string;
+  position: string;
 };
 
 // 통합 마이페이지 응답 타입

@@ -38,8 +38,7 @@ const MyPage = () => {
       data.role === 'student'
         ? `${data.career_aspiration}, ${data.interest}`
         : `${data.organization_type}, ${data.organization_name}`,
-    subDescription:
-      data.role === 'student' ? data.description : data.organization_position,
+    subDescription: data.role === 'student' ? data.description : data.position,
     isOwnProfile,
   };
 

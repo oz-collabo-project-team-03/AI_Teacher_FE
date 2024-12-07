@@ -11,7 +11,7 @@ export type EditProfileRequestParams = {
   // 교사 전용 필드
   organization_name?: string;
   organization_type?: string;
-  organization_position?: string;
+  position?: string;
 };
 
 export type ProfileInputFieldsProps = {
