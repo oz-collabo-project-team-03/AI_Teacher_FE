@@ -8,7 +8,6 @@ import {
   homeOutlineIcon,
   plusOutlineIcon,
 } from '@/assets/assets';
-import studentIcon1 from '@/assets/editProfile/student/studentIcon1.png';
 
 // 네비게이션 설정
 const STUDENT_NAV_ITEMS: layoutNavItem[] = [
@@ -39,13 +38,7 @@ const STUDENT_NAV_ITEMS: layoutNavItem[] = [
 ];
 
 const StudentNavBar = () => {
-  return (
-    <BaseNavBar
-      items={STUDENT_NAV_ITEMS}
-      profilePath='/my-page'
-      profileImg={studentIcon1}
-    />
-  );
+  return <BaseNavBar items={STUDENT_NAV_ITEMS} profilePath='/my-page' />;
 };
 
 export default StudentNavBar;

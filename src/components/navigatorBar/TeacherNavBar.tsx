@@ -1,3 +1,5 @@
+import BaseNavBar from './BaseNavBar';
+import { layoutNavItem } from '@/types/layoutNavType';
 import {
   chatActiveIcon,
   chatOutlineIcon,
@@ -6,10 +8,6 @@ import {
   userActiveIcon,
   userOutlineIcon,
 } from '@/assets/assets';
-
-import BaseNavBar from './BaseNavBar';
-import { layoutNavItem } from '@/types/layoutNavType';
-import teacherIcon1 from '@/assets/editProfile/teacher/teacherIcon1.png';
 
 // 네비게이션 설정
 const TEACHER_NAV_ITEMS: layoutNavItem[] = [
@@ -41,11 +39,7 @@ const TEACHER_NAV_ITEMS: layoutNavItem[] = [
 
 const TeacherNavBar = () => {
   return (
-    <BaseNavBar
-      items={TEACHER_NAV_ITEMS}
-      profilePath='/teacher/my-page'
-      profileImg={teacherIcon1}
-    />
+    <BaseNavBar items={TEACHER_NAV_ITEMS} profilePath='/teacher/my-page' />
   );
 };
 
