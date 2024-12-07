@@ -25,7 +25,7 @@ export const ChatOtherBubble = ({ message, message_type }: ChatBubbleProps) => {
       <div className='relative left-[-15px] max-w-[245px] rounded-[10px] bg-chatBubbleColor p-[14px]'>
         <div className='flex items-center justify-between'>
           {message_type !== 'image' ? (
-            <p className='break-words text-[14px] font-normal text-textMainColor'>
+            <p className='overflow-wrap w-full break-words text-[14px] font-normal text-textMainColor'>
               {message}
             </p>
           ) : (
