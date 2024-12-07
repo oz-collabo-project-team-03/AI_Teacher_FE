@@ -7,7 +7,7 @@ import { getMyPostsAPI, getUserPostsAPI } from './postDetailAPI';
 import { PostListResponseDto } from '@/types/postType';
 
 export const useDetailPostsInfiniteGetQuery = (
-  userId?: string,
+  userId?: number,
   options?: UseInfiniteQueryOptions<
     PostListResponseDto,
     Error,

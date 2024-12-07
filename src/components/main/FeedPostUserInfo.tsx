@@ -1,8 +1,9 @@
 import { Link } from 'react-router-dom';
 import studentIcon1 from '@/assets/editProfile/student/studentIcon1.png';
+import { useProfile } from '@/hooks/useProfile';
 
 type FeedPostUserInfoProps = {
-  user_id: string;
+  user_id: number;
   nickname: string;
   profile_image: string;
   career_aspiration: string;
@@ -16,9 +17,23 @@ const FeedPostUserInfo = ({
   career_aspiration,
   interest,
 }: FeedPostUserInfoProps) => {
+  const { profileData } = useProfile();
+  const localStorageId = Number(localStorage.getItem('userId'));
+
+  const getMyPagePath = () => {
+    if (user_id === localStorageId) {
+      return profileData?.role === 'student'
+        ? '/my-page'
+        : `/${profileData?.role}/my-page`;
+    }
+    return profileData?.role === 'student'
+      ? `/my-page/${user_id}`
+      : `/${profileData?.role}/my-page/${user_id}`;
+  };
+
   return (
     <header className='flex h-[54px] items-center gap-2 px-[9px] py-[8px]'>
-      <Link to={`/my-page/${user_id}`}>
+      <Link to={getMyPagePath()}>
         <img
           src={profile_image || studentIcon1}
           onError={(e) => {

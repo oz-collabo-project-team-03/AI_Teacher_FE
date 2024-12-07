@@ -4,12 +4,12 @@ import Button from '../common/Button';
 import AuthInput from '../auth/AuthInput';
 import { GradeSelector } from '../auth/GradeButton';
 import { useEditAccountForm } from '@/hooks/changeProfile/useEditAccountForm';
-import { useProfileStore } from '@/stores/editProfile/useProfileStore';
 import CancelMemberModal from '@/components/modal/CancelMemberModal';
+import { useProfile } from '@/hooks/useProfile';
 
 const EditAccount = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { userInfo } = useProfileStore();
+  const { profileData } = useProfile();
 
   const {
     form,
@@ -19,7 +19,7 @@ const EditAccount = () => {
     onSubmit,
     register,
     formState: { errors },
-  } = useEditAccountForm(userInfo?.role);
+  } = useEditAccountForm(profileData?.role);
 
   const handleOpenModal = () => {
     setIsModalOpen(true);
@@ -82,7 +82,7 @@ const EditAccount = () => {
                 )}
               </div>
 
-              {userInfo?.role === 'student' && (
+              {profileData?.role === 'student' && (
                 <>
                   <div>
                     <AuthInput

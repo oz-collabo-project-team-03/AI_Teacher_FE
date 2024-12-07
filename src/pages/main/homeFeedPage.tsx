@@ -1,17 +1,17 @@
 import { AnimatePresence, motion } from 'framer-motion';
-import { useEffect, useState } from 'react';
-
-import CommentModal from '@components/modal/CommentModal';
-import ErrorPage from '../status/errorPage';
-import FeedPost from '../../components/main/FeedPost';
-import LoadingPage from '../status/loadingPage';
-import MainHeader from '../../components/main/MainHeader';
-import NotfoundPage from '../status/notfoundPage';
-import TeacherListModal from '@/components/modal/TeacherListModal';
 import { useAllPostsInfiniteGetQuery } from '@/api/homeFeed/homeFeed.hooks';
-import useCommentModalStore from '@/stores/useCommentModalStore';
+import TeacherListModal from '@/components/modal/TeacherListModal';
 import { useInfiniteScroll } from '@/hooks/useInfiniteScroll';
+import useCommentModalStore from '@/stores/useCommentModalStore';
+import CommentModal from '@components/modal/CommentModal';
+import { useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
+import FeedPost from '../../components/main/FeedPost';
+import MainHeader from '../../components/main/MainHeader';
+import ErrorPage from '../status/errorPage';
+import LoadingPage from '../status/loadingPage';
+import NotfoundPage from '../status/notfoundPage';
+import { useScrollPosition } from '@/hooks/useScrollPosition';
 
 const HomeFeedPage = () => {
   const location = useLocation();
@@ -36,6 +36,13 @@ const HomeFeedPage = () => {
     fetchNextPage,
     hasNextPage,
   });
+
+  // 데이터가 로드되었는지 확인
+  const isDataLoaded = !!data?.pages.length;
+
+  // 스크롤이 있는 div 요소를 참조하기 위한 useRef 생성
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  useScrollPosition(scrollContainerRef, isDataLoaded);
 
   // 선생님 모달 닫는 함수
   const closeTeacherModal = () => {
@@ -73,14 +80,18 @@ const HomeFeedPage = () => {
   };
 
   return (
-    <div className='custom-scrollbar h-full overflow-auto pt-[72px]'>
+    <div className='h-full pt-[72px]'>
       <MainHeader />
 
-      {data.pages.map((page) =>
-        page.posts?.map((post) => <FeedPost key={post.post_id} posts={post} />)
-      )}
+      <div ref={scrollContainerRef} className='custom-scrollbar h-full'>
+        {data.pages.map((page) =>
+          page.posts?.map((post) => (
+            <FeedPost key={post.post_id} posts={post} />
+          ))
+        )}
 
-      <div ref={observerRef} className='h-2' />
+        <div ref={observerRef} className='h-2' />
+      </div>
 
       {/* 모달 */}
       <AnimatePresence mode='wait'>

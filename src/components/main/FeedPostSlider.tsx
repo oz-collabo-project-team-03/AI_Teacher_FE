@@ -16,8 +16,8 @@ const FeedPostSlider = ({ image1, image2, image3 }: FeedPostSliderProps) => {
   // 모든 이미지가 null인 경우
   if (images.length === 0) {
     return (
-      <section className='h-[250px] w-full'>
-        <div className='flex h-[230px] w-full items-center justify-center border-y bg-gray-50/50'>
+      <section className='h-[300px] w-full'>
+        <div className='flex h-[280px] w-full items-center justify-center border-y bg-gray-50/50'>
           <p className='text-captionColor'>이미지 오류</p>
         </div>
       </section>
@@ -27,8 +27,8 @@ const FeedPostSlider = ({ image1, image2, image3 }: FeedPostSliderProps) => {
   // 이미지가 하나만 있는 경우
   if (images.length === 1) {
     return (
-      <section className='h-[250px] w-full'>
-        <div className='h-[230px] w-full overflow-hidden border-y bg-gray-50/50'>
+      <section className='h-[300px] w-full'>
+        <div className='h-[280px] w-full overflow-hidden border-y bg-gray-50/50'>
           <img
             src={images[0]}
             alt='daily사진 1'
@@ -50,12 +50,12 @@ const FeedPostSlider = ({ image1, image2, image3 }: FeedPostSliderProps) => {
   };
 
   return (
-    <section className='h-[250px] w-full'>
+    <section className='h-[300px] w-full'>
       <Slider {...settings} className='h-full w-full'>
         {images.map((image, index) => (
           <div
             key={`slide-${index}`}
-            className='h-[230px] w-full overflow-hidden border-y bg-gray-50/50'
+            className='h-[280px] w-full overflow-hidden border-y bg-gray-50/50 outline-none'
           >
             <img
               src={image}

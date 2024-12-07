@@ -7,28 +7,23 @@ import StudentProfileFields from '@/components/editProfile/inputFields/StudentPr
 import TeacherProfileFields from '@/components/editProfile/inputFields/TeacherProfileFields';
 import { AxiosError } from 'axios';
 import { useToast } from '@/hooks/useToast';
-import { useEffect, useState } from 'react';
+import { useProfile } from '@/hooks/useProfile';
+import { useState } from 'react';
 import { useEditProfileMutation } from '@/api/editProfile/editProfile.hooks';
 import { EditProfileRequestParams } from '@/types/editProfileType';
-import { useProfileStore } from '@/stores/editProfile/useProfileStore';
 
 const EditProfile = () => {
-  const { userInfo, updateProfile } = useProfileStore();
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [selectedImageUrl, setSelectedImageUrl] = useState('');
-  const { showToast } = useToast();
-  const navigate = useNavigate();
 
-  useEffect(() => {
-    if (!userInfo) {
-      showToast('로그인 후 이용바랍니다.');
-      navigate('/login');
-    }
-  }, [userInfo]);
+  const { profileData } = useProfile();
+  const { showToast } = useToast();
+
+  const navigate = useNavigate();
 
   const form = useForm<EditProfileRequestParams>({
     defaultValues: {
-      role: userInfo?.role,
+      role: profileData?.role,
     },
     mode: 'onChange',
   });
@@ -40,8 +35,11 @@ const EditProfile = () => {
 
   const { mutate: editProfileMutation } = useEditProfileMutation({
     onSuccess: () => {
-      updateProfile(form.getValues(), selectedImageUrl);
-      navigate('/my-page', { replace: true });
+      if (profileData?.role === 'student') {
+        navigate('/my-page', { replace: true });
+      } else {
+        navigate('/teacher/my-page', { replace: true });
+      }
       showToast('회원 정보 변경 완료');
     },
     onError: (error) => {
@@ -69,7 +67,7 @@ const EditProfile = () => {
     editProfileMutation(profileData);
   };
 
-  if (!userInfo) {
+  if (!profileData) {
     return null;
   }
 
@@ -86,15 +84,15 @@ const EditProfile = () => {
           <ProfileImages
             selectedIndex={selectedImageIndex}
             onImageSelect={handleImageSelect}
-            userType={userInfo?.role}
-            currentImageUrl={userInfo.profile_image}
+            userType={profileData.role}
+            currentImageUrl={profileData.profile_image}
           />
 
           <div className='flex flex-col gap-4 pb-4'>
-            {userInfo?.role === 'student' && (
+            {profileData.role === 'student' && (
               <StudentProfileFields register={register} errors={errors} />
             )}
-            {userInfo?.role === 'teacher' && (
+            {profileData.role === 'teacher' && (
               <TeacherProfileFields register={register} errors={errors} />
             )}
           </div>

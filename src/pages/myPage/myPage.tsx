@@ -1,5 +1,3 @@
-import { useEffect } from 'react';
-import { useProfileStore } from '@/stores/editProfile/useProfileStore';
 import { useParams } from 'react-router-dom';
 import ProfileHeader from '@/components/myPage/ProfileHeader';
 import CommunityInfo from '@/components/myPage/CommunityInfo';
@@ -8,23 +6,19 @@ import { useProfileGetQuery } from '@/api/myPage/myPage.hooks';
 import LoadingPage from '../status/loadingPage';
 import ErrorPage from '../status/errorPage';
 import NotfoundPage from '../status/notfoundPage';
+import { useProfile } from '@/hooks/useProfile';
 
 const MyPage = () => {
   const { userId } = useParams();
-  const { setUserInfo } = useProfileStore();
+  const numberTypeUserId = Number(userId);
 
   const isOwnProfile = !userId;
 
   // userId가 있으면 해당 유저의 프로필을, 없으면 내 프로필을 조회
   const { data, isLoading, isError, error, refetch } =
-    useProfileGetQuery(userId);
+    useProfileGetQuery(numberTypeUserId);
 
-  //* 현재는 임시로 스토어 사용
-  useEffect(() => {
-    if (data) {
-      setUserInfo(data);
-    }
-  }, [data]);
+  const { profileData } = useProfile();
 
   if (isLoading) return <LoadingPage />;
 
@@ -32,7 +26,7 @@ const MyPage = () => {
     return <ErrorPage error={error as Error} resetError={() => refetch()} />;
   }
 
-  if (!data) {
+  if (!data || !profileData) {
     return <NotfoundPage />;
   }
 
@@ -49,20 +43,28 @@ const MyPage = () => {
     isOwnProfile,
   };
 
+  const communityInfoProps = {
+    role: data.role,
+    post_count: data.post_count,
+    like_count: data.like_count,
+    comment_count: data.comment_count,
+  };
+
   const postGridProps = {
+    myRole: profileData?.role,
+    userRole: data.role,
     posts: data.posts,
-    title: data.role === 'student' ? '게시글' : '협업 게시글',
-    userId,
+    userId: numberTypeUserId,
     post_count: data.post_count,
     isOwnProfile,
   };
 
   return (
-    <div className='custom-scrollbar h-full overflow-auto'>
+    <div className='custom-scrollbar h-full [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden'>
       <div className='flex w-full flex-col items-center gap-9 px-4 py-12'>
         <ProfileHeader {...profileHeaderProps} />
 
-        {isOwnProfile && <CommunityInfo userInfo={data} />}
+        {isOwnProfile && <CommunityInfo {...communityInfoProps} />}
 
         <PostGrid {...postGridProps} />
       </div>

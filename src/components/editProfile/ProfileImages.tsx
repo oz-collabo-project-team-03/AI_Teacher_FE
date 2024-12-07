@@ -31,8 +31,11 @@ const ProfileImages = ({
       if (currentIndex !== -1) {
         onImageSelect(currentIndex, images[currentIndex]);
       }
+    } else {
+      // 현재 이미지가 없을 경우 첫 번째 이미지 선택
+      onImageSelect(0, images[0]);
     }
-  }, [currentImageUrl]);
+  }, [currentImageUrl, images]);
 
   return (
     <div className='flex max-w-[410px] flex-wrap justify-between gap-x-4 gap-y-5 self-center pb-9'>

@@ -9,7 +9,7 @@ export const getMyPostsAPI = async (pageParam: number) => {
   return response.data;
 };
 
-export const getUserPostsAPI = async (userId: string, pageParam: number) => {
+export const getUserPostsAPI = async (userId: number, pageParam: number) => {
   const response = await axiosInstance.get<PostListResponseDto>(
     `/posts/users/${userId}`,
     {

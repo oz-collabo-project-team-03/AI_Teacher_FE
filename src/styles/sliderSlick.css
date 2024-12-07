@@ -1,23 +1,26 @@
 /* 슬라이더 도트 커스텀 */
 .slick-dots {
-  bottom: 0px;
+  bottom: 3px;
   position: absolute;
+  display: flex !important;
+  justify-content: center;
+  align-items: center;
 }
 
 .slick-dots li {
-  width: 11px;
-  height: 11px;
+  width: 5px;
+  height: 5px;
 }
 
 .slick-dots li button {
-  width: 11px;
-  height: 11px;
+  width: 5px;
+  height: 5px;
 }
 
 .slick-dots li button:before {
   content: '';
-  width: 11px;
-  height: 11px;
+  width: 5px;
+  height: 5px;
   border-radius: 50%;
   background-color: #d9d9d9;
   opacity: 1;
@@ -26,7 +29,20 @@
   left: 0;
 }
 
+/* 액티브 상태 도트 크기 */
+.slick-dots li.slick-active {
+  width: 8px;
+  height: 8px;
+}
+
+.slick-dots li.slick-active button {
+  width: 8px;
+  height: 8px;
+}
+
 .slick-dots li.slick-active button:before {
+  width: 8px;
+  height: 8px;
   background-color: #a6a4e9;
   opacity: 1;
 }

@@ -18,7 +18,9 @@ const TeacherLayout = () => {
           </UserInfoProvider>
         </div>
         <div className='fixed bottom-0 left-1/2 w-full -translate-x-1/2 transform bg-white md:w-[425px] lg:w-[425px]'>
-          <TeacherNavBar />
+          <UserInfoProvider userId={userId}>
+            <TeacherNavBar />
+          </UserInfoProvider>
         </div>
       </div>
     </div>
