@@ -21,7 +21,7 @@ const TEACHER_NAV_ITEMS: layoutNavItem[] = [
   },
   {
     id: 'main',
-    path: '/teacher/managedList',
+    path: '/teacher-main',
     icons: {
       outline: userOutlineIcon,
       active: userActiveIcon,
