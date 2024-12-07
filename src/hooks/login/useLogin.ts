@@ -52,13 +52,13 @@ export const useLogin = () => {
             state: { isFirstLogin: true },
           });
         } else if (data.role === 'teacher') {
-          navigate('/teacher/managedList', { replace: true });
+          navigate('/teacher-main', { replace: true });
         }
       } else {
         if (data.role === 'student') {
           navigate('/student-main', { replace: true });
         } else if (data.role === 'teacher') {
-          navigate('/teacher/managedList', { replace: true });
+          navigate('/teacher-main', { replace: true });
         }
       }
       cookies.set('accessToken', data.access_token);
