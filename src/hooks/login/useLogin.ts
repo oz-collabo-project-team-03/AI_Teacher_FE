@@ -43,6 +43,8 @@ export const useLogin = () => {
       // 로그인 성공 시 userId 설정
       login(data.id);
 
+      console.log(data);
+
       if (data.first_login) {
         if (data.role === 'student') {
           navigate('/student-main', {
