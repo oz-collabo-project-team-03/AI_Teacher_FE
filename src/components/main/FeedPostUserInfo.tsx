@@ -22,13 +22,11 @@ const FeedPostUserInfo = ({
 
   const getMyPagePath = () => {
     if (user_id === localStorageId) {
-      return profileData?.role === 'student'
-        ? '/my-page'
-        : `/${profileData?.role}/my-page`;
+      return profileData?.role === 'student' ? '/my-page' : '/teacher/my-page';
     }
     return profileData?.role === 'student'
       ? `/my-page/${user_id}`
-      : `/${profileData?.role}/my-page/${user_id}`;
+      : `/teacher/my-page/${user_id}`;
   };
 
   return (
