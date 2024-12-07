@@ -1,27 +1,24 @@
-import { useState, useEffect } from 'react';
-import { MyPageResponseDto } from '@/types/myPageType';
-
 type CommunityInfoProps = {
-  userInfo: MyPageResponseDto;
+  role: string;
+  post_count: number;
+  like_count: number;
+  comment_count: number;
 };
 
-const CommunityInfo = ({ userInfo }: CommunityInfoProps) => {
-  const [communityInfo, setCommunityInfo] = useState<
-    { label: string; value: number }[]
-  >([]);
-
-  useEffect(() => {
-    if (userInfo) {
-      setCommunityInfo([
-        {
-          label: userInfo.role === 'student' ? '게시글' : '협업 게시글',
-          value: userInfo.post_count,
-        },
-        { label: '좋아요', value: userInfo.like_count },
-        { label: '작성 댓글', value: userInfo.comment_count },
-      ]);
-    }
-  }, [userInfo]);
+const CommunityInfo = ({
+  role,
+  post_count,
+  like_count,
+  comment_count,
+}: CommunityInfoProps) => {
+  const communityInfo = [
+    {
+      label: role === 'student' ? '게시글' : '협업 게시글',
+      value: post_count,
+    },
+    { label: '좋아요', value: like_count },
+    { label: '받은 댓글', value: comment_count },
+  ];
 
   return (
     <ul className='flex w-full items-center justify-center gap-6 px-4'>
