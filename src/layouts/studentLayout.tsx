@@ -20,7 +20,9 @@ const StudentLayout = () => {
           </UserInfoProvider>
         </div>
         <div className='fixed bottom-0 left-1/2 w-full -translate-x-1/2 transform bg-white md:w-[425px] lg:w-[425px]'>
-          <StudentNavBar />
+          <UserInfoProvider userId={userId}>
+            <StudentNavBar />
+          </UserInfoProvider>
         </div>
       </div>
     </div>
