@@ -22,9 +22,7 @@ const EditProfile = () => {
   const navigate = useNavigate();
 
   const form = useForm<EditProfileRequestParams>({
-    defaultValues: {
-      role: profileData?.role,
-    },
+    values: profileData,
     mode: 'onChange',
   });
 
@@ -60,11 +58,12 @@ const EditProfile = () => {
   };
 
   const handleEditProfile = () => {
-    const profileData = {
+    const formData = {
       ...form.getValues(),
-      profile_image: selectedImageUrl,
+      profile_image: selectedImageUrl || profileData?.profile_image,
     };
-    editProfileMutation(profileData);
+
+    editProfileMutation(formData);
   };
 
   if (!profileData) {
