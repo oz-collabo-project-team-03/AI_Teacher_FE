@@ -3,7 +3,7 @@ import { UseFormRegister, FieldErrors } from 'react-hook-form';
 export type EditProfileRequestParams = {
   role?: 'student' | 'teacher';
   nickname?: string;
-  profile_image: string;
+  profile_image?: string;
   // 학생 전용 필드
   career_aspiration?: string;
   interest?: string;
