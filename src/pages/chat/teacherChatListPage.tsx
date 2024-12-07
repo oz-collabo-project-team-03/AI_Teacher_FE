@@ -8,34 +8,17 @@ const TeacherChatListPage = () => {
   const navigate = useNavigate();
   const { data: chatList } = useGetChatHelpQuery(1);
 
-  const handleClick = (roomId: string) => {
+  const handleClick = (roomId: number) => {
     navigate(`/teacher/chats/${roomId}`);
   };
 
-  // 최신순 내림차순
-  const recentlyChats = useMemo(() => {
+  // 최신순으로 정렬된 채팅 목록
+  const sortedChatList = useMemo(() => {
     if (!chatList) return [];
-
     return [...chatList].sort((a, b) => {
-      const parseDate = (dateStr: string | null | undefined) => {
-        if (!dateStr) return null;
-
-        const cleanedDateStr = dateStr
-          .replace('시', ':')
-          .replace('분', '')
-          .trim();
-        const date = new Date(cleanedDateStr);
-        return isNaN(date.getTime()) ? null : date;
-      };
-
-      const dateA = parseDate(a.recent_update);
-      const dateB = parseDate(b.recent_update);
-
-      if (!dateA && !dateB) return 0;
-      if (!dateA) return 1;
-      if (!dateB) return -1;
-
-      return dateB.getTime() - dateA.getTime();
+      const timeA = new Date(a.recent_update).getTime();
+      const timeB = new Date(b.recent_update).getTime();
+      return timeB - timeA; // 내림차순 정렬
     });
   }, [chatList]);
 
@@ -43,7 +26,7 @@ const TeacherChatListPage = () => {
     <div className='flex h-full flex-col pt-[72px]'>
       <Header title='최신 채팅' />
       <div className='custom-scrollbar flex-grow overflow-y-auto'>
-        {recentlyChats?.map((chat) => (
+        {sortedChatList.map((chat) => (
           <ChatItem
             key={chat.room_id}
             roomName={chat.student_nickname}
