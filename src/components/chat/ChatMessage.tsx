@@ -18,7 +18,7 @@ const ChatMessage = ({
   );
 
   // 시스템 메시지일 경우
-  if (userType === 'System') {
+  if (userType === 'system') {
     return (
       <div className='text-center text-[12px] text-captionColor'>
         <ChatSystemBubble message={message} message_type={message_type} />
@@ -30,7 +30,7 @@ const ChatMessage = ({
     <div className={`m-[13px] flex ${isMyMessage ? 'justify-end' : ''}`}>
       {!isMyMessage && (
         <img
-          className='h-[50px] w-[50px] overflow-hidden rounded-full border border-captionColor object-cover'
+          className='h-[50px] w-[50px] overflow-hidden rounded-full object-cover'
           src={profileImage}
           alt={`${nickname} profile`}
         />

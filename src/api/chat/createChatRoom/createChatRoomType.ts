@@ -1,5 +1,5 @@
 export type ChatRoomData = {
-  room_id: string;
+  room_id: number;
   title: string;
   help_checked?: boolean;
   student_id?: number; 

@@ -1,4 +1,7 @@
 import studentIcon1 from '@/assets/editProfile/student/studentIcon1.png';
+import studentIcon10 from '@/assets/editProfile/student/studentIcon10.png';
+import studentIcon11 from '@/assets/editProfile/student/studentIcon11.png';
+import studentIcon12 from '@/assets/editProfile/student/studentIcon12.png';
 import studentIcon2 from '@/assets/editProfile/student/studentIcon2.png';
 import studentIcon3 from '@/assets/editProfile/student/studentIcon3.png';
 import studentIcon4 from '@/assets/editProfile/student/studentIcon4.png';
@@ -7,9 +10,6 @@ import studentIcon6 from '@/assets/editProfile/student/studentIcon6.png';
 import studentIcon7 from '@/assets/editProfile/student/studentIcon7.png';
 import studentIcon8 from '@/assets/editProfile/student/studentIcon8.png';
 import studentIcon9 from '@/assets/editProfile/student/studentIcon9.png';
-import studentIcon10 from '@/assets/editProfile/student/studentIcon10.png';
-import studentIcon11 from '@/assets/editProfile/student/studentIcon11.png';
-import studentIcon12 from '@/assets/editProfile/student/studentIcon12.png';
 import teacherIcon1 from '@/assets/editProfile/teacher/teacherIcon1.png';
 import teacherIcon2 from '@/assets/editProfile/teacher/teacherIcon2.png';
 import teacherIcon3 from '@/assets/editProfile/teacher/teacherIcon3.png';
@@ -39,6 +39,13 @@ export const getProfileImages = (
   currentImageUrl: string,
   onImageSelect: (index: number, imageUrl: string) => void
 ) => {
+  // currentImageUrl이 없으면 바로 기본 이미지 배열 반환
+  if (!currentImageUrl) {
+    return {
+      images: images[userType],
+    };
+  }
+
   // URL에서 파일명 추출 (예: studentIcon3.jpeg -> studentIcon3)
   const currentFileName = currentImageUrl.split('/').pop()?.split('.')[0];
 

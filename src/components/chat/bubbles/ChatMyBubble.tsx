@@ -23,7 +23,7 @@ export const ChatMyBubble = ({ message, message_type }: ChatBubbleProps) => {
     <div className='flex justify-end'>
       <div className='max-w-[245px] rounded-[10px] bg-primaryColor p-[14px]'>
         {message_type !== 'image' ? (
-          <p className='break-words text-[14px] font-normal text-white'>
+          <p className='w-full break-words text-[14px] font-normal text-white'>
             {message}
           </p>
         ) : (

@@ -1,10 +1,10 @@
 import { Suspense, lazy } from 'react';
 
-import StudentLayout from '../layouts/studentLayout';
-import TeacherLayout from '../layouts/teacherLayout';
+import DefaultLayout from '@/layouts/defaultLayout';
 import LoadingPage from '../pages/status/loadingPage';
 import ProtectedRoute from './protectedRoute';
-import DefaultLayout from '@/layouts/defaultLayout';
+import StudentLayout from '../layouts/studentLayout';
+import TeacherLayout from '../layouts/teacherLayout';
 
 const HomeFeedPage = lazy(() => import('../pages/main/homeFeedPage'));
 const ManagedStudentListPage = lazy(
@@ -54,7 +54,7 @@ export const loggedRoutes = [
             ),
           },
           {
-            path: '/student/chats/:chatId',
+            path: '/student/chats/:roomId',
             element: (
               <Suspense fallback={<LoadingPage />}>
                 <StudentChatRoomPage />
@@ -62,7 +62,7 @@ export const loggedRoutes = [
             ),
           },
           {
-            path: '/teacher/chats/:chatId',
+            path: '/teacher/chats/:roomId',
             element: (
               <Suspense fallback={<LoadingPage />}>
                 <TeacherChatRoomPage />

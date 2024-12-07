@@ -1,5 +1,5 @@
 export type ChatRoomData = {
-  room_id: string;
+  room_id: number;
   title: string;
   help_checked: boolean;
   created_at: string;
@@ -7,5 +7,5 @@ export type ChatRoomData = {
 };
 
 export type HelpResponse = {
-  room_id: string;
+  room_id: number;
 };

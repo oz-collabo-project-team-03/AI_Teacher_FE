@@ -1,42 +1,14 @@
-import { format, isToday, parse } from 'date-fns';
+import { format, isToday, parseISO } from 'date-fns';
 
 type ChatItemProps = {
   roomName: string;
   lastMessage: string;
-  lastMessageTime: string;
+  lastMessageTime?: string;
   showHelpRequest: boolean;
   onClick?: () => void;
 };
 
-const formatLastMessageTime = (
-  lastMessageTime: string | null | undefined
-): string => {
-  if (!lastMessageTime) {
-    // null 또는 undefined일 경우 기본값 반환
-    return '시간 정보 없음';
-  }
-
-  try {
-    // 날짜 파싱
-    const parsedDate = parse(
-      lastMessageTime,
-      'yyyy-MM-dd HH시mm분',
-      new Date()
-    );
-
-    // 오늘 날짜인지 확인
-    if (isToday(parsedDate)) {
-      return format(parsedDate, 'HH시mm분');
-    } else {
-      return format(parsedDate, 'yyyy-MM-dd');
-    }
-  } catch (error) {
-    console.error('Error parsing date:', lastMessageTime, error);
-    // 파싱 오류 시 기본값 반환
-    return '잘못된 날짜 형식';
-  }
-};
-
+//팬딩어떻게 할꺼야 로딩 필요
 const ChatItem = ({
   roomName,
   lastMessage,
@@ -72,3 +44,17 @@ const ChatItem = ({
 );
 
 export default ChatItem;
+
+const formatLastMessageTime = (lastMessageTime?: string) => {
+  if (!lastMessageTime) {
+    return '시간 정보 없음';
+  }
+
+  const parsedDate = parseISO(lastMessageTime);
+
+  if (isToday(parsedDate)) {
+    return format(parsedDate, 'HH시mm분');
+  }
+
+  return format(parsedDate, 'yyyy-MM-dd');
+};
