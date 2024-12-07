@@ -1,4 +1,4 @@
-import studentDefaultIcon from '@assets/editProfile/student/studentDefaultIcon.png';
+import studentIcon1 from '@assets/editProfile/student/studentIcon1.png';
 
 type Student = {
   id: number;
@@ -11,7 +11,7 @@ type ManagedListProps = {
   students: Student[];
 };
 
-const managedList: React.FC<ManagedListProps> = ({ students }) => {
+const managedList = ({ students }: ManagedListProps) => {
   return (
     <div className='custom-scrollbar h-full overflow-y-auto px-[16px] py-[16px]'>
       <ul className='flex flex-col gap-6'>
@@ -19,11 +19,11 @@ const managedList: React.FC<ManagedListProps> = ({ students }) => {
           <li key={student.id} className='flex items-center justify-between'>
             <div className='flex items-center gap-3'>
               <img
-                src={student.profileImage || studentDefaultIcon}
+                src={student.profileImage || studentIcon1}
                 alt={student.name}
                 className='h-12 w-12 rounded-full'
                 onError={(e) => {
-                  (e.target as HTMLImageElement).src = studentDefaultIcon;
+                  e.currentTarget.src = studentIcon1;
                 }}
               />
               <span className='text-[16px] font-medium'>{student.name} </span>
