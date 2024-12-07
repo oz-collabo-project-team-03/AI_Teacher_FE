@@ -6,6 +6,7 @@ import axios from 'axios';
 import { Cookies } from 'react-cookie';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../useAuth';
+import { clearScrollPositions } from '../useScrollPosition';
 
 export const useLogout = () => {
   const navigate = useNavigate();
@@ -22,6 +23,7 @@ export const useLogout = () => {
     onSuccess: (data: LogoutResponseDto) => {
       showToast(data.message);
       logout();
+      clearScrollPositions(); // 스크롤 저장 초기화
       // 모든 쿠키 제거 (도메인 전체)
       const allCookies = cookies.getAll();
       Object.keys(allCookies).forEach((cookieName) =>
