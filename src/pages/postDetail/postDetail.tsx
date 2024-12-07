@@ -13,11 +13,13 @@ import LoadingPage from '../status/loadingPage';
 
 const PostDetail = () => {
   const { userId } = useParams();
+  const { isModalOpen, setIsModalOpen } = useCommentModalStore();
+
   const location = useLocation();
+
   const searchParams = new URLSearchParams(location.search);
   const selectedPostId = searchParams.get('selected');
 
-  const { isModalOpen, setIsModalOpen } = useCommentModalStore();
   const closeCommentModal = () => setIsModalOpen(false);
 
   const {
@@ -28,7 +30,7 @@ const PostDetail = () => {
     fetchNextPage,
     error,
     refetch,
-  } = useDetailPostsInfiniteGetQuery(userId);
+  } = useDetailPostsInfiniteGetQuery(Number(userId));
 
   const observerRef = useInfiniteScroll({
     fetchNextPage,
@@ -42,7 +44,26 @@ const PostDetail = () => {
         element.scrollIntoView({ behavior: 'smooth', block: 'center' });
       }
     }
-  }, [selectedPostId]);
+  }, [selectedPostId, data]);
+
+  useEffect(() => {
+    const scrollToSelectedPost = async () => {
+      if (!selectedPostId || !data) return;
+
+      const element = document.getElementById(selectedPostId);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        return;
+      }
+
+      // 현재 로드된 페이지들에서 포스트를 찾지 못한 경우
+      if (hasNextPage) {
+        await fetchNextPage();
+      }
+    };
+
+    scrollToSelectedPost();
+  }, [selectedPostId, data, hasNextPage, fetchNextPage]);
 
   if (isLoading) return <LoadingPage />;
 
@@ -73,13 +94,15 @@ const PostDetail = () => {
   };
 
   return (
-    <div className='custom-scrollbar flex h-full flex-col overflow-auto pt-[72px]'>
+    <div className='h-full pt-[72px]'>
       <Header title={headerTitle} />
-      {data.pages.map((page) =>
-        page.posts.map((post) => <FeedPost key={post.post_id} posts={post} />)
-      )}
 
-      <div ref={observerRef} className='h-2' />
+      <div className='custom-scrollbar h-full'>
+        {data.pages.map((page) =>
+          page.posts.map((post) => <FeedPost key={post.post_id} posts={post} />)
+        )}
+        <div ref={observerRef} className='h-2' />
+      </div>
 
       {/* 모달 */}
       <AnimatePresence mode='wait'>
