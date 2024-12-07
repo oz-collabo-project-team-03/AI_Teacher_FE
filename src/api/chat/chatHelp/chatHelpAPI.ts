@@ -3,7 +3,7 @@ import { ChatRoomData, HelpResponse } from './chatHelpType';
 import axiosInstance from '@/api/axiosInstance';
 
 export const patchChatHelpAPI = async (
-  room_id: string,
+  room_id: number,
   helpData: HelpResponse
 ): Promise<ChatRoomData> => {
   try {

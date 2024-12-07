@@ -1,6 +1,6 @@
 export type ChatHelpListData = {
-  room_id: string;
-  student_id: string;
+  room_id: number;
+  student_id: number;
   student_nickname: string;
   help_checked: boolean;
   recent_message: string;
