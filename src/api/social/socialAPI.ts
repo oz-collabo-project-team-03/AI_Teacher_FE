@@ -1,16 +1,9 @@
 import axiosInstance from '@/api/axiosInstance';
-import axios from 'axios';
 import {
   GetSocialLoginResponse,
   SocialStudentInfoRequestParams,
   SocialTeacherInfoRequestParams,
 } from './socialType';
-const { VITE_BASE_REQUEST_URL } = import.meta.env;
-
-const instance = axios.create({
-  baseURL: VITE_BASE_REQUEST_URL,
-  withCredentials: true,
-});
 
 export const socialLoginAPI = {
   getRedirectToSocialLogin: async (provider: string) => {
