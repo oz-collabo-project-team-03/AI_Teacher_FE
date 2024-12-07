@@ -12,10 +12,10 @@ const SignupCompletePage = () => {
   const role = searchParams.get('role');
 
   const isFirstLogin = location.state?.isFirstLogin;
-  console.log('location 전체:', location);
-  console.log('location.state의 타입:', typeof location.state);
+  // console.log('location 전체:', location);
+  // console.log('location.state의 타입:', typeof location.state);
 
-  console.log(searchParams.get('role'));
+  // console.log(searchParams.get('role'));
 
   // 애니메이션을 위한 초기 상태 및 변형 설정
   const imageVariants = {

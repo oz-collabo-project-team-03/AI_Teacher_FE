@@ -18,10 +18,10 @@ const SignupPage = () => {
   const [searchParams] = useSearchParams();
   const isSocial = searchParams.get('social') === 'true';
 
-  console.log('전체 searchParams:', searchParams.toString());
-  console.log('social 파라미터:', searchParams.get('social'));
+  // console.log('전체 searchParams:', searchParams.toString());
+  // console.log('social 파라미터:', searchParams.get('social'));
 
-  console.log('isSocial 값:', isSocial);
+  // console.log('isSocial 값:', isSocial);
 
   // 회원정보 입력
   const {
@@ -47,12 +47,12 @@ const SignupPage = () => {
   const handleSubmit = isSocial
     ? updateSocialStudentInfoMutation
     : handleSignup;
-  console.log(
-    '선택된 제출 핸들러:',
-    handleSubmit === updateSocialStudentInfoMutation
-      ? 'updateSocialInfoMutation'
-      : 'handleSignup'
-  );
+  // console.log(
+  //   '선택된 제출 핸들러:',
+  //   handleSubmit === updateSocialStudentInfoMutation
+  //     ? 'updateSocialInfoMutation'
+  //     : 'handleSignup'
+  // );
   // 역할 파라미터 검증 (학생/선생님)
   useEffect(() => {
     if (roleParam !== 'student' && roleParam !== 'teacher') {

@@ -21,8 +21,8 @@ const TermsOfServicePage = () => {
   const location = useLocation();
 
   const isFirstLogin = location.state?.isFirstLogin;
-  console.log('location 전체:', location);
-  console.log('location.state의 타입:', typeof location.state);
+  console.log('약관동의 location 전체:', location);
+  console.log('약관동의 location.state의 타입:', typeof location.state);
   /** 전체 동의 체크박스 핸들러 */
   const handleAllCheck = () => {
     setAllChecked(!isAllChecked);

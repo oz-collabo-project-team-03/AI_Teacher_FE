@@ -4,16 +4,16 @@ import {
   usePatchSocialTeacherInfoMutation,
 } from '@/api/social/social.hooks';
 import {
-  GetSocialLoginResponse,
   SocialStudentInfoRequestParams,
   SocialTeacherInfoRequestParams,
+  GetSocialLoginUserInfoResponse,
 } from '@/api/social/socialType';
 
 import { useToast } from '@/hooks/useToast';
 import { signupFormSchema } from '@/schemas/signupValidationSchemas';
 import { useTermsStore } from '@/stores/useTermsStore';
 import { ApiErrorResponseDto } from '@/types/apiErrorType';
-import { Role, SignupRequestParams } from '@/types/signupType';
+import { SignupRequestParams } from '@/types/signupType';
 import { zodResolver } from '@hookform/resolvers/zod';
 import axios from 'axios';
 import { useState } from 'react';
@@ -88,12 +88,16 @@ export const useSignupForm = (roleParam: 'student' | 'teacher' | undefined) => {
     isPending: updateSocialInfoIsPending,
     error: updateSocialInfoIsError,
   } = usePatchSocialStudentInfoMutation({
-    onSuccess: (data: GetSocialLoginResponse) => {
+    onSuccess: (data: GetSocialLoginUserInfoResponse) => {
       showToast(data.message);
       console.log('학생소셜로그인입력했어요!!!', data);
+      // 네비게이션 시 state 로깅 추가
+      console.log('추가정보 제출:', {
+        isFirstLogin: data.first_login,
+      });
       navigate('/signup-complete?role=student', {
         replace: true,
-        state: { isFirstLogin: data.first_login },
+        state: { study_group: data.study_group },
       });
     },
     onError: (error) => {
@@ -119,7 +123,7 @@ export const useSignupForm = (roleParam: 'student' | 'teacher' | undefined) => {
     isPending: updateSocialTeacherIsPending,
     error: updateSocialTeacherIsError,
   } = usePatchSocialTeacherInfoMutation({
-    onSuccess: (data: GetSocialLoginResponse) => {
+    onSuccess: (data: GetSocialLoginUserInfoResponse) => {
       showToast(data.message);
       navigate('/signup-complete?role=teacher', {
         replace: true,
@@ -256,6 +260,10 @@ export const useSignupForm = (roleParam: 'student' | 'teacher' | undefined) => {
     selectedGrade,
     updateSocialInfoIsPending,
     updateSocialInfoIsError,
+    updateSocialTeacherIsPending,
+    updateSocialTeacherIsError,
+    signupIsPending,
+    signupIsError,
     setSelectedGrade,
     handleSignup,
     register,
