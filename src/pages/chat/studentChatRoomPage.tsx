@@ -11,6 +11,7 @@ import { useChatWebSocket } from '@/api/chat/chatWebSocket/chatWebSocket.hooks';
 import { useGetChatMessagesQuery } from '@/api/chat/chatMessages/chatMessages.hooks';
 import { useParams } from 'react-router-dom';
 import { usePatchChatHelpMutation } from '@/api/chat/chatHelp/chatHelp.hooks';
+import { useProfile } from '@/hooks/useProfile';
 
 const StudentChatRoomPage = () => {
   const [buttonType, setButtonType] = useState<'help' | 'end'>('help');
@@ -22,6 +23,15 @@ const StudentChatRoomPage = () => {
   const chatEndRef = useRef<HTMLDivElement>(null);
   const chatContainerRef = useRef<HTMLDivElement>(null);
   const [showLoading, setShowLoading] = useState(true);
+
+  // 유저 정보 가져오기
+  const { profileData } = useProfile();
+  const userId = profileData?.id;
+
+  if (userId === null) {
+    console.error('userId가 없습니다! WebSocket 연결 실패');
+    return null;
+  }
 
   // URL에서 roomId를 가져오고 number로 변환
   const { roomId } = useParams<{ roomId: string }>();
@@ -40,7 +50,7 @@ const StudentChatRoomPage = () => {
   // WebSocket 관련 상태 및 함수
   const { sendMessage, lastMessage } = useChatWebSocket(
     roomIdNumber,
-    6 //userId 부분으로 바꿔야함
+    userId as number
   );
 
   const { mutate: patchChatHelp } = usePatchChatHelpMutation({
@@ -168,7 +178,7 @@ const StudentChatRoomPage = () => {
         return;
       }
       sendMessage({
-        sender_id: 'user_id',
+        sender_id: userId,
         content: trimmedMessage,
         timestamp: new Date().toISOString(),
         message_type: 'text',
@@ -193,7 +203,7 @@ const StudentChatRoomPage = () => {
 
       try {
         console.log('전송 데이터:', {
-          sender_id: 'user_id',
+          sender_id: userId,
           content: `${file.name}`,
           timestamp: new Date().toISOString(),
           message_type: 'image',
@@ -202,7 +212,7 @@ const StudentChatRoomPage = () => {
 
         // 웹소켓을 통해 파일 데이터 전송
         sendMessage({
-          sender_id: 'user_id',
+          sender_id: userId,
           content: `${file.name}`,
           timestamp: new Date().toISOString(),
           message_type: 'image',
