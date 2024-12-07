@@ -1,5 +1,4 @@
 import { UseMutationOptions, useMutation } from '@tanstack/react-query';
-
 import { socialLoginAPI } from './socialAPI';
 import {
   GetSocialLoginResponse,
@@ -7,6 +6,7 @@ import {
   SocialTeacherInfoRequestParams,
 } from './socialType';
 
+/**소셜로그인 콜백요청 */
 export const useSocialLoginCallbackMutation = (
   options?: UseMutationOptions<
     GetSocialLoginResponse, // 성공 시 반환 타입
@@ -20,6 +20,7 @@ export const useSocialLoginCallbackMutation = (
   });
 };
 
+/**소셜로그인 후 정보입력 학생 */
 export const usePatchSocialStudentInfoMutation = (
   options?: UseMutationOptions<
     GetSocialLoginResponse, // 성공 시 반환 타입
@@ -33,6 +34,7 @@ export const usePatchSocialStudentInfoMutation = (
   });
 };
 
+/** 소셜로그인 후 정보입력 선생 */
 export const usePatchSocialTeacherInfoMutation = (
   options?: UseMutationOptions<
     GetSocialLoginResponse, // 성공 시 반환 타입
