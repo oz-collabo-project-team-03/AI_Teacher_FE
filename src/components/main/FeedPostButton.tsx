@@ -1,8 +1,8 @@
-import { useCallback, useState } from 'react';
+// import { useCallback, useState } from 'react';
 
-import Heart from '../../assets/feedPost/heart.svg';
+// import Heart from '../../assets/feedPost/heart.svg';
 import chat from '../../assets/feedPost/chat.svg';
-import fullHeart from '../../assets/feedPost/fullHeart.svg';
+// import fullHeart from '../../assets/feedPost/fullHeart.svg';
 import useCommentModalStore from '@/stores/useCommentModalStore';
 
 // import CommentModal from '../modal/CommentModal';

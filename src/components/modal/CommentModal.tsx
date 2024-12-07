@@ -5,7 +5,7 @@ import { Comment } from '@/api/comment/fetchComment/fetchCommentType';
 import CommentHeader from '../comment/CommentHeader';
 import CommentList from '../comment/CommentList';
 import sendIcon from '../../assets/comment/send.svg';
-import studentDefaultIcon from '@assets/editProfile/student/studentIcon1.png';
+import studentIcon1 from '@assets/editProfile/student/studentIcon1.png';
 import { useFetchCommentMutation } from '@/api/comment/writeComment/writeComment.hooks';
 import { useFetchCommentQuery } from '@/api/comment/fetchComment/fetchComment.hooks';
 import { useToast } from '@/hooks/useToast';
@@ -134,7 +134,7 @@ const CommentModal = ({ post_id }: CommentModalProps) => {
           targetCommentId ? 'pt-8' : ''
         }`}
       >
-        <img src={studentDefaultIcon} alt='comment user' className='h-[35px]' />
+        <img src={studentIcon1} alt='comment user' className='h-[35px]' />
         <div className='!important relative flex w-full items-center rounded-[15px] bg-commuInputColor p-[14px] placeholder:text-center'>
           {targetCommentId && (
             <div className='absolute left-0 top-[-24px] text-sm text-gray-500'>

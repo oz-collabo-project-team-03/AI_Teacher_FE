@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import teacherIcon1 from '@/assets/editProfile/teacher/teacherIcon1.png';
 import { useState, useRef, useEffect } from 'react';
 import { twMerge } from 'tailwind-merge';
+import { useProfile } from '@/hooks/useProfile';
 
 type FeedPostContentProps = {
   like_count: number;
@@ -25,6 +26,9 @@ const FeedPostContent = ({
   created_at,
   post_id,
 }: FeedPostContentProps) => {
+  const { profileData } = useProfile();
+  const localStorageId = Number(localStorage.getItem('userId'));
+
   // 텍스트 확장 상태
   const [isExpanded, setIsExpanded] = useState(false);
   // 텍스트 잘림 상태
@@ -56,6 +60,15 @@ const FeedPostContent = ({
     return `${date.getFullYear().toString().slice(2)}년 ${(date.getMonth() + 1).toString().padStart(2, '0')}월 ${date.getDate().toString().padStart(2, '0')}일`;
   };
 
+  const getMyPagePath = () => {
+    if (teacher?.user_id === localStorageId) {
+      return profileData?.role === 'student' ? '/my-page' : '/teacher/my-page';
+    }
+    return profileData?.role === 'student'
+      ? `/my-page/${teacher?.user_id}`
+      : `/teacher/my-page/${teacher?.user_id}`;
+  };
+
   return (
     <ul className='flex flex-col items-start px-[12px] font-medium'>
       <FeedPostButton
@@ -65,8 +78,8 @@ const FeedPostContent = ({
       />
 
       {teacher && (
-        <li className='flex w-full items-center gap-1 text-[15px]'>
-          <Link to={`/teacher/my-page/${teacher.user_id}`}>
+        <li className='mt-2 flex w-full items-center gap-2 text-[15px]'>
+          <Link to={getMyPagePath()}>
             <img
               src={teacher.profile_image || teacherIcon1}
               onError={(e) => {

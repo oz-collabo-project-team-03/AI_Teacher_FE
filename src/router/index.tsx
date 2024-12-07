@@ -1,4 +1,4 @@
-import { RouterProvider, Routes } from 'react-router';
+import { RouterProvider } from 'react-router';
 
 import { AuthProvider } from '@/context/AuthContextProvider';
 import { commonRoutes } from './commonRoutes';

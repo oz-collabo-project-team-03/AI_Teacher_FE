@@ -1,6 +1,6 @@
 import { useProfileGetQuery } from '@/api/myPage/myPage.hooks';
 import { MyPageResponseDto } from '@/types/myPageType';
-import { ReactNode, createContext, useContext } from 'react';
+import { ReactNode, createContext } from 'react';
 
 type UserInfoConTextType = {
   profileData?: MyPageResponseDto;

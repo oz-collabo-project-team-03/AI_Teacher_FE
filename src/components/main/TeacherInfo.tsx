@@ -14,7 +14,7 @@ const TeacherInfo = ({ name, profileImage }: TeacherInfoProps) => {
           alt='teacher Default Icon'
           className='around-full h-[60px] w-[60px]'
           onError={(e) => {
-            (e.target as HTMLImageElement).src = teacherIcon1;
+            e.currentTarget.src = teacherIcon1;
           }}
         />
         <p className='text-[18px] font-semibold text-mainLogoTextColor'>

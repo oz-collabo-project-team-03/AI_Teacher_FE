@@ -50,11 +50,11 @@ const TeacherProfileFields: React.FC<ProfileInputFieldsProps> = ({
         type='text'
         label='직급'
         placeholder='직급을 입력해주세요.'
-        {...register('organization_position')}
+        {...register('position')}
       />
-      {errors.organization_position && (
+      {errors.position && (
         <span className='text-sm text-errorTextColor'>
-          {errors.organization_position.message}
+          {errors.position.message}
         </span>
       )}
     </div>
@@ -62,3 +62,5 @@ const TeacherProfileFields: React.FC<ProfileInputFieldsProps> = ({
 );
 
 export default TeacherProfileFields;
+
+('{"detail":[{"type":"missing","loc":["body","nickname"],"msg":"Field required","input":{"profile_image":"teacherIcon1"}},{"type":"missing","loc":["body","position"],"msg":"Field required","input":{"profile_image":"teacherIcon1"}}]}');

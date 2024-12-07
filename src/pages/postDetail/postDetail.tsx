@@ -13,7 +13,7 @@ import LoadingPage from '../status/loadingPage';
 
 const PostDetail = () => {
   const { userId } = useParams();
-  const { isModalOpen, setIsModalOpen } = useCommentModalStore();
+  const { isModalOpen, setIsModalOpen, postId } = useCommentModalStore();
 
   const location = useLocation();
 
@@ -101,6 +101,7 @@ const PostDetail = () => {
         {data.pages.map((page) =>
           page.posts.map((post) => <FeedPost key={post.post_id} posts={post} />)
         )}
+
         <div ref={observerRef} className='h-2' />
       </div>
 
@@ -122,7 +123,7 @@ const PostDetail = () => {
               >
                 &times;
               </button>
-              <CommentModal />
+              <CommentModal post_id={postId} />
             </div>
           </motion.div>
         )}
