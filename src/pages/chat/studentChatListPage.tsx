@@ -18,7 +18,7 @@ const StudentChatListPage = () => {
   );
 
   const [selectedRoomId, setSelectedRoomId] = useState<number | null>(null);
-  const [deletingRoomId, setDeletingRoomId] = useState<number | null>(null);
+  const [, setDeletingRoomId] = useState<number | null>(null);
 
   // 페이지네이션를 다룰때 useInfiniteQuery 쓰기 (캡쳐사진있음)
   // refetch vs invalidate cache 차이 숙제 > refetch잘안씀 이유가 뭐지
