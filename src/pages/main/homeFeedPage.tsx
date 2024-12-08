@@ -1,28 +1,26 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { useAllPostsInfiniteGetQuery } from '@/api/homeFeed/homeFeed.hooks';
-import TeacherListModal from '@/components/modal/TeacherListModal';
 import { useInfiniteScroll } from '@/hooks/useInfiniteScroll';
 import useCommentModalStore from '@/stores/useCommentModalStore';
 import CommentModal from '@components/modal/CommentModal';
-import { useEffect, useRef, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useRef, useState } from 'react';
 import FeedPost from '../../components/main/FeedPost';
 import MainHeader from '../../components/main/MainHeader';
 import ErrorPage from '../status/errorPage';
 import LoadingPage from '../status/loadingPage';
 import NotfoundPage from '../status/notfoundPage';
 import { useScrollPosition } from '@/hooks/useScrollPosition';
+import { useProfile } from '@/hooks/useProfile';
+import TeacherListModal from '@/components/modal/TeacherListModal';
+import { useQueryClient } from '@tanstack/react-query';
 
 const HomeFeedPage = () => {
-  const location = useLocation();
-  const [isFirstLogin, setIsFirstLogin] = useState(
-    location.state?.isFirstLogin ?? true // 명시적으로 true로 설정
-  );
-  const [studyGroup, setStudyGroup] = useState(
-    location.state?.study_group ?? false // 명시적으로 false로 설정
-  );
+  const [isTeacherModalOpen, setIsTeacherModalOpen] = useState(true);
 
+  const { profileData } = useProfile();
   const { isModalOpen, setIsModalOpen, postId } = useCommentModalStore();
+  const queryClient = useQueryClient();
+
   const closeCommentModal = () => setIsModalOpen(false);
 
   const {
@@ -48,26 +46,10 @@ const HomeFeedPage = () => {
   useScrollPosition(scrollContainerRef, isDataLoaded);
 
   // 선생님 모달 닫는 함수
-  // const closeTeacherModal = () => {
-  //   setIsFirstLogin(false); // 모달을 닫으면 최초 로그인 상태 해제
-  // TODO 리스폰스값에 스터디그룹이랑 최초로그인 값에 따라서 모달 띄워주는 작업 추가로 해야합니다 지금은 오류로 잘안됨. 무한으로 뜹니다 ^_^....
-  // *선생님 모달 닫는 함수
-  // 일반 로그인 첫 로그인 모달 닫기
-  const closeNormalLoginModal = () => {
-    setIsFirstLogin(false);
+  const closeTeacherModal = () => {
+    setIsTeacherModalOpen(false);
+    queryClient.invalidateQueries({ queryKey: ['profile'] });
   };
-
-  // 소셜 로그인 스터디 그룹 모달 닫기
-  const closeSocialLoginModal = () => {
-    setStudyGroup(true);
-  };
-
-  useEffect(() => {
-    // 최초 로그인 시 한 번만 실행되도록 보장
-    if (isFirstLogin) {
-      console.log('First login detected');
-    }
-  }, [isFirstLogin]);
 
   if (isLoading) return <LoadingPage />;
 
@@ -129,14 +111,10 @@ const HomeFeedPage = () => {
           </motion.div>
         )}
       </AnimatePresence>
-      {/* 일반 로그인 첫 로그인 모달 */}
-      {isFirstLogin && (
-        <TeacherListModal closeTeacherModal={closeNormalLoginModal} />
-      )}
 
       {/* 소셜 로그인 스터디 그룹 모달 */}
-      {!studyGroup && (
-        <TeacherListModal closeTeacherModal={closeSocialLoginModal} />
+      {!profileData?.study_group && isTeacherModalOpen && (
+        <TeacherListModal closeTeacherModal={closeTeacherModal} />
       )}
     </div>
   );

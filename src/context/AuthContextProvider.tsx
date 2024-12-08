@@ -29,19 +29,19 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const accessToken = cookies.get('accessToken');
   // 초기 로그인 상태 체크 (토큰 존재 여부)
   useEffect(() => {
-    console.log('Auth Provider Effect:', {
-      accessToken: !!cookies.get('accessToken'),
-      userInfo,
-      isLoading,
-      isError,
-    });
+    // console.log('Auth Provider Effect:', {
+    //   accessToken: !!cookies.get('accessToken'),
+    //   userInfo,
+    //   isLoading,
+    //   isError,
+    // });
 
     const initializeAuth = async () => {
       try {
         if (accessToken) {
           if (!isLoading) {
             if (userInfo) {
-              console.log('Setting userId from userInfo:', userInfo.id);
+              // console.log('Setting userId from userInfo:', userInfo.id);
               setUserId(userInfo.id);
             } else if (isError) {
               console.warn('Error in fetching user profile');
@@ -53,12 +53,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             setIsInitialized(true);
           }
         } else {
-          console.log('No access token, setting userId to null');
+          console.log('엑세스토큰도 없고 아이디도 없어유');
           setUserId(null);
           setIsInitialized(true);
         }
-      } catch (err) {
-        console.error('Error in initializeAuth:', err);
+      } catch (error) {
+        console.error('Error:', error);
         setIsInitialized(true);
       }
     };
@@ -67,9 +67,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, [accessToken, userInfo, isError, isLoading]);
 
   const login = (newUserId: number) => {
-    console.log('Login called with userId:', newUserId);
+    // console.log('Login called with userId:', newUserId);
     setUserId(newUserId);
-    localStorage.setItem('userId', newUserId.toString());
+    // localStorage.setItem('userId', newUserId.toString());
   };
 
   const logout = () => {

@@ -5,6 +5,7 @@ import {
   SocialStudentInfoRequestParams,
   SocialTeacherInfoRequestParams,
 } from './socialType';
+import { ApiError } from '@/types/apiErrorType';
 
 /**소셜로그인 콜백요청 */
 export const useSocialLoginCallbackMutation = (
@@ -24,7 +25,7 @@ export const useSocialLoginCallbackMutation = (
 export const usePatchSocialStudentInfoMutation = (
   options?: UseMutationOptions<
     GetSocialLoginResponse, // 성공 시 반환 타입
-    Error, // 에러 타입
+    ApiError, // 에러 타입
     SocialStudentInfoRequestParams // 요청 데이터 타입
   >
 ) => {
@@ -38,7 +39,7 @@ export const usePatchSocialStudentInfoMutation = (
 export const usePatchSocialTeacherInfoMutation = (
   options?: UseMutationOptions<
     GetSocialLoginResponse, // 성공 시 반환 타입
-    Error, // 에러 타입
+    ApiError, // 에러 타입
     SocialTeacherInfoRequestParams // 요청 데이터 타입
   >
 ) => {

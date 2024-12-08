@@ -6,12 +6,13 @@ import {
   GetEmailVerificationResponse,
 } from './emailType';
 import { emailAPI } from './sendEmailAPI';
+import { ApiError } from '@/types/apiErrorType';
 
 // 이메일 인증을 보내는 useMutation 훅
 export const usePostEmailVerificationMutation = (
   options?: UseMutationOptions<
     GetEmailVerificationResponse, // 성공 시 반환 타입
-    Error, // 에러 타입
+    ApiError, // 에러 타입
     EmailVerificationRequestParams // 요청 데이터 타입
   >
 ) => {
@@ -25,7 +26,7 @@ export const usePostEmailVerificationMutation = (
 export const usePostEmailVerificationCodeMutation = (
   options?: UseMutationOptions<
     GetEmailVerificationCodeResponse, // 성공 시 반환 타입
-    Error, // 에러 타입
+    ApiError, // 에러 타입
     EmailVerificationCodeRequestParams // 요청 데이터 타입
   >
 ) => {

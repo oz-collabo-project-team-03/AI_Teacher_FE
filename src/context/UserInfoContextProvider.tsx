@@ -18,7 +18,7 @@ export const UserInfoProvider = ({
   userId,
   children,
 }: {
-  userId: number;
+  userId?: number;
   children: ReactNode;
 }) => {
   const {

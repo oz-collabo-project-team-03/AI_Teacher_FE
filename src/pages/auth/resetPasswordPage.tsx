@@ -3,7 +3,6 @@ import Button from '@/components/common/Button';
 import { useResetPassword } from '@/hooks/resetPassword/useResetPassword';
 import { FormProvider } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-import ErrorPage from '../status/errorPage';
 import LoadingPage from '../status/loadingPage';
 
 const ResetPasswordPage = () => {
@@ -24,7 +23,7 @@ const ResetPasswordPage = () => {
   } = form;
 
   if (isPending) return <LoadingPage />;
-  if (error) return <ErrorPage />;
+  // if (error) return <ErrorPage />;
   return (
     <FormProvider {...form}>
       <form
