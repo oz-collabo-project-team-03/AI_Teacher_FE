@@ -4,7 +4,6 @@ import AuthInput from '@/components/auth/AuthInput';
 import Button from '@/components/common/Button';
 import { useFindEmail } from '@/hooks/findEmail/useFindEmail';
 import { FormProvider } from 'react-hook-form';
-import ErrorPage from '../status/errorPage';
 import LoadingPage from '../status/loadingPage';
 
 const FindEmailPage = () => {
@@ -26,7 +25,7 @@ const FindEmailPage = () => {
   } = form;
 
   if (isPending) return <LoadingPage />;
-  if (error) return <ErrorPage />;
+  // if (error) return <ErrorPage />;
 
   return (
     <FormProvider {...form}>

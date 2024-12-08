@@ -7,7 +7,7 @@ import { z as zod } from 'zod';
 import { usePostResetPasswordMutation } from '@/api/auth/resetPassword/resetPassword.hooks';
 import { GetResetPasswordResponse } from '@/api/auth/resetPassword/resetPasswordType';
 import { useToast } from '@/hooks/useToast';
-import { ApiErrorResponseDto } from '@/types/apiErrorType';
+import { ApiError } from '@/types/apiErrorType';
 
 export const RESET_PASSWORD_STEP = {
   INPUT_EMAIL: 1,
@@ -54,9 +54,9 @@ export const useResetPassword = () => {
         });
       }
 
-      const apiError = error as ApiErrorResponseDto;
+      const apiError = error as ApiError;
       const errorMessage =
-        apiError?.response?.data?.message ||
+        apiError?.originalError.response?.data?.detail ||
         '비밀번호 재설정에 실패했습니다. 다시 시도해주세요.';
       showToast(errorMessage);
     },

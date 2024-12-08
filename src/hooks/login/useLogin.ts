@@ -1,4 +1,4 @@
-import { ApiErrorResponseDto } from '@/types/apiErrorType';
+import { ApiError } from '@/types/apiErrorType';
 import { Cookies } from 'react-cookie';
 import { GetLoginResponse } from '@/api/auth/login/loginType';
 import axios from 'axios';
@@ -43,7 +43,7 @@ export const useLogin = () => {
       // 로그인 성공 시 userId 설정
       login(data.id);
 
-      console.log(data);
+      console.log('로그인', data);
 
       if (data.first_login) {
         if (data.role === 'student') {
@@ -65,6 +65,7 @@ export const useLogin = () => {
       cookies.set('refreshToken', data.refresh_token);
     },
     onError: (error) => {
+      console.error('Login Mutation Error:', error);
       // Axios 에러인 경우 더 상세한 로깅
       if (axios.isAxiosError(error)) {
         console.error('Axios Error Details:', {
@@ -74,9 +75,9 @@ export const useLogin = () => {
         });
       }
 
-      const apiError = error as ApiErrorResponseDto;
+      const apiError = error as ApiError;
       const errorMessage =
-        apiError?.response?.data?.message ||
+        apiError?.originalError.response?.data?.detail ||
         '로그인에 실패하였습니다. 다시 시도해주세요.';
       showToast(errorMessage);
     },

@@ -1,6 +1,6 @@
 import { usePostFindEmailMutation } from '@/api/auth/findEmail/findEmail.hooks';
 import { GetFindEmailResponse } from '@/api/auth/findEmail/findEmailType';
-import { ApiErrorResponseDto } from '@/types/apiErrorType';
+import { ApiError } from '@/types/apiErrorType';
 import { zodResolver } from '@hookform/resolvers/zod';
 import axios from 'axios';
 import { useState } from 'react';
@@ -51,9 +51,9 @@ export const useFindEmail = () => {
           headers: error.response?.headers,
         });
       }
-      const apiError = error as ApiErrorResponseDto;
+      const apiError = error as ApiError;
       const errorMessage =
-        apiError?.response?.data?.message ||
+        apiError?.originalError.response?.data?.detail ||
         '이메일찾기에 실패하였습니다. 다시 시도해주세요.';
       showToast(errorMessage);
     },

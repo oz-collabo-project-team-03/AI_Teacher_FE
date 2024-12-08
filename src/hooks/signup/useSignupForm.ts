@@ -12,7 +12,7 @@ import {
 import { useToast } from '@/hooks/useToast';
 import { signupFormSchema } from '@/schemas/signupValidationSchemas';
 import { useTermsStore } from '@/stores/useTermsStore';
-import { ApiErrorResponseDto } from '@/types/apiErrorType';
+import { ApiError } from '@/types/apiErrorType';
 import { SignupRequestParams } from '@/types/signupType';
 import { zodResolver } from '@hookform/resolvers/zod';
 import axios from 'axios';
@@ -78,7 +78,11 @@ export const useSignupForm = (roleParam: 'student' | 'teacher' | undefined) => {
           headers: error.response?.headers,
         });
       }
-      console.error('회원가입 실패', error.message);
+      const apiError = error as ApiError;
+      const errorMessage =
+        apiError?.originalError.response?.data?.detail ||
+        '회원정보 저장에 실패했습니다. 다시 시도해주세요.';
+      showToast(errorMessage);
     },
   });
 
@@ -109,9 +113,9 @@ export const useSignupForm = (roleParam: 'student' | 'teacher' | undefined) => {
           headers: error.response?.headers,
         });
       }
-      const apiError = error as ApiErrorResponseDto;
+      const apiError = error as ApiError;
       const errorMessage =
-        apiError?.response?.data?.message ||
+        apiError?.originalError.response?.data?.message ||
         '회원정보 저장에 실패했습니다. 다시 시도해주세요.';
       showToast(errorMessage);
     },
@@ -139,9 +143,9 @@ export const useSignupForm = (roleParam: 'student' | 'teacher' | undefined) => {
           headers: error.response?.headers,
         });
       }
-      const apiError = error as ApiErrorResponseDto;
+      const apiError = error as ApiError;
       const errorMessage =
-        apiError?.response?.data?.message ||
+        apiError?.originalError.response?.data?.message ||
         '회원정보 저장에 실패했습니다. 다시 시도해주세요.';
       showToast(errorMessage);
     },
