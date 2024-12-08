@@ -21,11 +21,10 @@ export const useAllPostsInfiniteGetQuery = (
       return response;
     },
     getNextPageParam: (lastPage) => {
-      if (!lastPage.next) {
+      if (!lastPage.pagination.next) {
         return undefined;
       }
-      const nextPage = lastPage.next.split('page=')[1];
-      return nextPage ? parseInt(nextPage) : undefined;
+      return lastPage.pagination.next;
     },
     initialPageParam: 1,
     ...options,
