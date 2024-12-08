@@ -3,7 +3,7 @@ import { useAuth } from '@/hooks/useAuth';
 import LoadingPage from '@/pages/status/loadingPage';
 
 const ProtectedRoute = () => {
-  const { userId, isInitialized, isLoggedIn } = useAuth();
+  const { userId, isInitialized } = useAuth();
   const location = useLocation();
 
   // console.log('Protected Route Debug:', {

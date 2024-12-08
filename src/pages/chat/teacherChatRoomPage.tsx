@@ -14,7 +14,7 @@ import { useParams } from 'react-router-dom';
 const TeacherChatRoomPage = () => {
   const [roomTitle, setRoomTitle] = useState<string>('');
   const [chatMessages, setChatMessages] = useState<ChatMessageProps[]>([]);
-  const [page, setPage] = useState<number>(1);
+  const [page] = useState<number>(1);
   const chatEndRef = useRef<HTMLDivElement>(null);
   const chatContainerRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -33,7 +33,7 @@ const TeacherChatRoomPage = () => {
     1 //userId 부분으로 바꿔야함
   );
 
-  const [isNewMessageAdded, setIsNewMessageAdded] = useState(false);
+  const [, setIsNewMessageAdded] = useState(false);
 
   const { data } = useGetChatMessagesQuery({
     room_id: roomIdNumber,

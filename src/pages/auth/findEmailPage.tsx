@@ -14,7 +14,7 @@ const FindEmailPage = () => {
     FIND_EMAIL_STEP,
     findEmailMutation,
     isPending,
-    error,
+    // error,
   } = useFindEmail();
 
   const navigate = useNavigate();

@@ -19,7 +19,7 @@ const StudentChatRoomPage = () => {
   const [chatMessages, setChatMessages] = useState<ChatMessageProps[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const [page, setPage] = useState<number>(1);
+  const [page] = useState<number>(1);
   const chatEndRef = useRef<HTMLDivElement>(null);
   const chatContainerRef = useRef<HTMLDivElement>(null);
   const [showLoading, setShowLoading] = useState(true);

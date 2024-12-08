@@ -12,7 +12,7 @@ const ResetPasswordPage = () => {
     step,
     tempEmail,
     isPending,
-    error,
+    // error,
     resetPasswordMutation,
     RESET_PASSWORD_STEP,
   } = useResetPassword();
