@@ -8,6 +8,7 @@ export type BaseMyPageResponse = {
   like_count: number;
   comment_count: number;
   posts: Post[];
+  study_group: boolean;
 };
 
 // 공통된 포스트 타입
