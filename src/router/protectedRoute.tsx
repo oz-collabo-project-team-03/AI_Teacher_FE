@@ -6,12 +6,12 @@ const ProtectedRoute = () => {
   const { userId, isInitialized, isLoggedIn } = useAuth();
   const location = useLocation();
 
-  console.log('Protected Route Debug:', {
-    userId,
-    isInitialized,
-    isLoggedIn,
-    pathname: location.pathname,
-  });
+  // console.log('Protected Route Debug:', {
+  //   userId,
+  //   isInitialized,
+  //   isLoggedIn,
+  //   pathname: location.pathname,
+  // });
 
   if (!isInitialized) {
     return <LoadingPage />;

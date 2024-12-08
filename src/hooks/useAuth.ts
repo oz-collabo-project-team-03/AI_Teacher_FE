@@ -8,12 +8,12 @@ export const useAuth = () => {
     throw new Error('useAuth must be used within an AuthProvider');
   }
 
-  // 디버그 로그 추가
-  console.log('Auth Context:', {
-    userId: context.userId,
-    isLoggedIn: context.isLoggedIn,
-    isInitialized: context.isInitialized,
-  });
+  // // 디버그 로그 추가
+  // console.log('Auth Context:', {
+  //   userId: context.userId,
+  //   isLoggedIn: context.isLoggedIn,
+  //   isInitialized: context.isInitialized,
+  // });
 
   return context;
 };
