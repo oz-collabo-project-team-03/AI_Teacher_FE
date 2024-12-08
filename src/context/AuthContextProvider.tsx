@@ -58,7 +58,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           setIsInitialized(true);
         }
       } catch (error) {
-        console.error('Erㅇ:', error);
+        console.error('Error:', error);
         setIsInitialized(true);
       }
     };
