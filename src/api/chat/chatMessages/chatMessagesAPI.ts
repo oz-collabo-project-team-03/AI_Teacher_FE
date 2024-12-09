@@ -9,7 +9,7 @@ export const getChatMessagesAPI = async (params: ChatMessageRequestParams): Prom
       { params: { page: params.page } }
     );
 
-    console.log('[Chat 메세지 API 응답 데이터]', data);
+    // console.log('[Chat 메세지 API 응답 데이터]', data);
 
     if (status !== 200 || !data || !Array.isArray(data.messages)) {
       throw new Error('올바른 응답 형식이 아닙니다.');

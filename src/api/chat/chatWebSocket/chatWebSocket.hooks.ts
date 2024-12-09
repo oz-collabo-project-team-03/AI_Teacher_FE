@@ -25,6 +25,7 @@ export const useChatWebSocket = (roomId: number, userId: number) => {
 
   // 메시지 전송 함수
   const sendMessage = (message: any) => {
+    // console.log('[useChatWebSocket] 메시지 전송:', message);
     webSocketRef.current?.sendMessage(message);
   };
 
