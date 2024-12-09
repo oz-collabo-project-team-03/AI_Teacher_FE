@@ -1,9 +1,9 @@
-import { ChatListResponse } from './chatListType';
+import { ChatHelpListRequestParams } from './chatListType';
 import axiosInstance from '@/api/axiosInstance';
 
 export const getChatListAPI = async (page: number = 1) => {
   try {
-    const { data, status } = await axiosInstance.get<ChatListResponse>(
+    const { data, status } = await axiosInstance.get<ChatHelpListRequestParams>(
       '/chat/students',
       { params: { page } }
     );

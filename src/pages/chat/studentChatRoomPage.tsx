@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 
 import ChatInput from '@/components/chat/ChatInput';
 import ChatMessage from '@/components/chat/ChatMessage';
-import { ChatMessageProps } from '@/types/chat';
+import { ChatMessageRequestParams } from '@/types/chat';
 import Header from '@/components/common/Header';
 import HelpButton from '@/components/chat/HelpButton';
 import LoadingPage from '../status/loadingPage';
@@ -16,15 +16,17 @@ import { useProfile } from '@/hooks/useProfile';
 const StudentChatRoomPage = () => {
   const [buttonType, setButtonType] = useState<'help' | 'end'>('help');
   const [roomTitle, setRoomTitle] = useState<string>('');
-  const [chatMessages, setChatMessages] = useState<ChatMessageProps[]>([]);
+  const [chatMessages, setChatMessages] = useState<ChatMessageRequestParams[]>(
+    []
+  );
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [page] = useState<number>(1);
   const chatEndRef = useRef<HTMLDivElement>(null);
   const chatContainerRef = useRef<HTMLDivElement>(null);
+
   const [showLoading, setShowLoading] = useState(true);
 
-  // 유저 정보 가져오기
   const { profileData } = useProfile();
   const userId = profileData?.id;
 
@@ -33,7 +35,6 @@ const StudentChatRoomPage = () => {
     return null;
   }
 
-  // URL에서 roomId를 가져오고 number로 변환
   const { roomId } = useParams<{ roomId: string }>();
   const roomIdNumber = parseInt(roomId!, 10);
 
@@ -44,15 +45,15 @@ const StudentChatRoomPage = () => {
   const { data } = useGetChatMessagesQuery({
     room_id: roomIdNumber,
     page,
-    page_size: 20,
   });
 
   // WebSocket 관련 상태 및 함수
   const { sendMessage, lastMessage } = useChatWebSocket(
     roomIdNumber,
-    userId as number
+    userId || 0
   );
 
+  // Help버튼 클릭시
   const { mutate: patchChatHelp } = usePatchChatHelpMutation({
     onSuccess: (data) => {
       setButtonType(data.help_checked ? 'end' : 'help');
@@ -63,7 +64,7 @@ const StudentChatRoomPage = () => {
   });
 
   const mergeMessages = useCallback(
-    (newMessages: ChatMessageProps[]) => {
+    (newMessages: ChatMessageRequestParams[]) => {
       setChatMessages((prevMessages) => {
         const allMessages = [...newMessages, ...prevMessages];
         const uniqueMessages = Array.from(
@@ -108,7 +109,7 @@ const StudentChatRoomPage = () => {
   // WebSocket 메시지 처리
   useEffect(() => {
     if (lastMessage) {
-      const newChatMessage: ChatMessageProps = {
+      const newChatMessage: ChatMessageRequestParams = {
         message: lastMessage.content,
         message_type: lastMessage.message_type,
         nickname:
@@ -170,19 +171,26 @@ const StudentChatRoomPage = () => {
 
   // 메세지 전송
   const handleSendMessage = (newMessage: string) => {
-    console.log('[handleSendMessage 호출]', newMessage);
     try {
       const trimmedMessage = newMessage.trim();
       if (!trimmedMessage) {
         console.error('빈 메시지는 전송할 수 없습니다');
         return;
       }
+
+      // 마지막 메시지와 비교하여 중복 여부 확인
+      const lastMessage = chatMessages[chatMessages.length - 1];
+      if (lastMessage?.message === trimmedMessage) {
+        console.error('중복 메시지는 전송할 수 없습니다');
+        return;
+      }
+
       sendMessage({
         sender_id: userId,
         content: trimmedMessage,
         timestamp: new Date().toISOString(),
         message_type: 'text',
-        user_type: 'student',
+        user_type: 'teacher',
       });
     } catch (error) {
       console.error('WebSocket 메시지 전송 중 에러:', error);
@@ -201,37 +209,37 @@ const StudentChatRoomPage = () => {
         return;
       }
 
-      try {
-        console.log('전송 데이터:', {
-          sender_id: userId,
-          content: `${file.name}`,
-          timestamp: new Date().toISOString(),
-          message_type: 'image',
-          user_type: 'student',
-        });
+      const reader = new FileReader();
 
-        // 웹소켓을 통해 파일 데이터 전송
-        sendMessage({
+      reader.onload = () => {
+        const base64Data = reader.result as string; // Base64 인코딩된 데이터
+        const payload = {
           sender_id: userId,
-          content: `${file.name}`,
-          timestamp: new Date().toISOString(),
+          content: base64Data, // 서버로 전송되는 Base64 데이터
+          filename: file.name, // 서버에서 파일 이름도 보관 가능
           message_type: 'image',
-          user_type: 'student',
-        });
+          timestamp: new Date().toISOString(),
+          user_type: 'teacher',
+        };
 
-        // UI에 이미지 미리보기 메시지 추가
-        const newChatMessage: ChatMessageProps = {
+        console.log('WebSocket으로 전송될 데이터:', payload);
+
+        // WebSocket으로 Base64 데이터 전송
+        sendMessage(payload);
+
+        // UI에는 파일 이름만 추가
+        const newChatMessage: ChatMessageRequestParams = {
           message: file.name,
           message_type: 'image',
           nickname: '나',
           profileImage: '',
-          userType: 'student',
+          userType: 'teacher',
           timestamp: new Date().toISOString(),
         };
         setChatMessages((prevMessages) => [...prevMessages, newChatMessage]);
-      } catch (error) {
-        console.error('이미지 파일 처리 중 오류:', error);
-      }
+      };
+
+      reader.readAsDataURL(file); // Base64로 읽기
     }
   };
 
@@ -242,6 +250,11 @@ const StudentChatRoomPage = () => {
   };
 
   if (showLoading) {
+    return <LoadingPage />;
+  }
+  // userId가 null인 경우에 대한 처리
+  if (userId === null) {
+    console.error('userId가 없습니다! WebSocket 연결 실패');
     return <LoadingPage />;
   }
 

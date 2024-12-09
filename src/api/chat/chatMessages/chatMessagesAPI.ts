@@ -1,18 +1,15 @@
-import { ChatMessageParams, ChatMessageResponse } from './chatMessagesType';
-
+import { ChatMessageRequestParams } from './chatMessagesType';
+import { ChatRoomInfoResponseDto } from '@/types/chat';
 import axiosInstance from '@/api/axiosInstance';
 
-/**
- * 특정 채팅방의 메시지를 페이지 단위로 불러오는 API 함수
- */
-export const getChatMessagesAPI = async (params: ChatMessageParams): Promise<ChatMessageResponse> => {
+export const getChatMessagesAPI = async (params: ChatMessageRequestParams): Promise<ChatRoomInfoResponseDto> => {
   try {
-    const { data, status } = await axiosInstance.get<ChatMessageResponse>(
+    const { data, status } = await axiosInstance.get<ChatRoomInfoResponseDto>(
       `/chat/${params.room_id}/messages`,
-      { params: { page: params.page, page_size: params.page_size } }
+      { params: { page: params.page } }
     );
 
-    // console.log('[Chat 메세지 API 응답 데이터]', data);
+    console.log('[Chat 메세지 API 응답 데이터]', data);
 
     if (status !== 200 || !data || !Array.isArray(data.messages)) {
       throw new Error('올바른 응답 형식이 아닙니다.');

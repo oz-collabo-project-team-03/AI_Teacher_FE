@@ -1,12 +1,12 @@
-import { ChatRoomData, CreateChatRoomResponse } from './createChatRoomType';
+import { ChatRoomResponseDto, CreateChatRoomRequestParams } from './createChatRoomType';
 import { UseMutationOptions, useMutation } from '@tanstack/react-query';
 
 import { createChatRoomAPI } from './createChatRoomAPI';
 
 export const useCreateChatRoomMutation = (
-  options?: UseMutationOptions<ChatRoomData, Error, CreateChatRoomResponse>
+  options?: UseMutationOptions<ChatRoomResponseDto, Error, CreateChatRoomRequestParams>
 ) => {
-  return useMutation<ChatRoomData, Error, CreateChatRoomResponse>({
+  return useMutation<ChatRoomResponseDto, Error, CreateChatRoomRequestParams>({
     mutationFn: createChatRoomAPI,
     ...options,
   });

@@ -1,5 +1,5 @@
-export type DeleteChatRoomParams = {
+export type DeleteChatRoomRequestParams = {
   room_id: number;
 };
 
-export type DeleteChatRoomResponse = void;
+export type DeleteChatRoomResponseDto = void;

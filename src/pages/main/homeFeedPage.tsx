@@ -1,18 +1,19 @@
 import { AnimatePresence, motion } from 'framer-motion';
-import { useAllPostsInfiniteGetQuery } from '@/api/homeFeed/homeFeed.hooks';
-import { useInfiniteScroll } from '@/hooks/useInfiniteScroll';
-import useCommentModalStore from '@/stores/useCommentModalStore';
-import CommentModal from '@components/modal/CommentModal';
 import { useRef, useState } from 'react';
-import FeedPost from '../../components/main/FeedPost';
-import MainHeader from '../../components/main/MainHeader';
+
+import CommentModal from '@components/modal/CommentModal';
 import ErrorPage from '../status/errorPage';
+import FeedPost from '../../components/main/FeedPost';
 import LoadingPage from '../status/loadingPage';
+import MainHeader from '../../components/main/MainHeader';
 import NotfoundPage from '../status/notfoundPage';
-import { useScrollPosition } from '@/hooks/useScrollPosition';
-import { useProfile } from '@/hooks/useProfile';
 import TeacherListModal from '@/components/modal/TeacherListModal';
+import { useAllPostsInfiniteGetQuery } from '@/api/homeFeed/homeFeed.hooks';
+import useCommentModalStore from '@/stores/useCommentModalStore';
+import { useInfiniteScroll } from '@/hooks/useInfiniteScroll';
+import { useProfile } from '@/hooks/useProfile';
 import { useQueryClient } from '@tanstack/react-query';
+import { useScrollPosition } from '@/hooks/useScrollPosition';
 
 const HomeFeedPage = () => {
   const [isTeacherModalOpen, setIsTeacherModalOpen] = useState(true);

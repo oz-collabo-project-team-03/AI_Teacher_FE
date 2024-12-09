@@ -13,7 +13,8 @@ const HelpButton = ({ type, onClick, disabled = false }: ButtonProps) => {
   // 각 타입별 스타일 분리
   const variantHelpButtonStyles =
     'bg-helpButtonColor hover:bg-primaryHoverColor';
-  const variantEndButtonStyles = 'bg-cancelButtonColor hover:bg-unFocusColor';
+  const variantEndButtonStyles =
+    'bg-cancelButtonColor hover:bg-cancelButtonHoverColor';
 
   // 타입에 따라 조건적으로 스타일 선택 (비활성화 시도 HELP 스타일 유지)
   const variantStyles =
