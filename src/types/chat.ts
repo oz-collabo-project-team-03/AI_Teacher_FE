@@ -31,6 +31,7 @@ export type ChatRoomInfoResponseDto = {
 export type ChatMessageResponseDto =  {
   sender_id: number;
   content: string;
+  filename?: string;
   timestamp: string;
   message_type: Message_type;
   user_type: UserType;
