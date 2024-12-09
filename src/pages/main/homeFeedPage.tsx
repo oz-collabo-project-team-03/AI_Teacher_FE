@@ -14,7 +14,6 @@ import { useInfiniteScroll } from '@/hooks/useInfiniteScroll';
 import { useProfile } from '@/hooks/useProfile';
 import { useQueryClient } from '@tanstack/react-query';
 import { useScrollPosition } from '@/hooks/useScrollPosition';
-import { teacherQueries } from '@/api/teacher/teacherQueries';
 
 const HomeFeedPage = () => {
   const [isTeacherModalOpen, setIsTeacherModalOpen] = useState(true);
@@ -50,8 +49,9 @@ const HomeFeedPage = () => {
   // 선생님 모달 닫는 함수
   const closeTeacherModal = () => {
     setIsTeacherModalOpen(false);
-    queryClient.invalidateQueries({ queryKey: teacherQueries.teachers._def });
+    queryClient.invalidateQueries({ queryKey: ['profile'] });
   };
+  console.log(profileData);
 
   if (isLoading) return <LoadingPage />;
 

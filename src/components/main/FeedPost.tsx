@@ -14,6 +14,7 @@ const FeedPost = ({ posts }: FeedPostProps) => {
     profile_image: posts.profile_image,
     career_aspiration: posts.career_aspiration,
     interest: posts.interest,
+    post_id: posts.post_id,
   };
 
   const feedPostsliderProps = {
