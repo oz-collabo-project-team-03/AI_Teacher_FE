@@ -3,25 +3,31 @@ import ProfileImage from './CommentProfileImage';
 import ReComment from './ReComment';
 import { useDeleteCommentMutation } from '@/api/comment/deleteComment/deleteComment.hooks';
 import { useState } from 'react';
+import { useProfile } from '@/hooks/useProfile';
+import { useQueryClient } from '@tanstack/react-query';
 
 type CommentProps = {
   comments: Comment[];
-  refetchComments: () => void;
+  // refetchComments: () => void;
   onReplyClick: (commentId: number) => void; // 추가
 };
 
 const CommentList = ({
   comments,
-  refetchComments,
+  // refetchComments,
   onReplyClick,
 }: CommentProps) => {
   const [expandedCommentIds, setExpandedCommentIds] = useState<Set<number>>(
     new Set()
   );
+  const { profileData } = useProfile();
+
+  const queryClient = useQueryClient();
   const { mutate: deleteComment, status } = useDeleteCommentMutation({
     onSuccess: (data) => {
       console.log(data.message);
-      refetchComments(); //댓글 삭제 후 댓글 목록 갱신
+      // refetchComments(); //댓글 삭제 후 댓글 목록 갱신
+      queryClient.invalidateQueries({ queryKey: ['comments'] });
     },
     onError: () => {
       console.log('삭제실패');
@@ -73,13 +79,15 @@ const CommentList = ({
                 >
                   답글
                 </button>
-                <button
-                  className='text-[12px] text-captionColor hover:text-repleText'
-                  onClick={() => handleDeleteClick(comment.comment_id)}
-                  disabled={status === 'pending'} // 삭제 중에는 버튼 비활성화
-                >
-                  삭제
-                </button>
+                {profileData?.id === comment.user_id && (
+                  <button
+                    className='text-[12px] text-captionColor hover:text-repleText'
+                    onClick={() => handleDeleteClick(comment.comment_id)}
+                    disabled={status === 'pending'} // 삭제 중에는 버튼 비활성화
+                  >
+                    삭제
+                  </button>
+                )}
                 {comment.recomment_count > 0 && (
                   <div className='my-2 flex items-center gap-1 text-[12px] text-black/35'>
                     <div className='mr-2 h-px w-8 bg-black/35'></div>
@@ -96,7 +104,7 @@ const CommentList = ({
                 )}
                 {/* 대댓글 펼침 */}
                 {expandedCommentIds.has(comment.comment_id) && (
-                  <div className='ml-6'>
+                  <div className='ml-6 flex flex-col gap-4'>
                     {comment.children.map((recomment) => (
                       <ReComment
                         key={recomment.comment_id}
