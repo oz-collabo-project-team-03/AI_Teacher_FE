@@ -4,14 +4,14 @@ import { useEffect, useRef, useState } from 'react';
 import { Comment } from '@/api/comment/fetchComment/fetchCommentType';
 import CommentHeader from '../comment/CommentHeader';
 import CommentList from '../comment/CommentList';
+import CommentModalSkeleton from '../comment/CommentModalSkeleton';
 import sendIcon from '../../assets/comment/send.svg';
 import studentIcon1 from '@assets/editProfile/student/studentIcon1.png';
 import { useFetchCommentMutation } from '@/api/comment/writeComment/writeComment.hooks';
 import { useFetchCommentQuery } from '@/api/comment/fetchComment/fetchComment.hooks';
-import { useToast } from '@/hooks/useToast';
-import CommentModalSkeleton from '../comment/CommentModalSkeleton';
 import { useProfile } from '@/hooks/useProfile';
 import { useQueryClient } from '@tanstack/react-query';
+import { useToast } from '@/hooks/useToast';
 
 type CommentModalProps = {
   post_id: string;
@@ -187,7 +187,7 @@ const CommentModal = ({ post_id }: CommentModalProps) => {
                 }
               }
             }}
-            className='scrollbar-hide mt-[7px] h-[30px] w-[90%] resize-none border-none bg-transparent p-0 text-[14px] focus:ring-0'
+            className='scrollbar-hide mt-[7px] h-[30px] w-[90%] resize-none break-words border-none bg-transparent p-0 text-[14px] focus:ring-0'
             placeholder={
               targetCommentId
                 ? '대댓글을 입력하세요...'
