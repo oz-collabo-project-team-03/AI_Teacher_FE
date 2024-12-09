@@ -23,7 +23,11 @@ const PreviewImageModal = ({
         onClick={(e) => e.stopPropagation()}
       >
         <button className='absolute right-2 top-2' onClick={onClose}>
-          <img src={modalCloseIcon} alt='modal close' />
+          <img
+            src={modalCloseIcon}
+            alt='닫기'
+            className='cursor-pointer transition-transform duration-200 hover:scale-110 hover:opacity-80'
+          />
         </button>
         <img
           src={imageUrl}
