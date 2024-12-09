@@ -19,13 +19,14 @@ const StudentChatRoomPage = () => {
   const [chatMessages, setChatMessages] = useState<ChatMessageRequestParams[]>(
     []
   );
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null); // 파일 input 참조
 
   const [page] = useState<number>(1);
   const chatEndRef = useRef<HTMLDivElement>(null);
   const chatContainerRef = useRef<HTMLDivElement>(null);
 
   const [showLoading, setShowLoading] = useState(true);
+  const [isComposing, setIsComposing] = useState(false); // 한글 조합 상태 관리
 
   const { profileData } = useProfile();
   const userId = profileData?.id;
@@ -47,13 +48,11 @@ const StudentChatRoomPage = () => {
     page,
   });
 
-  // WebSocket 관련 상태 및 함수
   const { sendMessage, lastMessage } = useChatWebSocket(
     roomIdNumber,
     userId || 0
   );
 
-  // Help버튼 클릭시
   const { mutate: patchChatHelp } = usePatchChatHelpMutation({
     onSuccess: (data) => {
       setButtonType(data.help_checked ? 'end' : 'help');
@@ -78,7 +77,6 @@ const StudentChatRoomPage = () => {
     [setChatMessages]
   );
 
-  // 기존 메시지 불러오기
   useEffect(() => {
     if (data) {
       const formattedMessages = data.messages.map((message) => ({
@@ -106,7 +104,6 @@ const StudentChatRoomPage = () => {
     }
   }, [data, mergeMessages]);
 
-  // WebSocket 메시지 처리
   useEffect(() => {
     if (lastMessage) {
       const newChatMessage: ChatMessageRequestParams = {
@@ -129,7 +126,6 @@ const StudentChatRoomPage = () => {
       };
 
       setChatMessages((prevMessages) => {
-        // 중복 메시지 확인
         const exists = prevMessages.some(
           (msg) =>
             msg.timestamp === newChatMessage.timestamp &&
@@ -143,14 +139,12 @@ const StudentChatRoomPage = () => {
     }
   }, [lastMessage, data]);
 
-  //새로운 메시지로 스크롤 자동 이동
   useEffect(() => {
     if (chatEndRef.current) {
       chatEndRef.current.scrollIntoView({ behavior: 'smooth' });
     }
   }, [chatMessages]);
 
-  // Help 버튼 클릭시
   const handleHelpButtonClick = () => {
     if (!roomId) {
       console.error('room_id(roomId)가 없습니다!');
@@ -169,8 +163,11 @@ const StudentChatRoomPage = () => {
     });
   };
 
-  // 메세지 전송
   const handleSendMessage = (newMessage: string) => {
+    if (isComposing) {
+      return;
+    }
+
     try {
       const trimmedMessage = newMessage.trim();
       if (!trimmedMessage) {
@@ -178,7 +175,6 @@ const StudentChatRoomPage = () => {
         return;
       }
 
-      // 마지막 메시지와 비교하여 중복 여부 확인
       const lastMessage = chatMessages[chatMessages.length - 1];
       if (lastMessage?.message === trimmedMessage) {
         console.error('중복 메시지는 전송할 수 없습니다');
@@ -197,12 +193,17 @@ const StudentChatRoomPage = () => {
     }
   };
 
-  // 이미지 첨부파일
   const handleFileChange = async (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     const file = event.target.files?.[0];
     if (file) {
+      if (!file.type.startsWith('image/')) {
+        console.error('이미지 파일만 첨부 가능합니다.');
+        event.target.value = '';
+        return;
+      }
+
       if (file.size > 10 * 1024 * 1024) {
         console.error('파일 크기가 10MB를 초과합니다.');
         event.target.value = '';
@@ -212,22 +213,18 @@ const StudentChatRoomPage = () => {
       const reader = new FileReader();
 
       reader.onload = () => {
-        const base64Data = reader.result as string; // Base64 인코딩된 데이터
+        const base64Data = reader.result as string;
         const payload = {
           sender_id: userId,
-          content: base64Data, // 서버로 전송되는 Base64 데이터
-          filename: file.name, // 서버에서 파일 이름도 보관 가능
+          content: base64Data,
+          filename: file.name,
           message_type: 'image',
           timestamp: new Date().toISOString(),
           user_type: 'teacher',
         };
 
-        console.log('WebSocket으로 전송될 데이터:', payload);
-
-        // WebSocket으로 Base64 데이터 전송
         sendMessage(payload);
 
-        // UI에는 파일 이름만 추가
         const newChatMessage: ChatMessageRequestParams = {
           message: file.name,
           message_type: 'image',
@@ -239,7 +236,7 @@ const StudentChatRoomPage = () => {
         setChatMessages((prevMessages) => [...prevMessages, newChatMessage]);
       };
 
-      reader.readAsDataURL(file); // Base64로 읽기
+      reader.readAsDataURL(file);
     }
   };
 
@@ -250,11 +247,6 @@ const StudentChatRoomPage = () => {
   };
 
   if (showLoading) {
-    return <LoadingPage />;
-  }
-  // userId가 null인 경우에 대한 처리
-  if (userId === null) {
-    console.error('userId가 없습니다! WebSocket 연결 실패');
     return <LoadingPage />;
   }
 
@@ -284,7 +276,11 @@ const StudentChatRoomPage = () => {
         <div ref={chatEndRef} />
       </div>
       <div className='sticky bottom-0 mx-auto w-full bg-white p-[18px] shadow-navShadow'>
-        <ChatInput onSendMessage={handleSendMessage} />
+        <ChatInput
+          onSendMessage={handleSendMessage}
+          onCompositionStart={() => setIsComposing(true)}
+          onCompositionEnd={() => setIsComposing(false)}
+        />
         <button
           className='absolute left-6 top-1/2 flex h-[23px] w-[40px] -translate-y-1/2 items-center justify-center pl-[10px]'
           onClick={handleButtonClick}

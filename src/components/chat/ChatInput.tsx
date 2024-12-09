@@ -2,14 +2,17 @@ import React, { useState } from 'react';
 
 type ChatInputProps = {
   onSendMessage: (message: string) => void;
+  onCompositionStart?: () => void; // 추가
+  onCompositionEnd?: () => void; // 추가
   disabled?: boolean;
 };
 
 const ChatInput = ({ onSendMessage, disabled = false }: ChatInputProps) => {
   const [inputValue, setInputValue] = useState('');
+  const [isComposing, setIsComposing] = useState(false); // 한글 조합 상태
 
   const handleSendOnEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter' && !disabled) {
+    if (e.key === 'Enter' && !isComposing && !disabled) {
       e.preventDefault();
       if (inputValue.trim() !== '') {
         onSendMessage(inputValue);
@@ -37,6 +40,8 @@ const ChatInput = ({ onSendMessage, disabled = false }: ChatInputProps) => {
       value={inputValue}
       onChange={handleInputChange}
       onKeyDown={handleSendOnEnter}
+      onCompositionStart={() => setIsComposing(true)} // 한글 조합 시작
+      onCompositionEnd={() => setIsComposing(false)} // 한글 조합 종료
       disabled={disabled}
     />
   );

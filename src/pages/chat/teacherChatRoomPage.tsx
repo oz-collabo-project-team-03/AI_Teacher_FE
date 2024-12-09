@@ -22,6 +22,7 @@ const TeacherChatRoomPage = () => {
   const chatContainerRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [showLoading, setShowLoading] = useState(true);
+  const [isComposing, setIsComposing] = useState(false); // 한글 조합 상태 관리
 
   const { profileData } = useProfile();
   const userId = profileData?.id;
@@ -52,7 +53,6 @@ const TeacherChatRoomPage = () => {
 
   const helpChecked = data?.help_checked || false;
 
-  // 새로운 메시지 병합
   const mergeMessages = useCallback(
     (newMessages: ChatMessageRequestParams[]) => {
       setChatMessages((prevMessages) => {
@@ -68,7 +68,6 @@ const TeacherChatRoomPage = () => {
     [setChatMessages]
   );
 
-  // 기존 메시지 불러오기
   useEffect(() => {
     if (data) {
       const studentProfileImage =
@@ -103,7 +102,6 @@ const TeacherChatRoomPage = () => {
     }
   }, [data, mergeMessages]);
 
-  // WebSocket 메시지 처리
   useEffect(() => {
     if (lastMessage) {
       const newChatMessage: ChatMessageRequestParams = {
@@ -126,14 +124,13 @@ const TeacherChatRoomPage = () => {
       };
 
       setChatMessages((prevMessages) => {
-        // 중복 메시지 확인
         const exists = prevMessages.some(
           (msg) =>
             msg.timestamp === newChatMessage.timestamp &&
             msg.message === newChatMessage.message
         );
         if (!exists) {
-          return [...prevMessages, newChatMessage]; // 중복되지 않은 경우에만 추가
+          return [...prevMessages, newChatMessage];
         }
         return prevMessages;
       });
@@ -141,15 +138,17 @@ const TeacherChatRoomPage = () => {
     }
   }, [lastMessage, data]);
 
-  // 새로운 메시지로 스크롤 자동 이동
   useEffect(() => {
     if (chatEndRef.current) {
       chatEndRef.current.scrollIntoView({ behavior: 'smooth' });
     }
   }, [chatMessages]);
 
-  // 메세지 전송
   const handleSendMessage = (newMessage: string) => {
+    if (isComposing) {
+      return;
+    }
+
     try {
       const trimmedMessage = newMessage.trim();
       if (!trimmedMessage) {
@@ -157,7 +156,6 @@ const TeacherChatRoomPage = () => {
         return;
       }
 
-      // 마지막 메시지와 비교하여 중복 여부 확인
       const lastMessage = chatMessages[chatMessages.length - 1];
       if (lastMessage?.message === trimmedMessage) {
         console.error('중복 메시지는 전송할 수 없습니다');
@@ -176,12 +174,17 @@ const TeacherChatRoomPage = () => {
     }
   };
 
-  // 이미지 첨부파일
   const handleFileChange = async (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     const file = event.target.files?.[0];
     if (file) {
+      if (!file.type.startsWith('image/')) {
+        console.error('이미지 파일만 첨부 가능합니다.');
+        event.target.value = '';
+        return;
+      }
+
       if (file.size > 10 * 1024 * 1024) {
         console.error('파일 크기가 10MB를 초과합니다.');
         event.target.value = '';
@@ -191,22 +194,18 @@ const TeacherChatRoomPage = () => {
       const reader = new FileReader();
 
       reader.onload = () => {
-        const base64Data = reader.result as string; // Base64 인코딩된 데이터
+        const base64Data = reader.result as string;
         const payload = {
           sender_id: userId,
-          content: base64Data, // 서버로 전송되는 Base64 데이터
-          filename: file.name, // 파일이름은 백엔드와 협의중 (아직추가안됨)
+          content: base64Data,
+          filename: file.name,
           message_type: 'image',
           timestamp: new Date().toISOString(),
           user_type: 'teacher',
         };
 
-        console.log('WebSocket으로 전송될 데이터:', payload);
-
-        // WebSocket으로 Base64 데이터 전송
         sendMessage(payload);
 
-        // UI에는 파일 이름만 추가
         const newChatMessage: ChatMessageRequestParams = {
           message: file.name,
           message_type: 'image',
@@ -258,7 +257,11 @@ const TeacherChatRoomPage = () => {
         <div ref={chatEndRef} />
       </div>
       <div className='sticky bottom-0 mx-auto w-full bg-white p-[18px] shadow-navShadow'>
-        <ChatInput onSendMessage={handleSendMessage} />
+        <ChatInput
+          onSendMessage={handleSendMessage}
+          onCompositionStart={() => setIsComposing(true)}
+          onCompositionEnd={() => setIsComposing(false)}
+        />
         <button
           className='absolute left-6 top-1/2 flex h-[23px] w-[40px] -translate-y-1/2 items-center justify-center pl-[10px]'
           onClick={handleButtonClick}
