@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { twMerge } from 'tailwind-merge';
+import { motion } from 'framer-motion';
 
 import roleStudentActive from '@/assets/roleSelect/role_student_active.svg';
 import roleStudentUnActive from '@/assets/roleSelect/role_student_unactive.svg';
@@ -13,8 +14,7 @@ import { useTermsStore } from '@/stores/useTermsStore';
 type TRole = 'student' | 'teacher' | null;
 
 const RoleSelectPage = () => {
-  const [isStudentHovered, setIsStudentHovered] = useState(false);
-  const [isTeacherHovered, setIsTeacherHovered] = useState(false);
+  const [hoveredRole, setHoveredRole] = useState<TRole>(null);
   const [selectedRole, setSelectedRole] = useState<TRole>(null);
 
   const isAllTermsAccepted = useTermsStore((state) => state.stack.isAllChecked);
@@ -25,24 +25,12 @@ const RoleSelectPage = () => {
   const isFirstLogin =
     location.state?.isFirstLogin || location.search.includes('social=true');
 
-  console.log(location.state);
   const handleRoleClick = (role: TRole) => {
     setSelectedRole(role);
   };
 
-  // 역할이 선택되었는지 확인하는 함수
-  const isRoleSelected = (role: 'student' | 'teacher'): boolean => {
-    return selectedRole === role;
-  };
-
-  // 역할에 마우스가 호버되었는지 확인하는 함수
-  const isRoleHovered = (role: 'student' | 'teacher'): boolean => {
-    return role === 'student' ? isStudentHovered : isTeacherHovered;
-  };
-
-  // 역할이 활성화되었는지 확인하는 함수 (선택 또는 호버)
   const isRoleActive = (role: 'student' | 'teacher'): boolean => {
-    return isRoleSelected(role) || isRoleHovered(role);
+    return selectedRole === role || hoveredRole === role;
   };
 
   return (
@@ -57,68 +45,49 @@ const RoleSelectPage = () => {
             <p>사용자 유형을 선택해주세요</p>
           </div>
           <div className='flex gap-2'>
-            <div
-              className={twMerge(
-                'flex w-full cursor-pointer flex-col justify-center gap-[22px] rounded-xl px-8 py-5',
-                isRoleActive('student')
-                  ? 'bg-primaryColor/15'
-                  : 'bg-unFocusColor/20'
-              )}
-              onMouseEnter={() => setIsStudentHovered(true)}
-              onMouseLeave={() => setIsStudentHovered(false)}
-              onClick={() => handleRoleClick('student')}
-            >
-              <img
-                src={
-                  isRoleActive('student')
-                    ? roleStudentActive
-                    : roleStudentUnActive
-                }
-                alt='학생 회원'
-              />
-              <Button
-                variant='cancel'
+            {(['student', 'teacher'] as const).map((role) => (
+              <motion.div
+                key={role}
                 className={twMerge(
-                  'font-semibold',
-                  isRoleActive('student')
-                    ? 'bg-primaryHoverColor'
-                    : 'hover:bg-primaryHoverColor'
+                  'flex w-full cursor-pointer flex-col justify-center gap-[22px] rounded-xl px-8 py-5 transition-all duration-300',
+                  isRoleActive(role)
+                    ? 'bg-primaryColor/15'
+                    : 'bg-unFocusColor/20'
                 )}
+                onMouseEnter={() => setHoveredRole(role)}
+                onMouseLeave={() => setHoveredRole(null)}
+                onClick={() => handleRoleClick(role)}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
               >
-                학생 회원
-              </Button>
-            </div>
-            <div
-              className={twMerge(
-                'flex w-full cursor-pointer flex-col justify-center gap-[22px] rounded-xl px-8 py-5',
-                isRoleActive('teacher')
-                  ? 'bg-primaryColor/15'
-                  : 'bg-unFocusColor/20'
-              )}
-              onMouseEnter={() => setIsTeacherHovered(true)}
-              onMouseLeave={() => setIsTeacherHovered(false)}
-              onClick={() => handleRoleClick('teacher')}
-            >
-              <img
-                src={
-                  isRoleActive('teacher')
-                    ? roleTeacherActive
-                    : roleTeacherUnActive
-                }
-                alt='선생님 회원'
-              />
-              <Button
-                variant='cancel'
-                className={twMerge(
-                  'font-semibold',
-                  isRoleActive('teacher')
-                    ? 'bg-primaryHoverColor'
-                    : 'hover:bg-primaryHoverColor'
-                )}
-              >
-                교사 회원
-              </Button>
-            </div>
+                <img
+                  src={
+                    isRoleActive(role)
+                      ? role === 'student'
+                        ? roleStudentActive
+                        : roleTeacherActive
+                      : role === 'student'
+                        ? roleStudentUnActive
+                        : roleTeacherUnActive
+                  }
+                  alt={role === 'student' ? '학생 회원' : '선생님 회원'}
+                />
+                <Button
+                  variant={isRoleActive(role) ? 'active' : 'cancel'}
+                  className={twMerge(
+                    'font-semibold',
+                    isRoleActive(role)
+                      ? 'bg-primaryHoverColor text-white'
+                      : 'hover:bg-primaryHoverColor'
+                  )}
+                  // 버튼에도 호버 상태 전달
+                  onMouseEnter={() => setHoveredRole(role)}
+                  onMouseLeave={() => setHoveredRole(null)}
+                >
+                  {role === 'student' ? '학생 회원' : '교사 회원'}
+                </Button>
+              </motion.div>
+            ))}
           </div>
         </div>
       </div>

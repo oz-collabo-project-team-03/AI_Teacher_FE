@@ -9,6 +9,7 @@ import studentIcon1 from '@assets/editProfile/student/studentIcon1.png';
 import { useFetchCommentMutation } from '@/api/comment/writeComment/writeComment.hooks';
 import { useFetchCommentQuery } from '@/api/comment/fetchComment/fetchComment.hooks';
 import { useToast } from '@/hooks/useToast';
+import CommentModalSkeleton from '../comment/CommentModalSkeleton';
 
 type CommentModalProps = {
   post_id: string;
@@ -117,7 +118,7 @@ const CommentModal = ({ post_id }: CommentModalProps) => {
       <CommentHeader />
       <section className='custom-scrollbar flex-1 overflow-y-auto px-[21px] py-[21px]'>
         {isLoading ? (
-          <p>Loading...</p>
+          <CommentModalSkeleton />
         ) : isError ? (
           <p>댓글을 불러오는 데 실패했습니다.</p>
         ) : (

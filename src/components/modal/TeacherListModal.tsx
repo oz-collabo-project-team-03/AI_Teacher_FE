@@ -77,7 +77,7 @@ const TeacherListModal = ({ closeTeacherModal }: CloseTeacherModalProps) => {
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
             </div>
-            <ul className='flex h-52 flex-col overflow-y-scroll'>
+            <ul className='custom-scrollbar flex h-52 flex-col overflow-y-scroll'>
               {filteredTeachers.length > 0 ? (
                 filteredTeachers.map((teacher) => (
                   <motion.li
