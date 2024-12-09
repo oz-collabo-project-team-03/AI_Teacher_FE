@@ -24,8 +24,6 @@ const FeedPost = ({ posts }: FeedPostProps) => {
   };
 
   const feedPostcontentProps = {
-    like_count: posts.like_count,
-    comment_count: posts.comment_count,
     content: posts.content,
     teacher: posts.teacher,
     created_at: posts.created_at,

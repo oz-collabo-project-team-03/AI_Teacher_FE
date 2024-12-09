@@ -1,13 +1,12 @@
+import { useEffect, useRef, useState } from 'react';
+
 import FeedPostButton from '@/components/main/FeedPostButton';
 import { Link } from 'react-router-dom';
 import teacherIcon1 from '@/assets/editProfile/teacher/teacherIcon1.png';
-import { useState, useRef, useEffect } from 'react';
 import { twMerge } from 'tailwind-merge';
 import { useProfile } from '@/hooks/useProfile';
 
 type FeedPostContentProps = {
-  like_count: number;
-  comment_count: number;
   content: string;
   teacher?: {
     user_id: number;
@@ -19,8 +18,6 @@ type FeedPostContentProps = {
 };
 
 const FeedPostContent = ({
-  like_count,
-  // comment_count,
   content,
   teacher,
   created_at,
@@ -71,11 +68,7 @@ const FeedPostContent = ({
 
   return (
     <ul className='flex flex-col items-start px-[12px] font-medium'>
-      <FeedPostButton
-        like_count={like_count}
-        // comment_count={comment_count}
-        post_id={post_id}
-      />
+      <FeedPostButton post_id={post_id} />
 
       {teacher && (
         <li className='mt-2 flex w-full items-center gap-2 text-[15px]'>
