@@ -97,7 +97,7 @@ const FeedPostUserInfo = ({
       {isOwnPost && (
         <div className='relative'>
           <motion.div
-            className='flex cursor-pointer flex-col items-center justify-center gap-1'
+            className='flex w-6 cursor-pointer flex-col items-center justify-center gap-1'
             onClick={toggleMenu}
             whileTap={{ scale: 0.9 }}
             whileHover={{ scale: 1.1 }}
