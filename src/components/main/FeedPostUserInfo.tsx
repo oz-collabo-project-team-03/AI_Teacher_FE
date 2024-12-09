@@ -26,7 +26,7 @@ const FeedPostUserInfo = ({
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const { profileData } = useProfile();
-  const { deletePostMutation, isPending } = useDeletePost();
+  const { deletePostMutation } = useDeletePost();
 
   const queryClient = useQueryClient();
 
