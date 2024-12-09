@@ -51,7 +51,6 @@ const HomeFeedPage = () => {
     setIsTeacherModalOpen(false);
     queryClient.invalidateQueries({ queryKey: ['profile'] });
   };
-  console.log(profileData);
 
   if (isLoading) return <LoadingPage />;
 

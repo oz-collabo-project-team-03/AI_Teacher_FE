@@ -10,6 +10,8 @@ import { useFetchCommentMutation } from '@/api/comment/writeComment/writeComment
 import { useFetchCommentQuery } from '@/api/comment/fetchComment/fetchComment.hooks';
 import { useToast } from '@/hooks/useToast';
 import CommentModalSkeleton from '../comment/CommentModalSkeleton';
+import { useProfile } from '@/hooks/useProfile';
+import { useQueryClient } from '@tanstack/react-query';
 
 type CommentModalProps = {
   post_id: string;
@@ -22,10 +24,13 @@ type commentFormData = {
 const CommentModal = ({ post_id }: CommentModalProps) => {
   const [isInputEmpty, setIsInputEmpty] = useState(true);
   const [commentValue, setCommentValue] = useState('');
+  const [isComposing, setIsComposing] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   const [targetCommentId, setTargetCommentId] = useState<number | null>(null);
   const { showToast } = useToast();
+  const { profileData } = useProfile();
 
+  const queryClient = useQueryClient();
   const {
     register,
     handleSubmit,
@@ -37,7 +42,6 @@ const CommentModal = ({ post_id }: CommentModalProps) => {
   const {
     data: commentData,
     isError,
-    refetch,
     isLoading,
   } = useFetchCommentQuery(post_id);
   const comments: Comment[] = commentData ? commentData.comments : [];
@@ -50,7 +54,7 @@ const CommentModal = ({ post_id }: CommentModalProps) => {
   //댓글 작성 post요청
   const { mutate: postComment } = useFetchCommentMutation({
     onSuccess: () => {
-      refetch();
+      queryClient.invalidateQueries({ queryKey: ['comments'] });
       setCommentValue('');
       setTargetCommentId(null);
     },
@@ -68,12 +72,16 @@ const CommentModal = ({ post_id }: CommentModalProps) => {
         FetchCommentData: {
           content: newComment,
           parent_comment_id: targetCommentId ?? undefined, //댓글_대댓글 구분
+          author_nickname: profileData?.nickname ?? 'Anonymous',
         },
       });
 
       if (textareaRef.current) {
         textareaRef.current.style.height = '30px'; // 기본 높이로 리셋
       }
+      setValue('comment', '');
+      setCommentValue('');
+      setIsInputEmpty(true);
     } else {
       showToast('댓글을 입력해주세요.');
     }
@@ -125,17 +133,26 @@ const CommentModal = ({ post_id }: CommentModalProps) => {
           <CommentList
             comments={comments}
             onReplyClick={handleReplyClick}
-            refetchComments={refetch}
+            // refetchComments={refetch}
           />
         )}
       </section>
       <form
-        onSubmit={handleSubmit(commentOnSubmit)}
+        onSubmit={(e) => {
+          e.preventDefault();
+          if (!isInputEmpty) {
+            handleSubmit(commentOnSubmit)();
+          }
+        }}
         className={`bottom-0 flex items-center gap-3 border-t border-chatListHoverColor px-[17px] py-[16px] transition-all duration-300 ${
           targetCommentId ? 'pt-8' : ''
         }`}
       >
-        <img src={studentIcon1} alt='comment user' className='h-[35px]' />
+        <img
+          src={profileData?.profile_image || studentIcon1}
+          alt='comment user'
+          className='h-[35px]'
+        />
         <div className='!important relative flex w-full items-center rounded-[15px] bg-commuInputColor p-[14px] placeholder:text-center'>
           {targetCommentId && (
             <div className='absolute left-0 top-[-24px] text-sm text-gray-500'>
@@ -155,7 +172,21 @@ const CommentModal = ({ post_id }: CommentModalProps) => {
           <textarea
             value={commentValue}
             {...register('comment', { required: '댓글을 입력해주세요.' })}
+            onCompositionStart={() => setIsComposing(true)} // 한글 조합 시작
+            onCompositionEnd={() => setIsComposing(false)} //
             onChange={handleTextareaInput}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' && !e.shiftKey && !isComposing) {
+                e.preventDefault(); // 기본 Enter 동작 방지
+                // if (!isInputEmpty) {
+                //   handleSubmit(commentOnSubmit)(); // 한 번만 제출
+                // }
+                if (commentValue.trim() !== '') {
+                  handleSubmit(commentOnSubmit)();
+                  setCommentValue('');
+                }
+              }
+            }}
             className='scrollbar-hide mt-[7px] h-[30px] w-[90%] resize-none border-none bg-transparent p-0 text-[14px] focus:ring-0'
             placeholder={
               targetCommentId

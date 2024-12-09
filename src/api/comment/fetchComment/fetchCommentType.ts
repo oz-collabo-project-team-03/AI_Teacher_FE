@@ -11,6 +11,7 @@ export type Comment = {
   profile_image: string | null;
   recomment_count: number;
   children: Comment[]; // 대댓글 리스트 (재귀 구조)
+  user_id: number;
 };
 
 // 댓글 리스트 응답 타입 정의

@@ -20,7 +20,7 @@ type FeedPostContentProps = {
 
 const FeedPostContent = ({
   like_count,
-  comment_count,
+  // comment_count,
   content,
   teacher,
   created_at,
@@ -73,7 +73,7 @@ const FeedPostContent = ({
     <ul className='flex flex-col items-start px-[12px] font-medium'>
       <FeedPostButton
         like_count={like_count}
-        comment_count={comment_count}
+        // comment_count={comment_count}
         post_id={post_id}
       />
 

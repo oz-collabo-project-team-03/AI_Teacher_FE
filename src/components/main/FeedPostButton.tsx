@@ -1,24 +1,33 @@
 // import { useCallback, useState } from 'react';
 
 // import Heart from '../../assets/feedPost/heart.svg';
+import { useFetchCommentQuery } from '@/api/comment/fetchComment/fetchComment.hooks';
 import chat from '../../assets/feedPost/chat.svg';
 // import fullHeart from '../../assets/feedPost/fullHeart.svg';
 import useCommentModalStore from '@/stores/useCommentModalStore';
+import LoadingPage from '@/pages/status/loadingPage';
+import ErrorPage from '@/pages/status/errorPage';
 
 // import CommentModal from '../modal/CommentModal';
 
 type FeedPostButtonProps = {
   like_count: number;
-  comment_count: number;
+  // comment_count: number;
   post_id: string;
 };
 
 const FeedPostButton = ({
   like_count,
-  comment_count,
+  // comment_count,
   post_id,
 }: FeedPostButtonProps) => {
   const { setIsModalOpen, setPostId } = useCommentModalStore();
+
+  const {
+    data: commentData,
+    isError,
+    isLoading,
+  } = useFetchCommentQuery(post_id);
 
   // const toggleHeart = useCallback(() => {
   //   setIsLiked((prev) => {
@@ -33,6 +42,8 @@ const FeedPostButton = ({
     setIsModalOpen(true);
   };
 
+  if (isLoading) return <LoadingPage />;
+  if (isError) return <ErrorPage />;
   return (
     <>
       <li className='flex items-center gap-6'>
@@ -51,7 +62,7 @@ const FeedPostButton = ({
           <button onClick={openCommentModal}>
             <img src={chat} alt='fullHeartIcon' />
           </button>
-          <p className='text-textMainColor'>{comment_count}</p>
+          <p className='text-textMainColor'>{commentData?.total_count}</p>
         </div>
 
         {/* <span className='ml-[3px]'>{commentCount}</span> */}
