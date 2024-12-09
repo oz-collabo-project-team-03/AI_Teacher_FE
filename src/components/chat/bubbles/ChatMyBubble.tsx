@@ -29,13 +29,16 @@ export const ChatMyBubble = ({
             {message}
           </p>
         ) : (
-          <div className='flex min-w-[200px] max-w-[250px] items-center justify-between rounded-[5px] bg-white px-[8px] shadow-lg'>
-            <p className='min-w-[80px] max-w-[250px] flex-1 break-words p-1 text-left text-[14px] font-normal text-textMainColor'>
-              {message}
-            </p>
+          <div
+            className='flex min-w-[40px] max-w-[40px] cursor-pointer items-center justify-between rounded-[5px] bg-white px-[8px] shadow-lg hover:bg-unFocusColor hover:bg-opacity-20'
+            onClick={handlePreview}
+          >
             <button
-              className='my-2 py-1 hover:bg-unFocusColor hover:bg-opacity-20'
-              onClick={handlePreview}
+              className='my-2 py-1'
+              onClick={(e) => {
+                e.stopPropagation();
+                handlePreview();
+              }}
             >
               <img src={chatPreviewIcon} alt='Preview' className='w-[30px]' />
             </button>

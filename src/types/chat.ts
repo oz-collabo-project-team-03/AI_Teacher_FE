@@ -1,14 +1,12 @@
-export type UserType = 'student' | 'teacher' | 'ai' | 'system';
-export type Message_type = 'text' | 'image';
-
 export type ChatBubbleRequestParams = {
-  message: string;
-  message_type: Message_type;
+  message: string ;
+  message_type: MessageType;
+  filename?: string;
 };
 
 export type ChatMessageRequestParams = {
   message: string;
-  message_type: Message_type;
+  message_type: MessageType;
   filename?: string;
   nickname: string;
   profileImage: string;
@@ -17,7 +15,7 @@ export type ChatMessageRequestParams = {
 };
 
 // 채팅방 Info
-export type ChatRoomInfoResponseDto = {
+export type ChatRoomInfoResponseDto= {
   room_id: number;
   title: string;
   help_checked: boolean;
@@ -28,23 +26,27 @@ export type ChatRoomInfoResponseDto = {
   ai_profile: string;
   teacher_profile: string;
   student_profile: string;
+  
+  pagination: ChatPagination;
 };
 
 // 채팅내역
-export type ChatMessageDetail =  {
+export type ChatMessageDetail= {
   sender_id: number;
   content: string;
   filename?: string;
   timestamp: string;
-  message_type: Message_type;
+  message_type: MessageType; 
   user_type: UserType;
-}
-
-// 채팅내역 응답 타입
-export type ChatMessagesResponseDto = {
-  pagination: {
-    next: number | null;
-    previous: number | null;
-  };
-  posts: ChatRoomInfoResponseDto[];
 };
+
+// 채팅 페이지네이션 타입
+export type ChatPagination = {
+  next: number | null;
+  previous: number | null;
+  total_messages: number; 
+  total_pages: number;
+};
+
+export type UserType = 'student' | 'teacher' | 'ai' | 'system';
+export type MessageType = 'text' | 'image';
