@@ -11,10 +11,9 @@ export default class ChatWebSocketAPI {
 
     const baseUrl = axiosInstance.defaults.baseURL || '';
     const wsUrl = `${baseUrl.replace(/^http:/, 'ws:')}ws/${this.roomId}/${this.userId}`;
-    // const wsUrl = `${baseUrl.replace(/^http:/, 'ws:')}ws/${this.roomId}/6`;
     
     this.socket = new WebSocket(wsUrl);
-    
+    // console.log(userId );
     // console.log(wsUrl);
     // this.socket.onopen = () => {
     //   console.log('WebSocket 연결 성공');
@@ -24,9 +23,9 @@ export default class ChatWebSocketAPI {
     //   console.log('WebSocket 연결 종료');
     // };
 
-    // this.socket.onerror = (error) => {
-    //   console.error('WebSocket 에러:', error);
-    // };
+    this.socket.onerror = (error) => {
+      console.error('WebSocket 에러:', error);
+    };
   }
 
   // 메시지 전송
