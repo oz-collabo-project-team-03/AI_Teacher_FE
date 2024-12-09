@@ -3,9 +3,16 @@ import { teacherAPI } from './teacherAPI';
 
 export const teacherQueries = createQueryKeyStore({
   teachers: {
-    all: () => ({
+    all: (role?: string) => ({
       queryKey: ['teachers'],
-      queryFn: () => teacherAPI.getTeachers(),
+      queryFn: () => {
+        if (role === 'student') {
+          return teacherAPI.getTeachers();
+        }
+
+        return Promise.resolve([]);
+      },
+      enabled: role === 'student',
     }),
 
     //안쓸듯
