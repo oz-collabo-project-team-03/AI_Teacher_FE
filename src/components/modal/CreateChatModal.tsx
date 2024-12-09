@@ -61,20 +61,19 @@ const CreateChatModal = ({
       aria-describedby='modal-description'
     >
       <div
-        className='h-auto w-full max-w-[390px] rounded-[16px] border border-inputBorderColor bg-white p-[16px]'
+        className='relative h-auto w-full max-w-[390px] rounded-[16px] border border-inputBorderColor bg-white p-[16px]'
         onClick={(e) => e.stopPropagation()}
       >
-        <div className='flex justify-end'>
+        <button className='absolute right-2 top-2' onClick={onClose}>
           <img
             src={modalCloseIcon}
             alt='닫기'
             className='cursor-pointer transition-transform duration-200 hover:scale-110 hover:opacity-80'
-            onClick={onClose}
           />
-        </div>
+        </button>
         <div
           id='modal-title'
-          className='mb-[21px] text-center text-[18px] font-medium'
+          className='mb-[21px] mt-2 text-center text-[18px] font-medium'
         >
           생성할 채팅방 제목을 입력하세요
         </div>
