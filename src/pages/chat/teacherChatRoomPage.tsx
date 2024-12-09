@@ -3,30 +3,34 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import ChatInput from '@/components/chat/ChatInput';
 import ChatMessage from '@/components/chat/ChatMessage';
 import { ChatMessageRequestParams } from '@/types/chat';
+import ErrorPage from '../status/errorPage';
 import Header from '@/components/common/Header';
 import HelpButton from '@/components/chat/HelpButton';
 import LoadingPage from '../status/loadingPage';
 import { chatPlusIcon } from '@/assets/assets';
+import { getMessageMetadata } from '@/utils/getMessageMetadata';
+import { useChatMessagesInfiniteQuery } from '@/api/chat/chatMessages/chatMessages.hooks';
 import { useChatWebSocket } from '@/api/chat/chatWebSocket/chatWebSocket.hooks';
-import { useGetChatMessagesQuery } from '@/api/chat/chatMessages/chatMessages.hooks';
+import { useFileUpload } from '@/hooks/useFileUpload';
+import { useInfiniteScroll } from '@/hooks/useInfiniteScroll';
+import { useMergeMessages } from '@/hooks/chat/useMergeMessages';
 import { useParams } from 'react-router-dom';
 import { useProfile } from '@/hooks/useProfile';
 
 const TeacherChatRoomPage = () => {
+  const chatEndRef = useRef<HTMLDivElement>(null);
+  const chatContainerRef = useRef<HTMLDivElement>(null);
+
   const [roomTitle, setRoomTitle] = useState<string>('');
   const [page] = useState<number>(1);
   const [chatMessages, setChatMessages] = useState<ChatMessageRequestParams[]>(
     []
   );
-  const chatEndRef = useRef<HTMLDivElement>(null);
-  const chatContainerRef = useRef<HTMLDivElement>(null);
-  const fileInputRef = useRef<HTMLInputElement>(null);
-  const [showLoading, setShowLoading] = useState(true);
   const [isComposing, setIsComposing] = useState(false); // 한글 조합 상태 관리
+  const [helpChecked, setHelpChecked] = useState(false);
 
   const { profileData } = useProfile();
   const userId = profileData?.id;
-
   if (userId === null) {
     console.error('userId가 없습니다! WebSocket 연결 실패');
     return null;
@@ -38,90 +42,86 @@ const TeacherChatRoomPage = () => {
     console.error('roomId가 유효한 숫자가 아닙니다.');
   }
 
+  const {
+    data,
+    isLoading,
+    isError,
+    hasNextPage,
+    fetchNextPage,
+    error,
+    refetch,
+  } = useChatMessagesInfiniteQuery({
+    room_id: roomIdNumber,
+    page,
+  });
+
+  const observerRef = useInfiniteScroll({
+    fetchNextPage,
+    hasNextPage,
+  });
+
   // WebSocket 관련 상태 및 함수
   const { sendMessage, lastMessage } = useChatWebSocket(
     roomIdNumber,
     userId || 0
   );
 
-  const [, setIsNewMessageAdded] = useState(false);
-
-  const { data } = useGetChatMessagesQuery({
-    room_id: roomIdNumber,
-    page,
-  });
-
-  const helpChecked = data?.help_checked || false;
-
-  const mergeMessages = useCallback(
+  const { mergeMessages } = useMergeMessages();
+  // 메시지 병합
+  const mergeAndSetMessages = useCallback(
     (newMessages: ChatMessageRequestParams[]) => {
-      setChatMessages((prevMessages) => {
-        const allMessages = [...newMessages, ...prevMessages];
-        const uniqueMessages = Array.from(
-          new Map(
-            allMessages.map((msg) => [msg.message + msg.timestamp, msg])
-          ).values()
-        );
-        return uniqueMessages.reverse();
-      });
+      setChatMessages((prevMessages) =>
+        mergeMessages(prevMessages, newMessages)
+      );
     },
-    [setChatMessages]
+    [mergeMessages]
   );
 
+  // 채팅 데이터 가져올 때 처리
   useEffect(() => {
     if (data) {
-      const studentProfileImage =
-        data.student_profile || '/images/default-student-profile.png';
-      const aiProfileImage =
-        data.ai_profile || '/images/default-ai-profile.png';
+      const firstPage = data.pages[0];
+      setHelpChecked(firstPage.help_checked || false); // helpChecked 초기화
 
-      setRoomTitle(data.student_nickname || '');
-      const newMessages: ChatMessageRequestParams[] = data.messages.map(
-        (message) => ({
-          message: message.content,
-          message_type: message.message_type,
-          nickname:
-            message.user_type === 'student'
-              ? `${data.student_nickname || '이름없음'}`
-              : message.user_type === 'ai'
-                ? 'AI'
-                : 'System',
-          profileImage:
-            message.user_type === 'student'
-              ? studentProfileImage
-              : message.user_type === 'ai'
-                ? aiProfileImage
-                : '',
-          userType: message.user_type,
-          timestamp: message.timestamp,
+      const allMessages = data.pages.flatMap((page) =>
+        page.messages.map((message) => {
+          const { nickname, profileImage } = getMessageMetadata(
+            message.user_type,
+            page
+          );
+
+          return {
+            message: message.content,
+            message_type: message.message_type,
+            filename: message.filename,
+            nickname,
+            profileImage,
+            userType: message.user_type,
+            timestamp: message.timestamp,
+          };
         })
       );
 
-      mergeMessages(newMessages);
-      setShowLoading(false);
+      mergeAndSetMessages(allMessages); // 병합된 메시지 설정
+      setRoomTitle(data.pages[0]?.student_nickname || '');
     }
   }, [data, mergeMessages]);
 
+  // WebSocket 마지막 메시지 처리
   useEffect(() => {
-    if (lastMessage) {
+    if (lastMessage && data?.pages.length) {
+      const firstPage = data.pages[0];
+
+      const { nickname, profileImage } = getMessageMetadata(
+        lastMessage.user_type,
+        firstPage
+      );
+
       const newChatMessage: ChatMessageRequestParams = {
-        message:
-          lastMessage.message_type === 'image'
-            ? lastMessage.filename
-            : lastMessage.content,
+        message: lastMessage.content,
         message_type: lastMessage.message_type,
-        nickname:
-          lastMessage.user_type === 'student'
-            ? `${data?.student_nickname || '이름없음'}`
-            : lastMessage.user_type === 'ai'
-              ? 'AI'
-              : 'System',
-        profileImage:
-          lastMessage.user_type === 'student'
-            ? data?.student_profile || ''
-            : lastMessage.user_type === 'ai'
-              ? data?.ai_profile || ''
-              : '',
+        nickname,
+        profileImage,
         userType: lastMessage.user_type,
         timestamp: lastMessage.timestamp,
       };
@@ -137,16 +137,17 @@ const TeacherChatRoomPage = () => {
         }
         return prevMessages;
       });
-      setIsNewMessageAdded(true);
     }
   }, [lastMessage, data]);
 
+  // 채팅 자동 스크롤 처리
   useEffect(() => {
     if (chatEndRef.current) {
       chatEndRef.current.scrollIntoView({ behavior: 'smooth' });
     }
   }, [chatMessages]);
 
+  // 텍스트 메시지 전송 핸들러
   const handleSendMessage = (newMessage: string) => {
     if (isComposing) {
       return;
@@ -156,12 +157,6 @@ const TeacherChatRoomPage = () => {
       const trimmedMessage = newMessage.trim();
       if (!trimmedMessage) {
         console.error('빈 메시지는 전송할 수 없습니다');
-        return;
-      }
-
-      const lastMessage = chatMessages[chatMessages.length - 1];
-      if (lastMessage?.message === trimmedMessage) {
-        console.error('중복 메시지는 전송할 수 없습니다');
         return;
       }
 
@@ -177,35 +172,12 @@ const TeacherChatRoomPage = () => {
     }
   };
 
-  // 파일전송
-  const handleFileChange = async (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const file = event.target.files?.[0];
-
-    if (!file) {
-      console.error('파일이 선택되지 않았습니다.');
-      return;
-    }
-
-    const allowedTypes = ['image/jpeg', 'image/png'];
-    if (!allowedTypes.includes(file.type)) {
-      console.error(
-        '허용되지 않은 파일 형식입니다. JPG 또는 PNG 파일만 첨부할 수 있습니다.'
-      );
-      event.target.value = '';
-      return;
-    }
-
-    const reader = new FileReader();
-
-    reader.onload = () => {
-      const base64Data = reader.result as string;
-      const base64Content = base64Data.split(',')[1];
-
+  // 파일 첨부 전송 핸들러
+  const { fileInputRef, handleFileChange, openFileDialog } = useFileUpload(
+    (fileContent, fileName) => {
       const contentJson = {
-        content: base64Content,
-        filename: file.name,
+        content: fileContent,
+        filename: fileName,
         message_type: 'image',
       };
 
@@ -215,28 +187,18 @@ const TeacherChatRoomPage = () => {
           content: JSON.stringify(contentJson),
           message_type: 'image',
           timestamp: new Date().toISOString(),
-          user_type: 'teacher',
+          user_type: 'student',
         });
       } catch (error) {
         console.error('메시지 전송 중 에러:', error);
       }
-    };
-
-    reader.onerror = (error) => {
-      console.error('파일 읽기 중 에러:', error);
-    };
-
-    reader.readAsDataURL(file);
-  };
-
-  const handleButtonClick = () => {
-    if (fileInputRef.current) {
-      fileInputRef.current.click();
     }
-  };
+  );
 
-  if (showLoading) {
-    return <LoadingPage />;
+  if (isLoading) return <LoadingPage />;
+
+  if (isError) {
+    return <ErrorPage error={error as Error} resetError={() => refetch()} />;
   }
 
   return (
@@ -247,6 +209,7 @@ const TeacherChatRoomPage = () => {
           <HelpButton type='help' onClick={() => {}} disabled={true} />
         }
       />
+      <div ref={observerRef} className='h-2' />
       <div
         ref={chatContainerRef}
         className='custom-scrollbar flex-grow overflow-y-auto overflow-x-hidden'
@@ -271,9 +234,12 @@ const TeacherChatRoomPage = () => {
           onCompositionEnd={() => setIsComposing(false)}
         />
         <button
-          className='absolute left-6 top-1/2 flex h-[23px] w-[40px] -translate-y-1/2 items-center justify-center pl-[10px]'
-          onClick={handleButtonClick}
-          disabled={!helpChecked}
+          className='absolute left-6 top-1/2 flex h-[23px] w-[40px] -translate-y-1/2 items-center justify-center pl-[10px] transition-opacity duration-200'
+          onClick={helpChecked ? openFileDialog : undefined}
+          style={{
+            opacity: helpChecked ? 1 : 0.5,
+            cursor: helpChecked ? 'pointer' : 'not-allowed',
+          }}
         >
           <img
             src={chatPlusIcon}
