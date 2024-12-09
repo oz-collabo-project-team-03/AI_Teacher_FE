@@ -15,13 +15,13 @@ export default class ChatWebSocketAPI {
     this.socket = new WebSocket(wsUrl);
     // console.log(userId );
     // console.log(wsUrl);
-    // this.socket.onopen = () => {
-    //   console.log('WebSocket 연결 성공');
-    // };
+    this.socket.onopen = () => {
+      console.log('WebSocket 연결 성공');
+    };
 
-    // this.socket.onclose = () => {
-    //   console.log('WebSocket 연결 종료');
-    // };
+    this.socket.onclose = () => {
+      console.log('WebSocket 연결 종료');
+    };
 
     this.socket.onerror = () => {
       console.error('WebSocket 에러있음 재연결중');

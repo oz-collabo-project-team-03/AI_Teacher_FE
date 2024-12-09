@@ -10,6 +10,8 @@ export const useGetChatListQuery = (
   return useQuery<ChatListResponseDto[], Error, ChatListResponseDto[], [string, number]>({
     queryKey: ['chatList', page],
     queryFn: () => getChatListAPI(page),
+    refetchInterval: 5000, 
+    refetchIntervalInBackground: true,
     ...options,
   });
 };

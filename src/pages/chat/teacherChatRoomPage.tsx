@@ -105,7 +105,10 @@ const TeacherChatRoomPage = () => {
   useEffect(() => {
     if (lastMessage) {
       const newChatMessage: ChatMessageRequestParams = {
-        message: lastMessage.content,
+        message:
+          lastMessage.message_type === 'image'
+            ? lastMessage.filename
+            : lastMessage.content,
         message_type: lastMessage.message_type,
         nickname:
           lastMessage.user_type === 'student'
@@ -174,51 +177,56 @@ const TeacherChatRoomPage = () => {
     }
   };
 
+  // 파일전송
   const handleFileChange = async (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     const file = event.target.files?.[0];
-    if (file) {
-      if (!file.type.startsWith('image/')) {
-        console.error('이미지 파일만 첨부 가능합니다.');
-        event.target.value = '';
-        return;
-      }
 
-      if (file.size > 10 * 1024 * 1024) {
-        console.error('파일 크기가 10MB를 초과합니다.');
-        event.target.value = '';
-        return;
-      }
+    if (!file) {
+      console.error('파일이 선택되지 않았습니다.');
+      return;
+    }
 
-      const reader = new FileReader();
+    const allowedTypes = ['image/jpeg', 'image/png'];
+    if (!allowedTypes.includes(file.type)) {
+      console.error(
+        '허용되지 않은 파일 형식입니다. JPG 또는 PNG 파일만 첨부할 수 있습니다.'
+      );
+      event.target.value = '';
+      return;
+    }
 
-      reader.onload = () => {
-        const base64Data = reader.result as string;
-        const payload = {
+    const reader = new FileReader();
+
+    reader.onload = () => {
+      const base64Data = reader.result as string;
+      const base64Content = base64Data.split(',')[1];
+
+      const contentJson = {
+        content: base64Content,
+        filename: file.name,
+        message_type: 'image',
+      };
+
+      try {
+        sendMessage({
           sender_id: userId,
-          content: base64Data,
-          filename: file.name,
+          content: JSON.stringify(contentJson),
           message_type: 'image',
           timestamp: new Date().toISOString(),
           user_type: 'teacher',
-        };
+        });
+      } catch (error) {
+        console.error('메시지 전송 중 에러:', error);
+      }
+    };
 
-        sendMessage(payload);
+    reader.onerror = (error) => {
+      console.error('파일 읽기 중 에러:', error);
+    };
 
-        const newChatMessage: ChatMessageRequestParams = {
-          message: file.name,
-          message_type: 'image',
-          nickname: '나',
-          profileImage: '',
-          userType: 'teacher',
-          timestamp: new Date().toISOString(),
-        };
-        setChatMessages((prevMessages) => [...prevMessages, newChatMessage]);
-      };
-
-      reader.readAsDataURL(file);
-    }
+    reader.readAsDataURL(file);
   };
 
   const handleButtonClick = () => {
