@@ -1,10 +1,10 @@
-import { DeleteChatRoomParams, DeleteChatRoomResponse } from './deleteChatRoomType';
+import { DeleteChatRoomRequestParams, DeleteChatRoomResponseDto } from './deleteChatRoomType';
 
 import axiosInstance from '@/api/axiosInstance';
 
 export const deleteChatRoomAPI = async (
-  params: DeleteChatRoomParams
-): Promise<DeleteChatRoomResponse> => {
+  params: DeleteChatRoomRequestParams
+): Promise<DeleteChatRoomResponseDto> => {
   const { room_id } = params;
 
   try {

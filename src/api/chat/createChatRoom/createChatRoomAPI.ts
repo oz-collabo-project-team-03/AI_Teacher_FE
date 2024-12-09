@@ -1,12 +1,12 @@
-import { ChatRoomData, CreateChatRoomResponse } from './createChatRoomType';
+import { ChatRoomResponseDto, CreateChatRoomRequestParams } from './createChatRoomType';
 
 import axiosInstance from '@/api/axiosInstance';
 
 export const createChatRoomAPI = async (
-  userData: CreateChatRoomResponse
-): Promise<ChatRoomData> => {
+  userData: CreateChatRoomRequestParams
+): Promise<ChatRoomResponseDto> => {
   try {
-    const response = await axiosInstance.post<ChatRoomData>(
+    const response = await axiosInstance.post<ChatRoomResponseDto>(
       '/chat/room',
       userData
     );

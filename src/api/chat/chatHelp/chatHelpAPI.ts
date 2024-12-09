@@ -1,13 +1,13 @@
-import { ChatRoomData, HelpResponse } from './chatHelpType';
+import { ChatHelpRequestParams, ChatHelpResponseDto } from './chatHelpType';
 
 import axiosInstance from '@/api/axiosInstance';
 
 export const patchChatHelpAPI = async (
   room_id: number,
-  helpData: HelpResponse
-): Promise<ChatRoomData> => {
+  helpData: ChatHelpRequestParams
+): Promise<ChatHelpResponseDto> => {
   try {
-    const response = await axiosInstance.patch<ChatRoomData>(
+    const response = await axiosInstance.patch<ChatHelpResponseDto>(
       `/chat/help/${room_id}`,
       helpData
     );

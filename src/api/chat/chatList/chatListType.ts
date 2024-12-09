@@ -1,4 +1,8 @@
-export type ChatListData = {
+export type ChatHelpListRequestParams = {
+  data: ChatListResponseDto[]; 
+};
+
+export type ChatListResponseDto = {
   room_id: number;
   title: string;
   help_checked: boolean;
@@ -7,6 +11,3 @@ export type ChatListData = {
   user_id: number;
 };
 
-export type ChatListResponse = {
-  data: ChatListData[]; 
-};

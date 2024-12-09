@@ -1,4 +1,8 @@
-export type ChatRoomData = {
+export type CreateChatRoomRequestParams = {
+  title: string;
+};
+
+export type ChatRoomResponseDto = {
   room_id: number;
   title: string;
   help_checked?: boolean;
@@ -10,7 +14,3 @@ export type ChatRoomData = {
   updated_at?: string; 
 };
 
-
-export type CreateChatRoomResponse = {
-  title: string;
-};

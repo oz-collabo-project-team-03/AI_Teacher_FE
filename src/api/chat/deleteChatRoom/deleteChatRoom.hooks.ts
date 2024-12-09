@@ -1,10 +1,10 @@
 import { UseMutationOptions, useMutation } from '@tanstack/react-query';
 
-import { DeleteChatRoomParams } from './deleteChatRoomType';
+import { DeleteChatRoomRequestParams } from './deleteChatRoomType';
 import { deleteChatRoomAPI } from './deleteChatRoomAPI';
 
 export const useDeleteChatRoomMutation = (
-  options?: UseMutationOptions<void, Error, DeleteChatRoomParams>
+  options?: UseMutationOptions<void, Error, DeleteChatRoomRequestParams>
 ) => {
   return useMutation({
     mutationFn: deleteChatRoomAPI,

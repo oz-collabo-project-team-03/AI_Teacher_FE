@@ -1,11 +1,11 @@
 import { UseQueryOptions, useQuery } from '@tanstack/react-query';
 
-import { ChatHelpListData } from './chatHelpListType';
+import { ChatHelpListResponseDto } from './chatHelpListType';
 import { getChatHelpAPI } from './chatHelpListAPI';
 
 export const useGetChatHelpQuery = (
   page: number = 1,
-  options?: UseQueryOptions<ChatHelpListData[], Error>
+  options?: UseQueryOptions<ChatHelpListResponseDto[], Error>
 ) => {
   return useQuery({
     queryKey: ['chatHelpList', page],

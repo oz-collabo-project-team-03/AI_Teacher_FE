@@ -1,18 +1,19 @@
-import { ChatMessageParams, ChatMessageResponse } from './chatMessagesType';
 import { UseQueryOptions, useQuery } from '@tanstack/react-query';
 
+import { ChatMessageRequestParams } from './chatMessagesType';
+import { ChatRoomInfoResponseDto } from '@/types/chat';
 import { getChatMessagesAPI } from './chatMessagesAPI';
 
 export const useGetChatMessagesQuery = (
-  params: ChatMessageParams,
+  params: ChatMessageRequestParams,
   options?: UseQueryOptions<
-    ChatMessageResponse,
+    ChatRoomInfoResponseDto,
     Error,
-    ChatMessageResponse,
-    [string, ChatMessageParams]
+    ChatRoomInfoResponseDto,
+    [string, ChatMessageRequestParams]
   >
 ) => {
-  return useQuery<ChatMessageResponse, Error, ChatMessageResponse, [string, ChatMessageParams]>({
+  return useQuery<ChatRoomInfoResponseDto, Error, ChatRoomInfoResponseDto, [string, ChatMessageRequestParams]>({
     queryKey: ['chatMessages', params],
     queryFn: () => getChatMessagesAPI(params),
     ...options,
