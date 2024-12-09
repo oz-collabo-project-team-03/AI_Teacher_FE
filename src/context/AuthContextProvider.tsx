@@ -44,7 +44,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
               // console.log('Setting userId from userInfo:', userInfo.id);
               setUserId(userInfo.id);
             } else if (isError) {
-              console.warn('Error in fetching user profile');
+              // console.warn('Error in fetching user profile');
               // 토큰 검증 실패 시 명시적 로그아웃
               logout();
             }
@@ -53,12 +53,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             setIsInitialized(true);
           }
         } else {
-          console.log('엑세스토큰도 없고 아이디도 없어유');
+          // console.log('엑세스토큰도 없고 아이디도 없어유');
           setUserId(null);
           setIsInitialized(true);
         }
       } catch (error) {
-        console.error('Error:', error);
+        // console.error('Error:', error);
         setIsInitialized(true);
       }
     };
@@ -73,10 +73,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const logout = () => {
-    console.log('Logout called');
+    // console.log('Logout called');
     setUserId(null);
-    // 로그아웃 시 localStorage에서 제거
-    localStorage.removeItem('userId');
+    cookies.remove('accessToken');
   };
 
   const value = {

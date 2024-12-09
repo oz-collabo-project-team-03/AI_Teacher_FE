@@ -27,7 +27,7 @@ const FeedPostContent = ({
   post_id,
 }: FeedPostContentProps) => {
   const { profileData } = useProfile();
-  const localStorageId = Number(localStorage.getItem('userId'));
+  // const localStorageId = Number(localStorage.getItem('userId'));
 
   // 텍스트 확장 상태
   const [isExpanded, setIsExpanded] = useState(false);
@@ -61,7 +61,7 @@ const FeedPostContent = ({
   };
 
   const getMyPagePath = () => {
-    if (teacher?.user_id === localStorageId) {
+    if (teacher?.user_id === profileData?.id) {
       return profileData?.role === 'student' ? '/my-page' : '/teacher/my-page';
     }
     return profileData?.role === 'student'
