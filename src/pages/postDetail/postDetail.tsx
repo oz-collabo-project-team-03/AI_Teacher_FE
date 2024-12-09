@@ -5,22 +5,22 @@ import CommentModal from '@/components/modal/CommentModal';
 import useCommentModalStore from '@/stores/useCommentModalStore';
 import { useInfiniteScroll } from '@/hooks/useInfiniteScroll';
 import { useLocation, useParams } from 'react-router-dom';
-import { useEffect } from 'react';
+import { useState, useLayoutEffect, useCallback } from 'react';
 import Header from '@/components/common/Header';
 import NotfoundPage from '../status/notfoundPage';
 import ErrorPage from '../status/errorPage';
 import LoadingPage from '../status/loadingPage';
+import { twMerge } from 'tailwind-merge';
 
 const PostDetail = () => {
+  const [initialScrollComplete, setInitialScrollComplete] = useState(false);
+
   const { userId } = useParams();
   const { isModalOpen, setIsModalOpen, postId } = useCommentModalStore();
 
   const location = useLocation();
 
-  const searchParams = new URLSearchParams(location.search);
-  const selectedPostId = searchParams.get('selected');
-
-  const closeCommentModal = () => setIsModalOpen(false);
+  const selectedPostId = new URLSearchParams(location.search).get('selected');
 
   const {
     data,
@@ -37,38 +37,57 @@ const PostDetail = () => {
     hasNextPage,
   });
 
-  useEffect(() => {
-    if (selectedPostId) {
-      const element = document.getElementById(selectedPostId);
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      }
-    }
-  }, [selectedPostId, data]);
+  // 컴포넌트가 리렌더링될 때마다 `scrollToElement` 함수가 새로 생성되는 것을 방지
+  const scrollToElement = useCallback((element: HTMLElement) => {
+    element.scrollIntoView({ behavior: 'instant', block: 'start' });
+    setInitialScrollComplete(true);
+  }, []);
 
-  useEffect(() => {
+  // `useCallback`을 사용하지 않으면 컴포넌트가 리렌더링될 때마다
+  // 새로운 함수가 생성되어 불필요한 `useLayoutEffect` 실행이 발생할 수 있습니다
+  // DOM 조작과 애니메이션 프레임 요청을 포함하는 복잡한 로직을 수행하므로,
+  // 불필요한 함수 재생성을 방지하는 것이 중요합니다
+  const findAndScrollToPost = useCallback(() => {
+    const element = document.getElementById(selectedPostId!);
+    if (element) {
+      document.body.style.opacity = '0';
+      scrollToElement(element);
+
+      // 브라우저의 다음 리페인트 시점에 실행되도록 보장
+      // 브라우저가 최적의 시점에 변경사항을 화면에 반영할 수 있어 더 효율적인 렌더링이 가능
+      requestAnimationFrame(() => {
+        document.body.style.opacity = '1';
+      });
+      return true;
+    }
+    return false;
+  }, [selectedPostId, scrollToElement]);
+
+  // 시각적 깜빡임 최소화
+  useLayoutEffect(() => {
     const scrollToSelectedPost = async () => {
       if (!selectedPostId || !data) return;
 
-      const element = document.getElementById(selectedPostId);
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        return;
-      }
-
-      // 현재 로드된 페이지들에서 포스트를 찾지 못한 경우
-      if (hasNextPage) {
-        await fetchNextPage();
+      try {
+        if (!findAndScrollToPost()) {
+          while (hasNextPage) {
+            await fetchNextPage();
+            await new Promise((resolve) => setTimeout(resolve, 50));
+            if (findAndScrollToPost()) break;
+          }
+        }
+      } catch (error) {
+        console.error('포스트를 찾는 중 오류 발생:', error);
       }
     };
 
     scrollToSelectedPost();
-  }, [selectedPostId, data, hasNextPage, fetchNextPage]);
+  }, [selectedPostId, data, hasNextPage, fetchNextPage, findAndScrollToPost]);
 
   if (isLoading) return <LoadingPage />;
 
   if (isError) {
-    return <ErrorPage error={error as Error} resetError={() => refetch()} />;
+    return <ErrorPage error={error} resetError={() => refetch()} />;
   }
 
   if (!data || !data.pages) {
@@ -94,7 +113,12 @@ const PostDetail = () => {
   };
 
   return (
-    <div className='h-full pt-[72px]'>
+    <div
+      className={twMerge(
+        'h-full pt-[72px]',
+        initialScrollComplete ? 'opacity-100' : 'opacity-0'
+      )}
+    >
       <Header title={headerTitle} />
 
       <div className='custom-scrollbar h-full'>
@@ -119,7 +143,7 @@ const PostDetail = () => {
             <div className='relative w-full rounded-t-[15px] bg-white md:w-[425px] lg:w-[425px]'>
               <button
                 className='absolute right-4 top-1 text-3xl'
-                onClick={closeCommentModal}
+                onClick={() => setIsModalOpen(false)}
               >
                 &times;
               </button>

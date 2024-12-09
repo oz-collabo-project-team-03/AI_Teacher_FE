@@ -1,7 +1,9 @@
 // 게시글 목록 응답 타입
 export type PostListResponseDto = {
-  next: string | null;
-  previous: string | null;
+  pagination: {
+    next: number | null;
+    previous: number | null;
+  };
   posts: PostDetail[];
 };
 
