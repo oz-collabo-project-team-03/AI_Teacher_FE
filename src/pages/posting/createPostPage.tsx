@@ -8,6 +8,7 @@ import PostImageUpload from '../../components/posting/PostImageUpload';
 import PostTextEditor from '../../components/posting/PostTextEditor';
 import { useNavigate } from 'react-router-dom';
 import { useToast } from '@/hooks/useToast';
+import { useQueryClient } from '@tanstack/react-query';
 
 type FormValues = {
   images: File[];
@@ -16,6 +17,8 @@ type FormValues = {
 };
 
 const CreatePostPage = () => {
+  const queryClient = useQueryClient();
+
   const { showToast } = useToast();
   const navigate = useNavigate();
   const postingFromMethods = useForm<FormValues>({
@@ -60,8 +63,9 @@ const CreatePostPage = () => {
       // CreatePostingAPI를 호출하여 서버에 데이터 전송
       const response = await CreatePostingAPI(postingData);
       console.log('포스팅 성공:', response);
-      // showToast('포스팅이 성공적으로 작성되었습니다!');
+      showToast('포스팅이 성공적으로 작성되었습니다!');
       navigate('/student-main');
+      queryClient.invalidateQueries({ queryKey: ['profile'] });
     } catch (error) {
       console.error('포스팅 실패:', error);
       showToast('서버 오류가 발생했습니다. 잠시 후 다시 전송 해주세요');
