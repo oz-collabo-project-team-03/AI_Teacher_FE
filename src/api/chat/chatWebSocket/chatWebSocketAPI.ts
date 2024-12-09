@@ -23,8 +23,8 @@ export default class ChatWebSocketAPI {
     //   console.log('WebSocket 연결 종료');
     // };
 
-    this.socket.onerror = (error) => {
-      console.error('WebSocket 에러:', error);
+    this.socket.onerror = () => {
+      console.error('WebSocket 에러있음 재연결중');
     };
   }
 
