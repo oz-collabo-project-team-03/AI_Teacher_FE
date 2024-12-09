@@ -7,8 +7,8 @@ import { loggedRoutes } from './loggedRoutes';
 
 const Router = () => {
   const router = createBrowserRouter([
-    ...commonRoutes, // 먼저 공통 라우트
-    ...loggedRoutes, // 그 다음 로그인된 라우트
+    ...commonRoutes, // 공통 라우트
+    ...loggedRoutes, //  로그인된 라우트
   ]);
 
   return (
