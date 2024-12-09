@@ -115,9 +115,11 @@ const HomeFeedPage = () => {
       </AnimatePresence>
 
       {/* 소셜 로그인 스터디 그룹 모달 */}
-      {!profileData?.study_group && isTeacherModalOpen && (
-        <TeacherListModal closeTeacherModal={closeTeacherModal} />
-      )}
+      {!profileData?.study_group &&
+        isTeacherModalOpen &&
+        profileData?.role === 'student' && (
+          <TeacherListModal closeTeacherModal={closeTeacherModal} />
+        )}
     </div>
   );
 };

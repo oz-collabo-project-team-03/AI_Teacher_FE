@@ -11,6 +11,7 @@ import { useDeleteChatRoomMutation } from '@/api/chat/deleteChatRoom/deleteChatR
 import { useGetChatListQuery } from '@/api/chat/chatList/chatList.hooks';
 import { useNavigate } from 'react-router-dom';
 import ChatListSkeleton from '@/components/chat/ChatListSkeleton';
+import LoadingPage from '../status/loadingPage';
 
 const StudentChatListPage = () => {
   const navigate = useNavigate();
@@ -27,6 +28,7 @@ const StudentChatListPage = () => {
     data: chatList,
     refetch: refetchChatList,
     isPending,
+    isLoading,
   } = useGetChatListQuery(1);
 
   const [draggingRoomId, setDraggingRoomId] = useState<number | null>(null);
@@ -122,6 +124,8 @@ const StudentChatListPage = () => {
       title: roomName,
     });
   };
+
+  if (isLoading) return <LoadingPage />;
 
   return (
     <div className='flex h-full flex-col pt-[72px]'>

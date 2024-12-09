@@ -9,6 +9,7 @@ import { usePostLoginMutation } from '@/api/auth/login/login.hooks';
 import { useToast } from '../useToast';
 import { z as zod } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useEffect } from 'react';
 
 // 로그인 폼 스키마 정의
 export const loginFormSchema = zod.object({
@@ -61,8 +62,12 @@ export const useLogin = () => {
           navigate('/teacher-main', { replace: true });
         }
       }
-      cookies.set('accessToken', data.access_token);
-      cookies.set('refreshToken', data.refresh_token);
+      // 기존 토큰 모두 제거
+      cookies.remove('accessToken', { path: '/' });
+      cookies.remove('accessToken', { path: '/student' });
+      cookies.remove('accessToken', { path: '/teacher' });
+
+      cookies.set('accessToken', data.access_token, { path: '/' });
     },
     onError: (error) => {
       console.error('Login Mutation Error:', error);
@@ -88,6 +93,26 @@ export const useLogin = () => {
     console.log('Login Attempt:', form.getValues());
     loginMutation(formData);
   };
+
+  useEffect(() => {
+    // 중복 토큰 제거
+    const tokens = cookies.getAll();
+    const accessTokens = Object.keys(tokens).filter((key) =>
+      key.includes('accessToken')
+    );
+
+    if (accessTokens.length > 1) {
+      accessTokens.forEach((tokenKey) => {
+        cookies.remove(tokenKey, { path: '/' });
+      });
+      // 가장 최근의 토큰만 남기기
+      cookies.set(
+        'accessToken',
+        tokens[accessTokens[accessTokens.length - 1]],
+        { path: '/' }
+      );
+    }
+  }, []);
 
   return {
     form,

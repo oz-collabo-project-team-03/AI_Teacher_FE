@@ -2,11 +2,15 @@ import MainHeader from '../../components/main/MainHeader';
 import ManagedList from '../../components/main/ManagedList';
 import TeacherInfo from '@/components/main/TeacherInfo';
 import { useFetchStudentsListQuery } from '../../api/studentsList/studentsList.hook';
+import LoadingPage from '../status/loadingPage';
+import { useQueryClient } from '@tanstack/react-query';
 
 const ManagedStudentListPage = () => {
   const { data, isLoading, error } = useFetchStudentsListQuery();
+  const queryClient = useQueryClient();
+  queryClient.invalidateQueries({ queryKey: ['profile'] });
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <LoadingPage />;
   if (error instanceof Error) return <div>Error: {error.message}</div>;
 
   console.log(data);

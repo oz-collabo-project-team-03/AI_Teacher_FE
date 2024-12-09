@@ -16,24 +16,10 @@ const refreshTokenInstance = axios.create({
 
 // 액세스 토큰 갱신 함수
 const refreshAccessToken = async () => {
-  const refreshToken = cookies.get('refreshToken');
-
-  if (!refreshToken) {
-    throw new Error('사용 가능한 리프레시 토큰 없음');
-  }
-
   try {
-    const response = await refreshTokenInstance.post('/auth/token/refresh', {
-      refreshToken,
-    });
+    const response = await refreshTokenInstance.post('/auth/token/refresh');
 
-    // 쿠키에 새로운 토큰 업데이트
-    cookies.set('accessToken', response.data.accessToken);
-    if (response.data.refreshToken) {
-      cookies.set('refreshToken', response.data.refreshToken);
-    }
-
-    return response.data.accessToken;
+    cookies.set('accessToken', response.data.accessToken, { path: '/' });
   } catch (error) {
     // 토큰 갱신 실패 시 처리 (사용자 로그아웃 등)
     cookies.remove('accessToken');
@@ -49,6 +35,7 @@ export const createAxiosInterceptor = (axiosInstance: AxiosInstance) => {
   axiosInstance.interceptors.request.use(
     (config) => {
       const accessToken = cookies.get('accessToken');
+
       if (accessToken) {
         config.headers['Authorization'] = `Bearer ${accessToken}`;
       }

@@ -30,12 +30,12 @@ const FeedPostUserInfo = ({
 
   const queryClient = useQueryClient();
 
-  const localStorageId = Number(localStorage.getItem('userId'));
+  // const localStorageId = Number(localStorage.getItem('userId'));
 
   const isOwnPost = user_id === profileData?.id;
 
   const getMyPagePath = () => {
-    if (user_id === localStorageId) {
+    if (user_id === profileData?.id) {
       return profileData?.role === 'student' ? '/my-page' : '/teacher/my-page';
     }
     return profileData?.role === 'student'
