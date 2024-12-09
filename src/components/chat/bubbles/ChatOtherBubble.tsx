@@ -11,7 +11,7 @@ export const ChatOtherBubble = ({
   const [previewImage, setPreviewImage] = useState<string | null>(null);
 
   const handlePreview = () => {
-    const imageUrl = `${message}`; // 백엔드에서 제공할 이미지 URL 또는 현재 파일 경로
+    const imageUrl = `${message}`;
     setPreviewImage(imageUrl);
     setIsPreviewOpen(true);
   };
