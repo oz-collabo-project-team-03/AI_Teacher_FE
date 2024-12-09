@@ -1,15 +1,17 @@
-import { ChatBubbleProps } from '@/types/index';
+import { ChatBubbleRequestParams } from '@/types/index';
 import PreviewImageModal from '@/components/modal/PreviewImageModal';
 import { chatPreviewIcon } from '@/assets/assets';
 import { useState } from 'react';
 
-export const ChatMyBubble = ({ message, message_type }: ChatBubbleProps) => {
+export const ChatMyBubble = ({
+  message,
+  message_type,
+}: ChatBubbleRequestParams) => {
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
 
   const handlePreview = () => {
-    // 메시지가 이미지 파일 이름일 경우, 여기에 미리보기 데이터를 설정
-    const imageUrl = `/uploads/${message}`; // 백엔드에서 제공할 이미지 URL 또는 현재 파일 경로
+    const imageUrl = `${message}`; // 백엔드에서 제공할 이미지 URL 또는 현재 파일 경로
     setPreviewImage(imageUrl);
     setIsPreviewOpen(true);
   };
@@ -28,7 +30,7 @@ export const ChatMyBubble = ({ message, message_type }: ChatBubbleProps) => {
           </p>
         ) : (
           <div className='flex min-w-[200px] max-w-[250px] items-center justify-between rounded-[5px] bg-white px-[8px] shadow-lg'>
-            <p className='break-words p-1 text-left text-[14px] font-normal text-textMainColor'>
+            <p className='min-w-[80px] max-w-[250px] flex-1 break-words p-1 text-left text-[14px] font-normal text-textMainColor'>
               {message}
             </p>
             <button
