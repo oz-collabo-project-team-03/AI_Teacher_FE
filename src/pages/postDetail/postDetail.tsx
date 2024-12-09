@@ -1,22 +1,23 @@
-import { useDetailPostsInfiniteGetQuery } from '@/api/postDetail/postDetail.hooks';
 import { AnimatePresence, motion } from 'framer-motion';
-import FeedPost from '@/components/main/FeedPost';
-import CommentModal from '@/components/modal/CommentModal';
-import useCommentModalStore from '@/stores/useCommentModalStore';
-import { useInfiniteScroll } from '@/hooks/useInfiniteScroll';
+import { useCallback, useLayoutEffect, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
-import { useState, useLayoutEffect, useCallback } from 'react';
-import Header from '@/components/common/Header';
-import NotfoundPage from '../status/notfoundPage';
+
+import CommentModal from '@/components/modal/CommentModal';
 import ErrorPage from '../status/errorPage';
+import FeedPost from '@/components/main/FeedPost';
+import Header from '@/components/common/Header';
 import LoadingPage from '../status/loadingPage';
+import NotfoundPage from '../status/notfoundPage';
 import { twMerge } from 'tailwind-merge';
+import useCommentModalStore from '@/stores/useCommentModalStore';
+import { useDetailPostsInfiniteGetQuery } from '@/api/postDetail/postDetail.hooks';
+import { useInfiniteScroll } from '@/hooks/useInfiniteScroll';
 
 const PostDetail = () => {
   const [initialScrollComplete, setInitialScrollComplete] = useState(false);
 
   const { userId } = useParams();
-  const { isModalOpen, setIsModalOpen, postId } = useCommentModalStore();
+  const { isModalOpen, setIsModalOpen } = useCommentModalStore();
 
   const location = useLocation();
 
@@ -147,7 +148,12 @@ const PostDetail = () => {
               >
                 &times;
               </button>
-              <CommentModal post_id={postId} />
+              {data.pages.flatMap((page) =>
+                page.posts.map((post) => (
+                  <CommentModal key={post.post_id} post_id={post.post_id} />
+                ))
+              )}
+              {/* <CommentModal post_id={post_Id} /> */}
             </div>
           </motion.div>
         )}
