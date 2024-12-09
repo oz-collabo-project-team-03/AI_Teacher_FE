@@ -10,6 +10,7 @@ import { useCreateChatRoomMutation } from '@/api/chat/createChatRoom/createChatR
 import { useDeleteChatRoomMutation } from '@/api/chat/deleteChatRoom/deleteChatRoom.hooks';
 import { useGetChatListQuery } from '@/api/chat/chatList/chatList.hooks';
 import { useNavigate } from 'react-router-dom';
+import ChatListSkeleton from '@/components/chat/ChatListSkeleton';
 
 const StudentChatListPage = () => {
   const navigate = useNavigate();
@@ -22,7 +23,11 @@ const StudentChatListPage = () => {
 
   // 페이지네이션를 다룰때 useInfiniteQuery 쓰기 (캡쳐사진있음)
   // refetch vs invalidate cache 차이 숙제 > refetch잘안씀 이유가 뭐지
-  const { data: chatList, refetch: refetchChatList } = useGetChatListQuery(1);
+  const {
+    data: chatList,
+    refetch: refetchChatList,
+    isPending,
+  } = useGetChatListQuery(1);
 
   const [draggingRoomId, setDraggingRoomId] = useState<number | null>(null);
 
@@ -132,33 +137,37 @@ const StudentChatListPage = () => {
         }
       />
       <div className='custom-scrollbar flex-grow overflow-y-auto overflow-x-hidden'>
-        {sortedChatList.map((chat) => (
-          <motion.div
-            key={chat.room_id}
-            className='relative w-full'
-            drag='x'
-            dragConstraints={{ left: -73, right: 0 }}
-            dragElastic={0.2}
-            onDragStart={() => setDraggingRoomId(chat.room_id)}
-            onDragEnd={() => setDraggingRoomId(null)}
-          >
+        {isPending ? (
+          <ChatListSkeleton />
+        ) : (
+          sortedChatList.map((chat) => (
             <motion.div
-              className={'absolute left-0 top-0 h-full w-full bg-white'}
-              onClick={() => {
-                if (draggingRoomId === null) handleClick(chat.room_id);
-              }}
+              key={chat.room_id}
+              className='relative w-full'
+              drag='x'
+              dragConstraints={{ left: -73, right: 0 }}
+              dragElastic={0.2}
+              onDragStart={() => setDraggingRoomId(chat.room_id)}
+              onDragEnd={() => setDraggingRoomId(null)}
             >
-              <ChatItem
-                roomName={chat.title}
-                lastMessage={chat.recent_message}
-                lastMessageTime={chat.recent_update}
-                showHelpRequest={chat.help_checked}
-              />
-            </motion.div>
+              <motion.div
+                className={'absolute left-0 top-0 h-full w-full bg-white'}
+                onClick={() => {
+                  if (draggingRoomId === null) handleClick(chat.room_id);
+                }}
+              >
+                <ChatItem
+                  roomName={chat.title}
+                  lastMessage={chat.recent_message}
+                  lastMessageTime={chat.recent_update}
+                  showHelpRequest={chat.help_checked}
+                />
+              </motion.div>
 
-            {trailingActions(chat.room_id)}
-          </motion.div>
-        ))}
+              {trailingActions(chat.room_id)}
+            </motion.div>
+          ))
+        )}
       </div>
 
       {activeModal === 'create' && (
