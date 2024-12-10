@@ -9,7 +9,9 @@ function App() {
       fallbackRender={({ error, resetErrorBoundary }) => (
         <ErrorPage error={error} resetError={resetErrorBoundary} />
       )}
-      onError={() => {}}
+      onError={(error) => {
+        error;
+      }}
     >
       <ToastProvider>
         <Router />
