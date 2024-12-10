@@ -2,13 +2,14 @@ import { Controller, FormProvider, useForm } from 'react-hook-form';
 
 import Button from '../../components/common/Button';
 import { CreatePostingAPI } from '@/api/createPosting/createPostingAPI';
-import { CreatePostingRequestParams } from '@/types/createPostingType';
 import Header from '../../components/common/Header';
 import PostImageUpload from '../../components/posting/PostImageUpload';
 import PostTextEditor from '../../components/posting/PostTextEditor';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useToast } from '@/hooks/useToast';
 import { useQueryClient } from '@tanstack/react-query';
+import { useUpdatePost } from '@/hooks/updatePost/useUpdatePost';
+import { CreatePostingRequestParams } from '@/types/createPostingType';
 
 type FormValues = {
   images: File[];
@@ -18,9 +19,13 @@ type FormValues = {
 
 const CreatePostPage = () => {
   const queryClient = useQueryClient();
-
+  const { updatePostMutation } = useUpdatePost();
   const { showToast } = useToast();
   const navigate = useNavigate();
+  const { postId } = useParams<{ postId?: string }>();
+
+  const isUpdateMode = !!postId;
+
   const postingFromMethods = useForm<FormValues>({
     defaultValues: {
       images: [],
@@ -59,16 +64,38 @@ const CreatePostPage = () => {
       is_with_teacher: data.is_with_teacher,
     };
 
-    try {
-      // CreatePostingAPI를 호출하여 서버에 데이터 전송
-      const response = await CreatePostingAPI(postingData);
-      console.log('포스팅 성공:', response);
-      showToast('포스팅이 성공적으로 작성되었습니다!');
-      navigate('/student-main');
-      queryClient.invalidateQueries({ queryKey: ['profile'] });
-    } catch (error) {
-      console.error('포스팅 실패:', error);
-      showToast('서버 오류가 발생했습니다. 잠시 후 다시 전송 해주세요');
+    if (isUpdateMode) {
+      try {
+        console.log('Update Mode Data:', {
+          postId,
+          images: data.images,
+          content: data.content,
+          is_with_teacher: data.is_with_teacher,
+        });
+
+        updatePostMutation({
+          image1: data.images[0],
+          image2: data.images[1] || null,
+          image3: data.images[2] || null,
+          content: data.content,
+          is_with_teacher: data.is_with_teacher,
+        });
+      } catch (error) {
+        console.error('업데이트 호출 에러:', error);
+        showToast('포스트 업데이트 중 오류가 발생했습니다.');
+      }
+    } else {
+      try {
+        // CreatePostingAPI를 호출하여 서버에 데이터 전송
+        const response = await CreatePostingAPI(postingData);
+        console.log('포스팅 성공:', response);
+        showToast('포스팅이 성공적으로 작성되었습니다!');
+        navigate('/student-main');
+        queryClient.invalidateQueries({ queryKey: ['profile'] });
+      } catch (error) {
+        console.error('포스팅 실패:', error);
+        showToast('서버 오류가 발생했습니다. 잠시 후 다시 전송 해주세요');
+      }
     }
   };
 

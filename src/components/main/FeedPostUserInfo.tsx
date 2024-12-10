@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import studentIcon1 from '@/assets/editProfile/student/studentIcon1.png';
 import { useProfile } from '@/hooks/useProfile';
@@ -28,6 +28,7 @@ const FeedPostUserInfo = ({
   const { profileData } = useProfile();
   const { deletePostMutation } = useDeletePost();
 
+  const navigate = useNavigate();
   const queryClient = useQueryClient();
 
   // const localStorageId = Number(localStorage.getItem('userId'));
@@ -120,7 +121,14 @@ const FeedPostUserInfo = ({
                   whileHover={{ backgroundColor: '#f3f4f6' }}
                   whileTap={{ scale: 0.95 }}
                   className='block w-full rounded-t-md px-4 py-2 text-left text-sm text-gray-700'
-                  onClick={() => console.log('수정하기')}
+                  onClick={() => {
+                    const postId = profileData?.posts.find(
+                      (post) => post.post_id === post_id
+                    )?.post_id;
+                    if (postId) {
+                      navigate(`/student/post/${postId}`);
+                    }
+                  }}
                 >
                   수정하기
                 </motion.button>
