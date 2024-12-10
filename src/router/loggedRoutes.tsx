@@ -134,6 +134,14 @@ export const loggedRoutes = [
               </Suspense>
             ),
           },
+          {
+            path: '/student/post/:postId',
+            element: (
+              <Suspense fallback={<LoadingPage />}>
+                <CreatePostPage />
+              </Suspense>
+            ),
+          },
         ],
       },
       {

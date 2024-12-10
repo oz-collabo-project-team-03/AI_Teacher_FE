@@ -62,18 +62,7 @@ const HomeFeedPage = () => {
     return <NotfoundPage />;
   }
 
-  const modalVariants = {
-    open: {
-      opacity: 1,
-      y: 0,
-      transition: { type: 'spring', stiffness: 300, damping: 20 },
-    },
-    closed: {
-      opacity: 0,
-      y: 100,
-      transition: { type: 'spring', stiffness: 300, damping: 20 },
-    },
-  };
+  console.log('포스트데이터', data);
 
   return (
     <div className='h-full pt-[72px]'>
@@ -121,6 +110,18 @@ const HomeFeedPage = () => {
         )}
     </div>
   );
+};
+const modalVariants = {
+  open: {
+    opacity: 1,
+    y: 0,
+    transition: { type: 'spring', stiffness: 300, damping: 20 },
+  },
+  closed: {
+    opacity: 0,
+    y: 100,
+    transition: { type: 'spring', stiffness: 300, damping: 20 },
+  },
 };
 
 export default HomeFeedPage;
