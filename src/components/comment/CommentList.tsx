@@ -2,9 +2,9 @@ import { Comment } from '@/api/comment/fetchComment/fetchCommentType';
 import ProfileImage from './CommentProfileImage';
 import ReComment from './ReComment';
 import { useDeleteCommentMutation } from '@/api/comment/deleteComment/deleteComment.hooks';
-import { useState } from 'react';
 import { useProfile } from '@/hooks/useProfile';
 import { useQueryClient } from '@tanstack/react-query';
+import { useState } from 'react';
 
 type CommentProps = {
   comments: Comment[];
@@ -24,14 +24,11 @@ const CommentList = ({
 
   const queryClient = useQueryClient();
   const { mutate: deleteComment, status } = useDeleteCommentMutation({
-    onSuccess: (data) => {
-      console.log(data.message);
+    onSuccess: () => {
       // refetchComments(); //댓글 삭제 후 댓글 목록 갱신
       queryClient.invalidateQueries({ queryKey: ['comments'] });
     },
-    onError: () => {
-      console.log('삭제실패');
-    },
+    onError: () => {},
   });
 
   //댓글 삭제

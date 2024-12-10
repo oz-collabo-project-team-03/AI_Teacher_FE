@@ -1,15 +1,15 @@
 import { Controller, FormProvider, useForm } from 'react-hook-form';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import Button from '../../components/common/Button';
 import { CreatePostingAPI } from '@/api/createPosting/createPostingAPI';
+import { CreatePostingRequestParams } from '@/types/createPostingType';
 import Header from '../../components/common/Header';
 import PostImageUpload from '../../components/posting/PostImageUpload';
 import PostTextEditor from '../../components/posting/PostTextEditor';
-import { useNavigate, useParams } from 'react-router-dom';
-import { useToast } from '@/hooks/useToast';
 import { useQueryClient } from '@tanstack/react-query';
+import { useToast } from '@/hooks/useToast';
 import { useUpdatePost } from '@/hooks/updatePost/useUpdatePost';
-import { CreatePostingRequestParams } from '@/types/createPostingType';
 
 type FormValues = {
   images: File[];

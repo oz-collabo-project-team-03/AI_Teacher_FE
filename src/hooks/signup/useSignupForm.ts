@@ -1,24 +1,24 @@
-import { usePostSignupMutation } from '@/api/auth/signup/signup.hooks';
+import {
+  GetSocialLoginUserInfoResponse,
+  SocialStudentInfoRequestParams,
+  SocialTeacherInfoRequestParams,
+} from '@/api/social/socialType';
 import {
   usePatchSocialStudentInfoMutation,
   usePatchSocialTeacherInfoMutation,
 } from '@/api/social/social.hooks';
-import {
-  SocialStudentInfoRequestParams,
-  SocialTeacherInfoRequestParams,
-  GetSocialLoginUserInfoResponse,
-} from '@/api/social/socialType';
 
-import { useToast } from '@/hooks/useToast';
-import { signupFormSchema } from '@/schemas/signupValidationSchemas';
-import { useTermsStore } from '@/stores/useTermsStore';
 import { ApiError } from '@/types/apiErrorType';
 import { SignupRequestParams } from '@/types/signupType';
-import { zodResolver } from '@hookform/resolvers/zod';
 import axios from 'axios';
-import { useState } from 'react';
+import { signupFormSchema } from '@/schemas/signupValidationSchemas';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
+import { usePostSignupMutation } from '@/api/auth/signup/signup.hooks';
+import { useState } from 'react';
+import { useTermsStore } from '@/stores/useTermsStore';
+import { useToast } from '@/hooks/useToast';
+import { zodResolver } from '@hookform/resolvers/zod';
 
 const STEP = {
   ACCOUNT_INFO: 1,
@@ -65,18 +65,14 @@ export const useSignupForm = (roleParam: 'student' | 'teacher' | undefined) => {
     isPending: signupIsPending,
     error: signupIsError,
   } = usePostSignupMutation({
-    onSuccess: (data) => {
-      console.log('회원가입 완료', data);
+    onSuccess: () => {
+   
       navigate(`/signup-complete?role=${roleParam}`, { replace: true });
     },
     onError(error) {
       // Axios 에러인 경우 더 상세한 로깅
       if (axios.isAxiosError(error)) {
-        console.error('Axios Error Details:', {
-          response: error.response?.data,
-          status: error.response?.status,
-          headers: error.response?.headers,
-        });
+        
       }
       const apiError = error as ApiError;
       const errorMessage =
@@ -94,11 +90,7 @@ export const useSignupForm = (roleParam: 'student' | 'teacher' | undefined) => {
   } = usePatchSocialStudentInfoMutation({
     onSuccess: (data: GetSocialLoginUserInfoResponse) => {
       showToast(data.message);
-      console.log('학생소셜로그인입력했어요!!!', data);
-      // 네비게이션 시 state 로깅 추가
-      console.log('추가정보 제출:', {
-        isFirstLogin: data.first_login,
-      });
+
       navigate('/signup-complete?role=student', {
         replace: true,
         state: { study_group: data.study_group },
@@ -107,11 +99,7 @@ export const useSignupForm = (roleParam: 'student' | 'teacher' | undefined) => {
     onError: (error) => {
       // Axios 에러인 경우 더 상세한 로깅
       if (axios.isAxiosError(error)) {
-        console.error('Axios Error Details:', {
-          response: error.response?.data,
-          status: error.response?.status,
-          headers: error.response?.headers,
-        });
+        
       }
       const apiError = error as ApiError;
       const errorMessage =
@@ -137,11 +125,7 @@ export const useSignupForm = (roleParam: 'student' | 'teacher' | undefined) => {
     onError: (error) => {
       // Axios 에러인 경우 더 상세한 로깅
       if (axios.isAxiosError(error)) {
-        console.error('Axios Error Details:', {
-          response: error.response?.data,
-          status: error.response?.status,
-          headers: error.response?.headers,
-        });
+        
       }
       const apiError = error as ApiError;
       const errorMessage =

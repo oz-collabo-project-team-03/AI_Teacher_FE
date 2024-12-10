@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 
 import ChatInput from '@/components/chat/ChatInput';
 import ChatMessage from '@/components/chat/ChatMessage';
-import { ChatMessageRequestParams } from '@/types/chat';
+import { ChatMessageData } from '@/types/chat';
 import ErrorPage from '../status/errorPage';
 import Header from '@/components/common/Header';
 import HelpButton from '@/components/chat/HelpButton';
@@ -23,23 +23,19 @@ const TeacherChatRoomPage = () => {
 
   const [roomTitle, setRoomTitle] = useState<string>('');
   const [page] = useState<number>(1);
-  const [chatMessages, setChatMessages] = useState<ChatMessageRequestParams[]>(
-    []
-  );
+  const [chatMessages, setChatMessages] = useState<ChatMessageData[]>([]);
   const [isComposing, setIsComposing] = useState(false); // 한글 조합 상태 관리
   const [helpChecked, setHelpChecked] = useState(false);
 
   const { profileData } = useProfile();
   const userId = profileData?.id;
   if (userId === null) {
-    console.error('userId가 없습니다! WebSocket 연결 실패');
     return null;
   }
 
   const { roomId } = useParams<{ roomId: string }>();
   const roomIdNumber = parseInt(roomId!, 10);
   if (isNaN(roomIdNumber)) {
-    console.error('roomId가 유효한 숫자가 아닙니다.');
   }
 
   const {
@@ -63,13 +59,13 @@ const TeacherChatRoomPage = () => {
   // WebSocket 관련 상태 및 함수
   const { sendMessage, lastMessage } = useChatWebSocket(
     roomIdNumber,
-    userId || 0
+    userId as number
   );
 
   const { mergeMessages } = useMergeMessages();
   // 메시지 병합
   const mergeAndSetMessages = useCallback(
-    (newMessages: ChatMessageRequestParams[]) => {
+    (newMessages: ChatMessageData[]) => {
       setChatMessages((prevMessages) =>
         mergeMessages(prevMessages, newMessages)
       );
@@ -81,7 +77,7 @@ const TeacherChatRoomPage = () => {
   useEffect(() => {
     if (data) {
       const firstPage = data.pages[0];
-      setHelpChecked(firstPage.help_checked || false); // helpChecked 초기화
+      setHelpChecked(firstPage.help_checked || false);
 
       const allMessages = data.pages.flatMap((page) =>
         page.messages.map((message) => {
@@ -102,7 +98,7 @@ const TeacherChatRoomPage = () => {
         })
       );
 
-      mergeAndSetMessages(allMessages); // 병합된 메시지 설정
+      mergeAndSetMessages(allMessages);
       setRoomTitle(data.pages[0]?.student_nickname || '');
     }
   }, [data, mergeMessages]);
@@ -117,7 +113,7 @@ const TeacherChatRoomPage = () => {
         firstPage
       );
 
-      const newChatMessage: ChatMessageRequestParams = {
+      const newChatMessage: ChatMessageData = {
         message: lastMessage.content,
         message_type: lastMessage.message_type,
         nickname,
@@ -140,12 +136,26 @@ const TeacherChatRoomPage = () => {
     }
   }, [lastMessage, data]);
 
-  // 채팅 자동 스크롤 처리
+  // 스크롤 동작을 캡슐화한 함수
+  const scrollToElement = useCallback((element: HTMLElement) => {
+    element.scrollIntoView({ behavior: 'instant', block: 'end' });
+  }, []);
+
+  // 초기 스크롤 상태 관리
+  const [initialScrollComplete, setInitialScrollComplete] = useState(false);
+
+  // 채팅 자동 스크롤 처리 (chatMessages 업데이트될 때 실행)
   useEffect(() => {
     if (chatEndRef.current) {
-      chatEndRef.current.scrollIntoView({ behavior: 'smooth' });
+      if (!initialScrollComplete) {
+        scrollToElement(chatEndRef.current);
+        setInitialScrollComplete(true);
+      } else {
+        // 이후 메시지가 추가되면 부드러운 스크롤
+        chatEndRef.current.scrollIntoView({ behavior: 'smooth' });
+      }
     }
-  }, [chatMessages]);
+  }, [chatMessages, scrollToElement, initialScrollComplete]);
 
   // 텍스트 메시지 전송 핸들러
   const handleSendMessage = (newMessage: string) => {
@@ -156,7 +166,6 @@ const TeacherChatRoomPage = () => {
     try {
       const trimmedMessage = newMessage.trim();
       if (!trimmedMessage) {
-        console.error('빈 메시지는 전송할 수 없습니다');
         return;
       }
 
@@ -167,9 +176,7 @@ const TeacherChatRoomPage = () => {
         message_type: 'text',
         user_type: 'teacher',
       });
-    } catch (error) {
-      console.error('WebSocket 메시지 전송 중 에러:', error);
-    }
+    } catch (error) {}
   };
 
   // 파일 첨부 전송 핸들러
@@ -189,9 +196,7 @@ const TeacherChatRoomPage = () => {
           timestamp: new Date().toISOString(),
           user_type: 'student',
         });
-      } catch (error) {
-        console.error('메시지 전송 중 에러:', error);
-      }
+      } catch (error) {}
     }
   );
 

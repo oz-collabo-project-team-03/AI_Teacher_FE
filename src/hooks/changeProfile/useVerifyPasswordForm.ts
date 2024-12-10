@@ -1,11 +1,11 @@
+import { ApiErrorResponseDto } from '@/types/apiErrorType';
+import { VerifyPasswordRequestParams } from '@/api/auth/changeProfile/verifyPassword/verifyPasswordType';
+import axios from 'axios';
 import { useForm } from 'react-hook-form';
+import { useToast } from '@/hooks/useToast';
+import { useVerifyPasswordMutation } from '@/api/auth/changeProfile/verifyPassword/verifyPassword.hooks';
 import { z as zod } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useVerifyPasswordMutation } from '@/api/auth/changeProfile/verifyPassword/verifyPassword.hooks';
-import { ApiErrorResponseDto } from '@/types/apiErrorType';
-import { useToast } from '@/hooks/useToast';
-import axios from 'axios';
-import { VerifyPasswordRequestParams } from '@/api/auth/changeProfile/verifyPassword/verifyPasswordType';
 
 const verifyPasswordSchema = zod.object({
   password: zod.string().min(1, { message: '비밀번호를 입력해주세요.' }),
@@ -35,11 +35,7 @@ export const useVerifyPasswordForm = (onUserVerifyPassword: () => void) => {
       },
       onError: (error) => {
         if (axios.isAxiosError(error)) {
-          console.error('Axios Error Details:', {
-            response: error.response?.data,
-            status: error.response?.status,
-            headers: error.response?.headers,
-          });
+         
         }
 
         const apiError = error as ApiErrorResponseDto;

@@ -48,3 +48,7 @@ const ChatInput = ({ onSendMessage, disabled = false }: ChatInputProps) => {
 };
 
 export default ChatInput;
+//api 리퀘스트니 onSendMessage 비동기로 되겠죠?
+//panding처리가 필요할지도 > 엔터를 연속으로 보낼때 엔터를 방지 > disabled 넣는거 좋음
+//엔터칠때마다 로딩이 필요함 어떻게할껀지 생각해보는것 숙제 => 다중 로딩처리 추천
+//스타일 길어지면 꼭 분리하기

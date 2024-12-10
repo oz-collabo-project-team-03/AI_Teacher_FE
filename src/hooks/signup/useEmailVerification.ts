@@ -2,14 +2,15 @@ import {
   usePostEmailVerificationCodeMutation,
   usePostEmailVerificationMutation,
 } from '@/api/auth/sendEmail/sendEmail.hooks';
-import useCountdown from '@/hooks/signup/useCountDown';
-import { useToast } from '@/hooks/useToast';
-import { signupFormSchema } from '@/schemas/signupValidationSchemas';
+
 import { ApiErrorResponseDto } from '@/types/apiErrorType';
-import { zodResolver } from '@hookform/resolvers/zod';
 import axios from 'axios';
-import { useState } from 'react';
+import { signupFormSchema } from '@/schemas/signupValidationSchemas';
+import useCountdown from '@/hooks/signup/useCountDown';
 import { useForm } from 'react-hook-form';
+import { useState } from 'react';
+import { useToast } from '@/hooks/useToast';
+import { zodResolver } from '@hookform/resolvers/zod';
 
 type FormValues = {
   email: string;
@@ -26,17 +27,13 @@ export const useEmailVerification = (getValues: () => FormValues) => {
     isPending,
     error,
   } = usePostEmailVerificationMutation({
-    onSuccess: (data) => {
-      console.log('Email verification sent successfully:', data);
+    onSuccess: () => {
+   
     },
     onError: (error) => {
       // Axios 에러인 경우 더 상세한 로깅
       if (axios.isAxiosError(error)) {
-        console.error('Axios Error Details:', {
-          response: error.response?.data,
-          status: error.response?.status,
-          headers: error.response?.headers,
-        });
+       
       }
 
       const apiError = error as ApiErrorResponseDto;
@@ -64,11 +61,7 @@ export const useEmailVerification = (getValues: () => FormValues) => {
       onError: (error) => {
         // Axios 에러인 경우 더 상세한 로깅
         if (axios.isAxiosError(error)) {
-          console.error('Axios Error Details:', {
-            response: error.response?.data,
-            status: error.response?.status,
-            headers: error.response?.headers,
-          });
+         
         }
 
         const apiError = error as ApiErrorResponseDto;

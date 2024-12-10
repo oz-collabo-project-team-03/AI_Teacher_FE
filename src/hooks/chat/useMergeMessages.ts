@@ -1,11 +1,11 @@
-import { ChatMessageRequestParams } from '@/types/chat';
+import { ChatMessageData } from '@/types/chat';
 import { useCallback } from 'react';
 
 export const useMergeMessages = () => {
   const mergeMessages = useCallback(
     (
-      prevMessages: ChatMessageRequestParams[],
-      newMessages: ChatMessageRequestParams[]
+      prevMessages: ChatMessageData [],
+      newMessages: ChatMessageData []
     ) => {
       const allMessages = [...newMessages, ...prevMessages];
       const uniqueMessages = Array.from(

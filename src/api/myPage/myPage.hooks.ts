@@ -15,39 +15,38 @@ export const useProfileGetQuery = (
   return useQuery({
     queryKey: ['profile', userId, pathname], // 경로도 키에 추가
     queryFn: async () => {
-      // console.log('Executing queryFn with:', { userId });
+      
 
       try {
         if (userId) {
           // 다른 사용자 기본 프로필 조회
-          // console.log('Fetching user profile for userId:', userId);
+          
           const userProfile = await getUserProfileAPI(userId);
-          // console.log('User profile fetched:', userProfile);
+         
 
           // studyGroup이 없다면 내 프로필에서 가져오기
           if (!userProfile.study_group) {
-            // console.log('No studyGroup in user profile, fetching my profile');
+         
             const myProfile = await getMyProfileAPI();
-            // console.log('My profile fetched:', myProfile);
+          
 
             const combinedProfile = {
               ...userProfile,
               study_group: myProfile.study_group,
             };
-            // console.log('Combined profile:', combinedProfile);
+          
             return combinedProfile;
           }
 
           return userProfile;
         } else {
           // 내 프로필 조회
-          // console.log('Fetching my profile');
           const myProfile = await getMyProfileAPI();
-          // console.log('My profile fetched:', myProfile);
+        
           return myProfile;
         }
       } catch (error) {
-        // console.error('Error in profile query:', error);
+      
         throw error;
       }
     },

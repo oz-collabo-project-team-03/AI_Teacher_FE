@@ -1,4 +1,3 @@
-import axiosInstance from '@/api/axiosInstance';
 import {
   EmailVerificationCodeRequestParams,
   EmailVerificationRequestParams,
@@ -6,12 +5,13 @@ import {
   GetEmailVerificationResponse,
 } from './emailType';
 
+import axiosInstance from '@/api/axiosInstance';
+
 export const emailAPI = {
   // 이메일 인증 요청 함수
   sendEmailVerification: async (
     emailData: EmailVerificationRequestParams
   ): Promise<GetEmailVerificationResponse> => {
-    console.log('요청 데이터:', emailData);
     const response = await axiosInstance.post<GetEmailVerificationResponse>(
       '/auth/email/send',
       emailData

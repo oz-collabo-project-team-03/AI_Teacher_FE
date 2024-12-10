@@ -47,9 +47,7 @@ const CommentModal = ({ post_id }: CommentModalProps) => {
   const comments: Comment[] = commentData ? commentData.comments : [];
 
   // 댓글 데이터 콘솔로 확인
-  useEffect(() => {
-    console.log('댓글 데이터:', comments);
-  }, [comments]);
+  useEffect(() => {}, [comments]);
 
   //댓글 작성 post요청
   const { mutate: postComment } = useFetchCommentMutation({

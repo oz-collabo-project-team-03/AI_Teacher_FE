@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 
 import ChatInput from '@/components/chat/ChatInput';
 import ChatMessage from '@/components/chat/ChatMessage';
-import { ChatMessageRequestParams } from '@/types/chat';
+import { ChatMessageData } from '@/types/chat';
 import ErrorPage from '../status/errorPage';
 import Header from '@/components/common/Header';
 import HelpButton from '@/components/chat/HelpButton';
@@ -21,29 +21,25 @@ import { useProfile } from '@/hooks/useProfile';
 const StudentChatRoomPage = () => {
   const [buttonType, setButtonType] = useState<'help' | 'end'>('help');
   const [roomTitle, setRoomTitle] = useState<string>('');
-  const [chatMessages, setChatMessages] = useState<ChatMessageRequestParams[]>(
-    []
-  );
+  const [chatMessages, setChatMessages] = useState<ChatMessageData[]>([]);
   const { mergeMessages } = useMergeMessages();
   const [isComposing, setIsComposing] = useState(false);
   const [helpChecked, setHelpChecked] = useState(false);
 
-  const chatEndRef = useRef<HTMLDivElement>(null);
   const chatContainerRef = useRef<HTMLDivElement>(null);
+  const chatEndRef = useRef<HTMLDivElement>(null);
 
   const [page] = useState<number>(1);
 
   const { profileData } = useProfile();
   const userId = profileData?.id;
   if (userId === null) {
-    console.error('userId가 없습니다! WebSocket 연결 실패');
     return null;
   }
 
   const { roomId } = useParams<{ roomId: string }>();
   const roomIdNumber = parseInt(roomId!, 10);
   if (isNaN(roomIdNumber)) {
-    console.error('roomId가 유효한 숫자가 아닙니다.');
   }
 
   const {
@@ -56,7 +52,7 @@ const StudentChatRoomPage = () => {
     refetch,
   } = useChatMessagesInfiniteQuery({
     room_id: roomIdNumber,
-    page,
+    page: page,
   });
 
   const observerRef = useInfiniteScroll({
@@ -67,23 +63,21 @@ const StudentChatRoomPage = () => {
   // WebSocket 관련 상태 및 함수
   const { sendMessage, lastMessage } = useChatWebSocket(
     roomIdNumber,
-    userId || 0
+    userId as number
   );
 
   // Help 요청 API 호출
   const { mutate: patchChatHelp } = usePatchChatHelpMutation({
     onSuccess: (data) => {
       setButtonType(data.help_checked ? 'end' : 'help');
-      setHelpChecked(data.help_checked); // helpChecked 상태 즉시 업데이트
+      setHelpChecked(data.help_checked);
     },
-    onError: (error) => {
-      console.error('Help 요청 실패:', error);
-    },
+    onError: () => {},
   });
 
   // 메시지 병합
   const mergeAndSetMessages = useCallback(
-    (newMessages: ChatMessageRequestParams[]) => {
+    (newMessages: ChatMessageData[]) => {
       setChatMessages((prevMessages) =>
         mergeMessages(prevMessages, newMessages)
       );
@@ -95,7 +89,7 @@ const StudentChatRoomPage = () => {
   useEffect(() => {
     if (data) {
       const firstPage = data.pages[0];
-      setHelpChecked(firstPage.help_checked || false); // helpChecked 초기화
+      setHelpChecked(firstPage.help_checked || false);
       setButtonType(firstPage.help_checked ? 'end' : 'help');
 
       const allMessages = data.pages.flatMap((page) =>
@@ -117,7 +111,7 @@ const StudentChatRoomPage = () => {
         })
       );
 
-      mergeAndSetMessages(allMessages); // 병합된 메시지 설정
+      mergeAndSetMessages(allMessages);
       setRoomTitle(data.pages[0]?.title || '');
       setButtonType(data.pages[0]?.help_checked ? 'end' : 'help');
     }
@@ -132,7 +126,7 @@ const StudentChatRoomPage = () => {
         firstPage
       );
 
-      const newChatMessage: ChatMessageRequestParams = {
+      const newChatMessage: ChatMessageData = {
         message: lastMessage.content,
         message_type: lastMessage.message_type,
         nickname,
@@ -155,23 +149,35 @@ const StudentChatRoomPage = () => {
     }
   }, [lastMessage, data]);
 
-  // 채팅 자동 스크롤 처리
+  // 스크롤 동작을 캡슐화한 함수
+  const scrollToElement = useCallback((element: HTMLElement) => {
+    element.scrollIntoView({ behavior: 'instant', block: 'end' });
+  }, []);
+
+  // 초기 스크롤 상태 관리
+  const [initialScrollComplete, setInitialScrollComplete] = useState(false);
+
+  // 채팅 자동 스크롤 처리 (chatMessages 업데이트될 때 실행)
   useEffect(() => {
     if (chatEndRef.current) {
-      chatEndRef.current.scrollIntoView({ behavior: 'smooth' });
+      if (!initialScrollComplete) {
+        scrollToElement(chatEndRef.current);
+        setInitialScrollComplete(true);
+      } else {
+        // 이후 메시지가 추가되면 부드러운 스크롤
+        chatEndRef.current.scrollIntoView({ behavior: 'smooth' });
+      }
     }
-  }, [chatMessages]);
+  }, [chatMessages, scrollToElement, initialScrollComplete]);
 
   // 도움 요청 버튼 클릭 핸들러
   const handleHelpButtonClick = () => {
     if (!roomId) {
-      console.error('room_id(roomId)가 없습니다!');
       return;
     }
 
     const roomIdNumber = parseInt(roomId, 10);
     if (isNaN(roomIdNumber)) {
-      console.error('room_id가 유효한 숫자가 아닙니다.');
       return;
     }
 
@@ -190,7 +196,6 @@ const StudentChatRoomPage = () => {
     try {
       const trimmedMessage = newMessage.trim();
       if (!trimmedMessage) {
-        console.error('빈 메시지는 전송할 수 없습니다');
         return;
       }
 
@@ -201,9 +206,7 @@ const StudentChatRoomPage = () => {
         message_type: 'text',
         user_type: 'student',
       });
-    } catch (error) {
-      console.error('WebSocket 메시지 전송 중 에러:', error);
-    }
+    } catch (error) {}
   };
 
   // 파일 첨부 전송 핸들러
@@ -223,9 +226,7 @@ const StudentChatRoomPage = () => {
           timestamp: new Date().toISOString(),
           user_type: 'student',
         });
-      } catch (error) {
-        console.error('메시지 전송 중 에러:', error);
-      }
+      } catch (error) {}
     }
   );
 

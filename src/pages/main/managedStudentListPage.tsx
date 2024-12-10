@@ -1,8 +1,8 @@
+import LoadingPage from '../status/loadingPage';
 import MainHeader from '../../components/main/MainHeader';
 import ManagedList from '../../components/main/ManagedList';
 import TeacherInfo from '@/components/main/TeacherInfo';
 import { useFetchStudentsListQuery } from '../../api/studentsList/studentsList.hook';
-import LoadingPage from '../status/loadingPage';
 import { useQueryClient } from '@tanstack/react-query';
 
 const ManagedStudentListPage = () => {
@@ -13,7 +13,6 @@ const ManagedStudentListPage = () => {
   if (isLoading) return <LoadingPage />;
   if (error instanceof Error) return <div>Error: {error.message}</div>;
 
-  console.log(data);
   if (!data || !data.students) return <div>No data available</div>;
 
   const students = Array.isArray(data.students)

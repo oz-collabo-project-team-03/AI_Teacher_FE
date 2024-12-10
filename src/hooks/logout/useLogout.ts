@@ -1,12 +1,12 @@
-import { usePostLogoutMutation } from '@/api/auth/logout/logout.hooks';
-import { LogoutResponseDto } from '@/api/auth/logout/logoutType';
-import { useToast } from '@/hooks/useToast';
 import { ApiErrorResponseDto } from '@/types/apiErrorType';
-import axios from 'axios';
 import { Cookies } from 'react-cookie';
-import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../useAuth';
+import { LogoutResponseDto } from '@/api/auth/logout/logoutType';
+import axios from 'axios';
 import { clearScrollPositions } from '../useScrollPosition';
+import { useAuth } from '../useAuth';
+import { useNavigate } from 'react-router-dom';
+import { usePostLogoutMutation } from '@/api/auth/logout/logout.hooks';
+import { useToast } from '@/hooks/useToast';
 
 export const useLogout = () => {
   const navigate = useNavigate();
@@ -33,14 +33,9 @@ export const useLogout = () => {
       navigate('/', { replace: true });
     },
     onError: (error) => {
-      console.error('Logout Error:', error);
 
       if (axios.isAxiosError(error)) {
-        console.error('Axios Error Details:', {
-          response: error.response?.data,
-          status: error.response?.status,
-          headers: error.response?.headers,
-        });
+       
       }
 
       const apiError = error as ApiErrorResponseDto;

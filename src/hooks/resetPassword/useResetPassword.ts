@@ -1,13 +1,12 @@
-import { zodResolver } from '@hookform/resolvers/zod';
-import axios from 'axios';
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { z as zod } from 'zod';
-
-import { usePostResetPasswordMutation } from '@/api/auth/resetPassword/resetPassword.hooks';
-import { GetResetPasswordResponse } from '@/api/auth/resetPassword/resetPasswordType';
-import { useToast } from '@/hooks/useToast';
 import { ApiError } from '@/types/apiErrorType';
+import { GetResetPasswordResponse } from '@/api/auth/resetPassword/resetPasswordType';
+import axios from 'axios';
+import { useForm } from 'react-hook-form';
+import { usePostResetPasswordMutation } from '@/api/auth/resetPassword/resetPassword.hooks';
+import { useState } from 'react';
+import { useToast } from '@/hooks/useToast';
+import { z as zod } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
 
 export const RESET_PASSWORD_STEP = {
   INPUT_EMAIL: 1,
@@ -43,15 +42,10 @@ export const useResetPassword = () => {
       showToast(data.message);
     },
     onError: (error) => {
-      console.error('Reset Password Error:', error);
-
+     
       // Axios 에러인 경우 더 상세한 로깅
       if (axios.isAxiosError(error)) {
-        console.error('Axios Error Details:', {
-          response: error.response?.data,
-          status: error.response?.status,
-          headers: error.response?.headers,
-        });
+        
       }
 
       const apiError = error as ApiError;
