@@ -24,7 +24,7 @@ const CommentList = ({
 
   const queryClient = useQueryClient();
   const { mutate: deleteComment, status } = useDeleteCommentMutation({
-    onSuccess: (data) => {
+    onSuccess: () => {
       // refetchComments(); //댓글 삭제 후 댓글 목록 갱신
       queryClient.invalidateQueries({ queryKey: ['comments'] });
     },

@@ -65,7 +65,7 @@ export const useSignupForm = (roleParam: 'student' | 'teacher' | undefined) => {
     isPending: signupIsPending,
     error: signupIsError,
   } = usePostSignupMutation({
-    onSuccess: (data) => {
+    onSuccess: () => {
    
       navigate(`/signup-complete?role=${roleParam}`, { replace: true });
     },

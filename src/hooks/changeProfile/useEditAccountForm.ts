@@ -36,7 +36,7 @@ export const useEditAccountForm = (role: 'student' | 'teacher' | undefined) => {
   } = form;
 
   const { mutate: editAccountMutation } = useEditAccountMutation({
-    onSuccess: (data) => {
+    onSuccess: () => {
       navigate('/my-page'), { replace: true };
       showToast('회원 정보 변경 완료');
     },

@@ -27,7 +27,7 @@ export const useEmailVerification = (getValues: () => FormValues) => {
     isPending,
     error,
   } = usePostEmailVerificationMutation({
-    onSuccess: (data) => {
+    onSuccess: () => {
    
     },
     onError: (error) => {

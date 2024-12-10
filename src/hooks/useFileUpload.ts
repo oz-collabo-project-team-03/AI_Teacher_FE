@@ -28,7 +28,7 @@ export const useFileUpload = (onUpload: (fileContent: string, fileName: string) 
       onUpload(base64Data.split(',')[1], file.name);
     };
 
-    reader.onerror = (error) => {
+    reader.onerror = () => {
      
     };
 

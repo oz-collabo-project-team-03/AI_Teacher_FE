@@ -72,7 +72,7 @@ const StudentChatRoomPage = () => {
       setButtonType(data.help_checked ? 'end' : 'help');
       setHelpChecked(data.help_checked);
     },
-    onError: (error) => {},
+    onError: () => {},
   });
 
   // 메시지 병합
