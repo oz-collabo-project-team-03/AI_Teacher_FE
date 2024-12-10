@@ -2,6 +2,8 @@ import { Link, useLocation } from 'react-router-dom';
 import { useLayoutNavIcon } from '@/hooks/useLayoutNavIcon';
 import { layoutNavItem } from '@/types/layoutNavType';
 import { useProfile } from '@/hooks/useProfile';
+import studentIcon1 from '@/assets/editProfile/student/studentIcon1.png';
+import teacherIcon1 from '@/assets/editProfile/teacher/teacherIcon1.png';
 
 type BaseNavBarProps = {
   items: layoutNavItem[];
@@ -12,6 +14,9 @@ const BaseNavBar = ({ items, profilePath }: BaseNavBarProps) => {
   const { getIcon, setHoveredId } = useLayoutNavIcon();
   const { profileData } = useProfile();
   const location = useLocation();
+
+  const defaultImage =
+    profileData?.role === 'student' ? studentIcon1 : teacherIcon1;
 
   const handleNavClick = (path: string) => {
     if (location.pathname === path) {
@@ -45,7 +50,10 @@ const BaseNavBar = ({ items, profilePath }: BaseNavBarProps) => {
       <Link to={profilePath} onClick={() => handleNavClick(profilePath)}>
         {profileData?.profile_image ? (
           <img
-            src={profileData.profile_image}
+            src={profileData.profile_image || defaultImage}
+            onError={(e) => {
+              e.currentTarget.src = defaultImage;
+            }}
             alt='프로필 이미지'
             className='rounded-ful h-8 w-8'
           />
