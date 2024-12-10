@@ -1,8 +1,9 @@
-import thumbsUPIcon from '@/assets/auth/thumbs_up.svg';
-import Celebration from '@/components/ConfettiCelebration';
-import Button from '@/components/common/Button';
-import { motion } from 'framer-motion';
 import { useLocation, useNavigate } from 'react-router-dom';
+
+import Button from '@/components/common/Button';
+import Celebration from '@/components/ConfettiCelebration';
+import { motion } from 'framer-motion';
+import thumbsUPIcon from '@/assets/auth/thumbs_up.svg';
 
 const SignupCompletePage = () => {
   const location = useLocation();
@@ -12,10 +13,6 @@ const SignupCompletePage = () => {
   const role = searchParams.get('role');
 
   const isFirstLogin = location.state?.isFirstLogin;
-  // console.log('location 전체:', location);
-  // console.log('location.state의 타입:', typeof location.state);
-
-  // console.log(searchParams.get('role'));
 
   // 애니메이션을 위한 초기 상태 및 변형 설정
   const imageVariants = {

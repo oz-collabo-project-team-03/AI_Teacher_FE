@@ -49,12 +49,7 @@ const FeedPostButton = ({ post_id }: FeedPostButtonProps) => {
             };
           });
         },
-        onError: (error: any) => {
-          console.error(
-            '좋아요 상태 변경 실패',
-            error.response?.data || error.message
-          );
-        },
+        onError: (error: any) => {},
       }
     );
   };

@@ -1,14 +1,14 @@
-import { useToast } from '@/hooks/useToast';
 import { ApiErrorResponseDto } from '@/types/apiErrorType';
-import axios from 'axios';
-import { useEffect } from 'react';
 import { Cookies } from 'react-cookie';
-import { useNavigate } from 'react-router-dom';
 import ErrorPage from '../status/errorPage';
-import LoadingPage from '../status/loadingPage';
 import { GetSocialLoginResponse } from '@/api/social/socialType';
-import { useSocialLoginCallbackMutation } from '@/api/social/social.hooks';
+import LoadingPage from '../status/loadingPage';
+import axios from 'axios';
 import { useAuth } from '@/hooks/useAuth';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useSocialLoginCallbackMutation } from '@/api/social/social.hooks';
+import { useToast } from '@/hooks/useToast';
 
 const LoginHandlerPage = () => {
   const url = new URL(window.location.href);
@@ -27,17 +27,9 @@ const LoginHandlerPage = () => {
   } = useSocialLoginCallbackMutation({
     onSuccess: (data: GetSocialLoginResponse) => {
       login(data.id);
-      console.log(data, '소셜로그인 확인');
-      console.log(data.social, '소셜로그인 확인');
 
       cookies.set('accessToken', data.access_token);
       cookies.set('refreshToken', data.refresh_token);
-
-      const userId = data.id;
-      console.log('After Social Login:', {
-        accessToken: !!cookies.get('accessToken'),
-        userId,
-      });
 
       if (data.first_login) {
         navigate('/member-agree?social=true', {
@@ -50,11 +42,6 @@ const LoginHandlerPage = () => {
     onError: (error) => {
       // Axios 에러인 경우 더 상세한 로깅
       if (axios.isAxiosError(error)) {
-        console.error('Axios Error Details:', {
-          response: error.response?.data,
-          status: error.response?.status,
-          headers: error.response?.headers,
-        });
       }
       const apiError = error as ApiErrorResponseDto;
       const errorMessage =
@@ -65,8 +52,6 @@ const LoginHandlerPage = () => {
   });
 
   useEffect(() => {
-    console.log('Provider:', provider);
-    console.log('Code:', code);
     if (provider && code) {
       socialLoginMutation({ provider, code });
     }

@@ -1,12 +1,12 @@
-import { usePostFindEmailMutation } from '@/api/auth/findEmail/findEmail.hooks';
-import { GetFindEmailResponse } from '@/api/auth/findEmail/findEmailType';
 import { ApiError } from '@/types/apiErrorType';
-import { zodResolver } from '@hookform/resolvers/zod';
+import { GetFindEmailResponse } from '@/api/auth/findEmail/findEmailType';
 import axios from 'axios';
-import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { z as zod } from 'zod';
+import { usePostFindEmailMutation } from '@/api/auth/findEmail/findEmail.hooks';
+import { useState } from 'react';
 import { useToast } from '../useToast';
+import { z as zod } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
 
 export const FIND_EMAIL_STEP = {
   INPUT_PHONE: 1, // 전화번호 입력
@@ -45,11 +45,7 @@ export const useFindEmail = () => {
     onError: (error) => {
       // Axios 에러인 경우 더 상세한 로깅
       if (axios.isAxiosError(error)) {
-        console.error('Axios Error Details:', {
-          response: error.response?.data,
-          status: error.response?.status,
-          headers: error.response?.headers,
-        });
+      
       }
       const apiError = error as ApiError;
       const errorMessage =

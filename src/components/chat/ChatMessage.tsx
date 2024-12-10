@@ -1,6 +1,6 @@
 import { ChatMyBubble, ChatOtherBubble, ChatSystemBubble } from './bubbles';
 
-import { ChatMessageRequestParams } from '@/types/chat';
+import { ChatMessageData } from '@/types/chat';
 import { useMemo } from 'react';
 
 const ChatMessage = ({
@@ -10,7 +10,7 @@ const ChatMessage = ({
   profileImage,
   myUserType,
   message_type,
-}: ChatMessageRequestParams & { myUserType: string }) => {
+}: ChatMessageData & { myUserType: string }) => {
   // 내가 보낸 메시지인지 판별
   const isMyMessage = useMemo(
     () => userType === myUserType,

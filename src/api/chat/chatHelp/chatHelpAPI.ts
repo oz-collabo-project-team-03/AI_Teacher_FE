@@ -11,7 +11,6 @@ export const patchChatHelpAPI = async (
       `/chat/help/${room_id}`,
       helpData
     );
-    // console.log('요청 데이터:', helpData);
 
     if (response.data) {
       return response.data; 
@@ -19,7 +18,6 @@ export const patchChatHelpAPI = async (
 
     throw new Error('서버 응답 형식이 올바르지 않습니다');
   } catch (error) {
-    console.error('도움 요청 업데이트 중 오류:', error);
     throw error;
   }
 };

@@ -1,7 +1,7 @@
+import { ApiErrorResponseDto } from '@/types/apiErrorType';
+import axios from 'axios';
 import { useDeletePostMutation } from '@/api/deletePost/deletePost.hooks';
 import { useToast } from '../useToast';
-import axios from 'axios';
-import { ApiErrorResponseDto } from '@/types/apiErrorType';
 
 export const useDeletePost = () => {
   const { showToast } = useToast();
@@ -17,11 +17,7 @@ export const useDeletePost = () => {
     onError: (error) => {
       // Axios 에러인 경우 더 상세한 로깅
       if (axios.isAxiosError(error)) {
-        console.error('Axios Error Details:', {
-          response: error.response?.data,
-          status: error.response?.status,
-          headers: error.response?.headers,
-        });
+      
       }
       const apiError = error as ApiErrorResponseDto;
       const errorMessage =

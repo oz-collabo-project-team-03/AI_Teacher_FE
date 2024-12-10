@@ -2,16 +2,16 @@ import { chatBubbleIcon, chatDeleteIcon } from '@/assets/assets';
 import { useMemo, useState } from 'react';
 
 import ChatItem from '@/components/chat/ChatItem';
+import ChatListSkeleton from '@/components/chat/ChatListSkeleton';
 import CreateChatModal from '@/components/modal/CreateChatModal';
 import DeleteChatModal from '@/components/modal/DeleteChatModal';
 import Header from '@/components/common/Header';
+import LoadingPage from '../status/loadingPage';
 import { motion } from 'framer-motion';
 import { useCreateChatRoomMutation } from '@/api/chat/createChatRoom/createChatRoom.hooks';
 import { useDeleteChatRoomMutation } from '@/api/chat/deleteChatRoom/deleteChatRoom.hooks';
 import { useGetChatListQuery } from '@/api/chat/chatList/chatList.hooks';
 import { useNavigate } from 'react-router-dom';
-import ChatListSkeleton from '@/components/chat/ChatListSkeleton';
-import LoadingPage from '../status/loadingPage';
 
 const StudentChatListPage = () => {
   const navigate = useNavigate();
@@ -70,7 +70,6 @@ const StudentChatListPage = () => {
   const createChatRoomMutation = useCreateChatRoomMutation({
     onSuccess: (newChatRoom) => {
       if (!newChatRoom.room_id) {
-        console.error('room_id가 없습니다:', newChatRoom);
         alert('채팅방 생성에 실패했습니다.');
         return;
       }
@@ -80,7 +79,6 @@ const StudentChatListPage = () => {
       setActiveModal(null);
     },
     onError: (error) => {
-      console.error('Error in onError:', error);
       alert(`채팅방 생성 실패: ${error.message}`);
     },
   });
@@ -115,7 +113,6 @@ const StudentChatListPage = () => {
       setDeletingRoomId(selectedRoomId);
       deleteChatRoomMutation.mutate({ room_id: selectedRoomId });
     } else {
-      console.error('selectedRoomId가 null입니다.');
     }
   };
 

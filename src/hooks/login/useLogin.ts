@@ -3,13 +3,13 @@ import { Cookies } from 'react-cookie';
 import { GetLoginResponse } from '@/api/auth/login/loginType';
 import axios from 'axios';
 import { useAuth } from '../useAuth';
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { usePostLoginMutation } from '@/api/auth/login/login.hooks';
 import { useToast } from '../useToast';
 import { z as zod } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useEffect } from 'react';
 
 // 로그인 폼 스키마 정의
 export const loginFormSchema = zod.object({
@@ -44,8 +44,6 @@ export const useLogin = () => {
       // 로그인 성공 시 userId 설정
       login(data.id);
 
-      console.log('로그인', data);
-
       if (data.first_login) {
         if (data.role === 'student') {
           navigate('/student-main', {
@@ -70,14 +68,10 @@ export const useLogin = () => {
       cookies.set('accessToken', data.access_token, { path: '/' });
     },
     onError: (error) => {
-      console.error('Login Mutation Error:', error);
+    
       // Axios 에러인 경우 더 상세한 로깅
       if (axios.isAxiosError(error)) {
-        console.error('Axios Error Details:', {
-          response: error.response?.data,
-          status: error.response?.status,
-          headers: error.response?.headers,
-        });
+     
       }
 
       const apiError = error as ApiError;
@@ -90,7 +84,7 @@ export const useLogin = () => {
 
   const handlePostLogin = async () => {
     const formData = form.getValues();
-    console.log('Login Attempt:', form.getValues());
+   
     loginMutation(formData);
   };
 

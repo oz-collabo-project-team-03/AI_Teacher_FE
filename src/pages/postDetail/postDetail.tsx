@@ -77,9 +77,7 @@ const PostDetail = () => {
             if (findAndScrollToPost()) break;
           }
         }
-      } catch (error) {
-        console.error('포스트를 찾는 중 오류 발생:', error);
-      }
+      } catch (error) {}
     };
 
     scrollToSelectedPost();

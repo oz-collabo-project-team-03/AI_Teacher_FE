@@ -1,13 +1,13 @@
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
-import { useToast } from '../useToast';
-import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
-import { getEditSchemaByRole } from '@/schemas/editAccountSchemas';
-import { useEditAccountMutation } from '@/api/auth/changeProfile/editAccount/editAccount.hooks';
-import axios from 'axios';
 import { ApiErrorResponseDto } from '@/types/apiErrorType';
 import { EditAccountRequestParams } from '@/api/auth/changeProfile/editAccount/editAccountType';
+import axios from 'axios';
+import { getEditSchemaByRole } from '@/schemas/editAccountSchemas';
+import { useEditAccountMutation } from '@/api/auth/changeProfile/editAccount/editAccount.hooks';
+import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import { useToast } from '../useToast';
+import { zodResolver } from '@hookform/resolvers/zod';
 
 export const useEditAccountForm = (role: 'student' | 'teacher' | undefined) => {
   const [selectedGrade, setSelectedGrade] = useState<number>(1);
@@ -37,17 +37,12 @@ export const useEditAccountForm = (role: 'student' | 'teacher' | undefined) => {
 
   const { mutate: editAccountMutation } = useEditAccountMutation({
     onSuccess: (data) => {
-      console.log('회원 정보 변경 완료', data);
       navigate('/my-page'), { replace: true };
       showToast('회원 정보 변경 완료');
     },
     onError: (error) => {
       if (axios.isAxiosError(error)) {
-        console.error('Axios Error Details:', {
-          response: error.response?.data,
-          status: error.response?.status,
-          headers: error.response?.headers,
-        });
+      
       }
 
       const apiError = error as ApiErrorResponseDto;

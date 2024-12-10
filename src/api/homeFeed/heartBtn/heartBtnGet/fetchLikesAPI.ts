@@ -10,10 +10,7 @@ export const fetchLikeStatus = async (
     );
     return response.data;
   } catch (error: any) {
-    console.error(
-      'Failed to fetch like status:',
-      error.response?.data || error.message
-    );
+
     throw error;
   }
 };

@@ -1,4 +1,5 @@
-import { createContext, useState, ReactNode, useEffect } from 'react';
+import { ReactNode, createContext, useEffect, useState } from 'react';
+
 import { Cookies } from 'react-cookie';
 import { useProfileGetQuery } from '@/api/myPage/myPage.hooks';
 
@@ -29,22 +30,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const accessToken = cookies.get('accessToken');
   // 초기 로그인 상태 체크 (토큰 존재 여부)
   useEffect(() => {
-    // console.log('Auth Provider Effect:', {
-    //   accessToken: !!cookies.get('accessToken'),
-    //   userInfo,
-    //   isLoading,
-    //   isError,
-    // });
-
     const initializeAuth = async () => {
       try {
         if (accessToken) {
           if (!isLoading) {
             if (userInfo) {
-              // console.log('Setting userId from userInfo:', userInfo.id);
               setUserId(userInfo.id);
             } else if (isError) {
-              // console.warn('Error in fetching user profile');
               // 토큰 검증 실패 시 명시적 로그아웃
               logout();
             }
@@ -53,12 +45,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             setIsInitialized(true);
           }
         } else {
-          // console.log('엑세스토큰도 없고 아이디도 없어유');
           setUserId(null);
           setIsInitialized(true);
         }
       } catch (error) {
-        // console.error('Error:', error);
         setIsInitialized(true);
       }
     };
@@ -67,13 +57,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, [accessToken, userInfo, isError, isLoading]);
 
   const login = (newUserId: number) => {
-    // console.log('Login called with userId:', newUserId);
     setUserId(newUserId);
     // localStorage.setItem('userId', newUserId.toString());
   };
 
   const logout = () => {
-    // console.log('Logout called');
     setUserId(null);
     cookies.remove('accessToken');
   };

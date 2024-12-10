@@ -5,6 +5,6 @@ export const getStudentsListAPI =
   async (): Promise<StudentsListResponseDto> => {
     const response =
       await axiosInstance.get<StudentsListResponseDto>(`/teacher/students`);
-    console.log(response.data);
+
     return response.data;
   };

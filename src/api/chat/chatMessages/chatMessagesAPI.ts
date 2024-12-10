@@ -9,6 +9,5 @@ export const getChatMessagesAPI = async (
     `/chat/${params.room_id}/messages`,
     { params: { page: params.page } }
   );
-
   return response.data;
 };

@@ -8,7 +8,7 @@ import axiosInstance from '@/api/axiosInstance';
 export const CreatePostingAPI = async (
   createPostingData: CreatePostingRequestParams
 ): Promise<CreatePostingResponseDto> => {
-  console.log('요청 데이터:', createPostingData);
+
 
   const formData = new FormData();
   formData.append('image1', createPostingData.image1);

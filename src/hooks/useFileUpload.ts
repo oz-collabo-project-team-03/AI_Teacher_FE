@@ -6,19 +6,19 @@ export const useFileUpload = (onUpload: (fileContent: string, fileName: string) 
   const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (!file) {
-      console.error('파일이 선택되지 않았습니다.');
+     
       return;
     }
 
     const allowedTypes = ['image/jpeg', 'image/png'];
     if (!allowedTypes.includes(file.type)) {
-      console.error('허용되지 않은 파일 형식입니다.');
+      
       event.target.value = '';
       return;
     }
 
     if (file.size > maxFileSize) {
-      console.error('파일 크기가 너무 큽니다.');
+    
       return;
     }
 
@@ -29,7 +29,7 @@ export const useFileUpload = (onUpload: (fileContent: string, fileName: string) 
     };
 
     reader.onerror = (error) => {
-      console.error('파일 읽기 중 에러:', error);
+     
     };
 
     reader.readAsDataURL(file);

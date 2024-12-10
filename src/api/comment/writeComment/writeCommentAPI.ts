@@ -12,7 +12,7 @@ export const FetchCommentAPI = async ({
   post_id: string;
   FetchCommentData: FetchCommentRequestParams;
 }): Promise<FetchCommentResponseDto> => {
-  console.log('요청 데이터:', FetchCommentData);
+
   const response = await axiosInstance.post<FetchCommentResponseDto>(
     `/comments/write/${post_id}`,
     FetchCommentData

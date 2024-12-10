@@ -1,16 +1,17 @@
 import { FormProvider, useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
+
+import { AxiosError } from 'axios';
 import Button from '@/components/common/Button';
+import { EditProfileRequestParams } from '@/types/editProfileType';
 import Header from '@/components/common/Header';
 import ProfileImages from '@/components/editProfile/ProfileImages';
 import StudentProfileFields from '@/components/editProfile/inputFields/StudentProfileFields';
 import TeacherProfileFields from '@/components/editProfile/inputFields/TeacherProfileFields';
-import { AxiosError } from 'axios';
-import { useToast } from '@/hooks/useToast';
+import { useEditProfileMutation } from '@/api/editProfile/editProfile.hooks';
 import { useProfile } from '@/hooks/useProfile';
 import { useState } from 'react';
-import { useEditProfileMutation } from '@/api/editProfile/editProfile.hooks';
-import { EditProfileRequestParams } from '@/types/editProfileType';
+import { useToast } from '@/hooks/useToast';
 
 const EditProfile = () => {
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
@@ -48,7 +49,6 @@ const EditProfile = () => {
       } else {
         showToast('프로필 업데이트 중 오류가 발생했습니다.');
       }
-      console.error('프로필 업데이트 오류:', error);
     },
   });
 

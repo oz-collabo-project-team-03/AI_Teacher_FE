@@ -1,7 +1,7 @@
 import Button from '../common/Button';
 import { useCancelMemberMutation } from '@/api/auth/cancleMember/cancelMember.hooks';
-import { useToast } from '@/hooks/useToast';
 import { useNavigate } from 'react-router-dom';
+import { useToast } from '@/hooks/useToast';
 
 type CancelMemberModalProps = {
   onClose: () => void;
@@ -16,7 +16,6 @@ const CancelMemberModal = ({ onClose }: CancelMemberModalProps) => {
       navigate('/');
     },
     onError: (error) => {
-      console.error('회원 탈퇴 실패:', error);
       showToast(`회원 탈퇴에 실패하였습니다. ${error.message}`);
     },
   });

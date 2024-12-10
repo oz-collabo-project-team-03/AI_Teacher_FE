@@ -1,4 +1,5 @@
 import axios, { AxiosError, AxiosInstance, AxiosRequestConfig } from 'axios';
+
 import { Cookies } from 'react-cookie';
 
 type ErrorResponse = {
@@ -95,9 +96,6 @@ export const createAxiosInterceptor = (axiosInstance: AxiosInstance) => {
           error.response?.data?.message ||
           errorMessages[status] ||
           defaultMessage;
-
-        // 토스트나 알림으로 에러 표시 가능
-        console.error(`${status} Error:`, message);
 
         return Promise.reject({
           status,

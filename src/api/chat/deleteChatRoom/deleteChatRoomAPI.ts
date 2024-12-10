@@ -16,7 +16,7 @@ export const deleteChatRoomAPI = async (
 
     throw new Error('서버 응답 형식이 올바르지 않습니다');
   } catch (error) {
-    console.error('채팅방 삭제 중 오류:', error);
+ 
     throw error;
   }
 };

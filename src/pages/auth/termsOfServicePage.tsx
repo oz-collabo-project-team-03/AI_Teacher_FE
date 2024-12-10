@@ -1,10 +1,12 @@
+import { useLocation, useNavigate } from 'react-router-dom';
+
 import Button from '@/components/common/Button';
 import CheckBox from '@/components/common/CheckBox';
 import ShowPrivacyTerms from '@/components/terms/ShowPrivacyTerms';
 import ShowThirdPartyTerms from '@/components/terms/ShowThirdPartyTerms';
-import { useToast } from '@/hooks/useToast';
 import { useTermsStore } from '@/stores/useTermsStore';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useToast } from '@/hooks/useToast';
+
 // 이용약관 페이지라는 뜻
 const TermsOfServicePage = () => {
   const isAllChecked = useTermsStore((state) => state.stack.isAllChecked);
@@ -21,8 +23,6 @@ const TermsOfServicePage = () => {
   const location = useLocation();
 
   const isFirstLogin = location.state?.isFirstLogin;
-  console.log('약관동의 location 전체:', location);
-  console.log('약관동의 location.state의 타입:', typeof location.state);
   /** 전체 동의 체크박스 핸들러 */
   const handleAllCheck = () => {
     setAllChecked(!isAllChecked);

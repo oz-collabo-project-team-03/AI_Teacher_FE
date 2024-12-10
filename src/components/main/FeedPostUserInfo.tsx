@@ -1,10 +1,11 @@
+import { AnimatePresence, motion } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
+
 import studentIcon1 from '@/assets/editProfile/student/studentIcon1.png';
-import { useProfile } from '@/hooks/useProfile';
-import { useState } from 'react';
 import { useDeletePost } from '@/hooks/deletePost/useDeletePost';
+import { useProfile } from '@/hooks/useProfile';
 import { useQueryClient } from '@tanstack/react-query';
+import { useState } from 'react';
 
 type FeedPostUserInfoProps = {
   user_id: number;
@@ -68,7 +69,6 @@ const FeedPostUserInfo = ({
           };
         });
       } else {
-        console.log('일치하는 게시글을 찾을 수 없습니다');
       }
     }
   };

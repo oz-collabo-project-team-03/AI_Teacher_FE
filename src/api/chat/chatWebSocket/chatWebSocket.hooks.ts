@@ -7,25 +7,25 @@ export const useChatWebSocket = (roomId: number, userId: number) => {
   const webSocketRef = useRef<ChatWebSocketAPI | null>(null);
 
   useEffect(() => {
-    // console.log('[useChatWebSocket] WebSocket 생성');
+    
     const webSocket = new ChatWebSocketAPI(roomId, userId);
     webSocketRef.current = webSocket;
   
     webSocket.onMessage((data) => {
       setLastMessage(data);
-      // console.log('[useChatWebSocket] 메시지 수신:', data);
+     
     });
   
     return () => {
       webSocket.close();
-      // console.log('[useChatWebSocket] WebSocket 종료');
+     
     };
   }, [roomId, userId]);
   
 
   // 메시지 전송 함수
   const sendMessage = (message: any) => {
-    // console.log('[useChatWebSocket] 메시지 전송:', message);
+    
     webSocketRef.current?.sendMessage(message);
   };
 

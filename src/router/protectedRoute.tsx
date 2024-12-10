@@ -1,17 +1,11 @@
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
-import { useAuth } from '@/hooks/useAuth';
+
 import LoadingPage from '@/pages/status/loadingPage';
+import { useAuth } from '@/hooks/useAuth';
 
 const ProtectedRoute = () => {
   const { userId, isInitialized } = useAuth();
   const location = useLocation();
-
-  // console.log('Protected Route Debug:', {
-  //   userId,
-  //   isInitialized,
-  //   isLoggedIn,
-  //   pathname: location.pathname,
-  // });
 
   if (!isInitialized) {
     return <LoadingPage />;
