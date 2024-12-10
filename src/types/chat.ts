@@ -4,7 +4,7 @@ export type ChatBubbleRequestParams = {
   filename?: string;
 };
 
-export type ChatMessageRequestParams = {
+export type ChatMessageData  = {
   message: string;
   message_type: MessageType;
   filename?: string;
