@@ -49,7 +49,7 @@ const FeedPostButton = ({ post_id }: FeedPostButtonProps) => {
             };
           });
         },
-        onError: (error: any) => {},
+        onError: () => {},
       }
     );
   };
