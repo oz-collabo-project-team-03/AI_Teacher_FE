@@ -10,6 +10,7 @@ import { useMemo, useState } from 'react';
 import { twMerge } from 'tailwind-merge';
 import Button from '../common/Button';
 import Input from '../common/Input';
+import { useProfile } from '@/hooks/useProfile';
 
 type CloseTeacherModalProps = {
   closeTeacherModal: () => void;
@@ -22,13 +23,14 @@ const TeacherListModal = ({ closeTeacherModal }: CloseTeacherModalProps) => {
   const [searchTerm, setSearchTerm] = useState('');
 
   const { selectTeacherMutation } = useTeacherSelection();
+  const { profileData } = useProfile();
 
   //전체 선생님 조회
   const {
     data: teachers = [],
     isLoading,
     error,
-  } = useQuery({ ...teacherQueries.teachers.all() });
+  } = useQuery({ ...teacherQueries.teachers.all(profileData?.role) });
 
   // 검색어를 기반으로 선생님 목록 필터링
   const filteredTeachers = useMemo(() => {
@@ -42,6 +44,7 @@ const TeacherListModal = ({ closeTeacherModal }: CloseTeacherModalProps) => {
   const handleTeacherSelect = (teacher: TeacherDto) => {
     setSelectedTeacher(teacher);
   };
+  console.log(teachers);
 
   if (isLoading) return <LoadingPage />;
   if (error) return <ErrorPage />;
