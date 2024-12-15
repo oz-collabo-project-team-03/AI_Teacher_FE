@@ -21,6 +21,10 @@
 <img width="428" alt="스크린샷 2024-10-24 오후 3 48 39" src="https://github.com/user-attachments/assets/8dda7fc6-7720-4bc4-9e15-9bf7dc68aade">
 </p>
 
+## 테스트 계정
+> * Test ID : aaaa@example.com
+> * Test PW : qwe123!@#
+
 ## ✅ 주요기능
 
 ### 1️⃣ AI 상담
