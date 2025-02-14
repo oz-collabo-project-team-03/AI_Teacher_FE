@@ -22,8 +22,12 @@
 </p>
 
 ## 테스트 계정
-> * Test ID : aaaa@example.com
-> * Test PW : qwe123!@#
+ ```
+Test ID : aaaa@example.com
+Test PW : qwe123!@#
+```
+### ‼️로그인 시 주의 사항
+**일반 로그인과 소셜 로그인 여부와 관계없이 동일한 전화번호로는 중복 가입이 불가능합니다.**
 
 ## ✅ 주요기능
 
