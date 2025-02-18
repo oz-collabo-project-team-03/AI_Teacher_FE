@@ -2,7 +2,8 @@
 
 ## 🔗 배포링크
 > ### [🧑🏻‍🏫 수행쌤](https://sam.kprolabs.space/)
-
+> **사이트가 되지않는다면??**
+여기로 모시겠습니다 [수행쌤 시연영상](https://youtu.be/jEPG1xnGKs0?si=wElP174_sW9HfXIK)
 ---
 
 ## 🗓️ 프로젝트 기간
